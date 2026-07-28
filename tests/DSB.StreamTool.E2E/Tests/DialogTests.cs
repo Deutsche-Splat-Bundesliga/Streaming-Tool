@@ -103,4 +103,23 @@ public class DialogTests : PageTest
 
         await Expect(caster2).ToHaveValueAsync("CasterTwo");
     }
+
+    [Test]
+    public async Task Dialog_CommBoxDisplaySettings_ModeButtons_AreVisible()
+    {
+        var dialogOpenButton = Page.Locator(".open-comm-box-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".comm-box-settings-dialog .manual-display-mode-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".comm-box-settings-dialog .auto-display-mode-button")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dialog_CommBoxDisplaySettings_ShowCommBoxIntervalInput_IsVisible()
+    {
+        var dialogOpenButton = Page.Locator(".open-comm-box-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".comm-box-settings-dialog .show-comm-box-interval-input")).ToBeVisibleAsync();
+    }
 }
