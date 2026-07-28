@@ -46,4 +46,22 @@ public class DialogTests : PageTest
         var count = await options.CountAsync();
         Assert.That(count, Is.GreaterThan(0), "Division select should have at least one option.");
     }
+
+    [Test]
+    public async Task Dialog_TourneySettings_Week_IsVisible()
+    {
+        var dialogOpenButton = Page.Locator(".open-tourney-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".tourney-settings-dialog .week-section input")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dialog_TourneySettings_StartTime_IsVisible()
+    {
+        var dialogOpenButton = Page.Locator(".open-tourney-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".tourney-settings-dialog .start-time-section input")).ToBeVisibleAsync();
+    }
 }
