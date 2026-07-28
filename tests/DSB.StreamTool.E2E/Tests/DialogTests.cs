@@ -64,4 +64,43 @@ public class DialogTests : PageTest
 
         await Expect(Page.Locator(".tourney-settings-dialog .start-time-section input")).ToBeVisibleAsync();
     }
+
+    [Test]
+    public async Task Dialog_StreamerCommsSettings_Streamer_InputAcceptsText()
+    {
+        var dialogOpenButton = Page.Locator(".open-streamer-comms-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        var streamerInput = Page.Locator(".streamer-comms-dialog input[placeholder='Streamer']");
+        await streamerInput.ClearAsync();
+        await streamerInput.FillAsync("TestStreamer");
+
+        await Expect(streamerInput).ToHaveValueAsync("TestStreamer");
+    }
+
+    [Test]
+    public async Task Dialog_StreamerCommsSettings_Commentator_InputAcceptsText()
+    {
+        var dialogOpenButton = Page.Locator(".open-streamer-comms-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        var caster1 = Page.Locator(".streamer-comms-dialog input[placeholder='Caster1']");
+        await caster1.ClearAsync();
+        await caster1.FillAsync("CasterOne");
+
+        await Expect(caster1).ToHaveValueAsync("CasterOne");
+    }
+
+    [Test]
+    public async Task Dialog_StreamerCommsSettings_Commentator2_InputAcceptsText()
+    {
+        var dialogOpenButton = Page.Locator(".open-streamer-comms-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        var caster2 = Page.Locator(".streamer-comms-dialog input[placeholder='Caster2']");
+        await caster2.ClearAsync();
+        await caster2.FillAsync("CasterTwo");
+
+        await Expect(caster2).ToHaveValueAsync("CasterTwo");
+    }
 }

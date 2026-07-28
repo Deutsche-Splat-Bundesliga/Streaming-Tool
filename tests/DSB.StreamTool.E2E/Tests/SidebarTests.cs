@@ -64,36 +64,6 @@ public class SidebarTests : PageTest
     }
 
     [Test]
-    public async Task Sidebar_Streamer_InputAcceptsText()
-    {
-        var streamerInput = Page.Locator("input[placeholder='Streamer']");
-        await streamerInput.ClearAsync();
-        await streamerInput.FillAsync("TestStreamer");
-
-        await Expect(streamerInput).ToHaveValueAsync("TestStreamer");
-    }
-
-    [Test]
-    public async Task Sidebar_Commentator1_InputAcceptsText()
-    {
-        var caster1 = Page.Locator("input[placeholder='Caster1']");
-        await caster1.ClearAsync();
-        await caster1.FillAsync("CasterOne");
-
-        await Expect(caster1).ToHaveValueAsync("CasterOne");
-    }
-
-    [Test]
-    public async Task Sidebar_Commentator2_InputAcceptsText()
-    {
-        var caster2 = Page.Locator("input[placeholder='Caster2']");
-        await caster2.ClearAsync();
-        await caster2.FillAsync("CasterTwo");
-
-        await Expect(caster2).ToHaveValueAsync("CasterTwo");
-    }
-
-    [Test]
     public async Task Sidebar_Visibility_AllThreeButtonsPresent()
     {
         await Expect(Page.Locator("app-toggle-slider.toggle-slider-show-map-screen")).ToBeVisibleAsync();
