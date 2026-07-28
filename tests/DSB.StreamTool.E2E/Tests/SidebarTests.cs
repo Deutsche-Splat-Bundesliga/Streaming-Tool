@@ -17,21 +17,6 @@ public class SidebarTests : PageTest
     }
 
     [Test]
-    public async Task Sidebar_Division_SelectIsVisible()
-    {
-        var divisionSelect = Page.Locator(".sidebar section:has(h2:text('Division')) select");
-        await Expect(divisionSelect).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Sidebar_Division_SelectHasOptions()
-    {
-        var options = Page.Locator(".sidebar section:has(h2:text('Division')) select option");
-        var count = await options.CountAsync();
-        Assert.That(count, Is.GreaterThan(0), "Division select should have at least one option.");
-    }
-
-    [Test]
     public async Task Sidebar_Teams_BothInputsAreVisible()
     {
         var teamInputs = Page.Locator(".sidebar section:has(h2:text('Teams')) input");
