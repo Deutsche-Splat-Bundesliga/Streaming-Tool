@@ -18,6 +18,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_OpenButtons_IsVisible()
     {
+        await Expect(Page.Locator(".open-colors-settings-dialog-button")).ToBeVisibleAsync();
         await Expect(Page.Locator(".open-tourney-settings-dialog-button")).ToBeVisibleAsync();
         await Expect(Page.Locator(".open-streamer-comms-dialog-button")).ToBeVisibleAsync();
         await Expect(Page.Locator(".open-comm-box-settings-dialog-button")).ToBeVisibleAsync();
