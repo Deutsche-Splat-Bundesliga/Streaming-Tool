@@ -188,11 +188,11 @@ public partial class OverlayTests : PageTest
     {
         await Page.GotoAsync(BaseUrl);
 
-        var timeDataDetails = Page.Locator(".socials__details-container");
-        await timeDataDetails.ClickAsync();
+        var socialsDialogButton = Page.Locator(".sidebar .open-socials-dialog-button");
+        await socialsDialogButton.ClickAsync();
 
-        var twitterInput = Page.Locator(".twitter-handle-input");
-        var discordInput = Page.Locator(".discord-invite-input");
+        var twitterInput = Page.Locator(".socials-dialog .twitter-handle-input");
+        var discordInput = Page.Locator(".socials-dialog .discord-invite-input");
 
         await twitterInput.FillAsync("@E2ETestDSB");
         await Expect(twitterInput).ToHaveValueAsync("@E2ETestDSB");
@@ -217,11 +217,11 @@ public partial class OverlayTests : PageTest
     {
         await Page.GotoAsync(BaseUrl);
 
-        var timeDataDetails = Page.Locator(".socials__details-container");
-        await timeDataDetails.ClickAsync();
+        var socialsDialogButton = Page.Locator(".sidebar .open-socials-dialog-button");
+        await socialsDialogButton.ClickAsync();
 
-        var twitterInput = Page.Locator(".twitter-handle-input");
-        var discordInput = Page.Locator(".discord-invite-input");
+        var twitterInput = Page.Locator(".socials-dialog .twitter-handle-input");
+        var discordInput = Page.Locator(".socials-dialog .discord-invite-input");
 
         await twitterInput.FillAsync(string.Empty);
         await Expect(twitterInput).ToHaveValueAsync(string.Empty);
@@ -238,6 +238,6 @@ public partial class OverlayTests : PageTest
         await endScreenPage.CloseAsync();
     }
 
-    [GeneratedRegex(@"^Season [0-9]?[0-9] - Woche \d - Division [1-8]")]
+    [GeneratedRegex(@"^Season \d+ - Woche \d+ - Division [1-8]")]
     private static partial Regex SeasonWeekDivisionRegex();
 }
