@@ -1,3 +1,4 @@
+using System.Drawing;
 using Microsoft.Playwright.NUnit;
 
 namespace DSB.StreamTool.E2E.Tests;
@@ -18,17 +19,17 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_OpenButtons_IsVisible()
     {
-        await Expect(Page.Locator(".open-colors-settings-dialog-button")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".open-tourney-settings-dialog-button")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".open-streamer-comms-dialog-button")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".open-comm-box-settings-dialog-button")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".open-socials-dialog-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".sidebar .open-colors-settings-dialog-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".sidebar .open-tourney-settings-dialog-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".sidebar .open-streamer-comms-dialog-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".sidebar .open-comm-box-settings-dialog-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".sidebar .open-socials-dialog-button")).ToBeVisibleAsync();
     }
 
     [Test]
     public async Task Dialog_TourneySettings_Division_SelectIsVisible()
     {
-        var dialogOpenButton = Page.Locator(".open-tourney-settings-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-tourney-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         await Expect(Page.Locator(".tourney-settings-dialog")).ToBeVisibleAsync();
@@ -40,7 +41,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_TourneySettings_Division_SelectHasOptions()
     {
-        var dialogOpenButton = Page.Locator(".open-tourney-settings-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-tourney-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         var options = Page.Locator(".tourney-settings-dialog section:has(h2:text('Division')) select option");
@@ -51,7 +52,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_TourneySettings_Week_IsVisible()
     {
-        var dialogOpenButton = Page.Locator(".open-tourney-settings-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-tourney-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         await Expect(Page.Locator(".tourney-settings-dialog .week-section input")).ToBeVisibleAsync();
@@ -60,7 +61,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_TourneySettings_StartTime_IsVisible()
     {
-        var dialogOpenButton = Page.Locator(".open-tourney-settings-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-tourney-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         await Expect(Page.Locator(".tourney-settings-dialog .start-time-section input")).ToBeVisibleAsync();
@@ -69,7 +70,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_StreamerCommsSettings_Streamer_InputAcceptsText()
     {
-        var dialogOpenButton = Page.Locator(".open-streamer-comms-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-streamer-comms-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         var streamerInput = Page.Locator(".streamer-comms-dialog input[placeholder='Streamer']");
@@ -82,7 +83,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_StreamerCommsSettings_Commentator_InputAcceptsText()
     {
-        var dialogOpenButton = Page.Locator(".open-streamer-comms-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-streamer-comms-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         var caster1 = Page.Locator(".streamer-comms-dialog input[placeholder='Caster1']");
@@ -95,7 +96,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_StreamerCommsSettings_Commentator2_InputAcceptsText()
     {
-        var dialogOpenButton = Page.Locator(".open-streamer-comms-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-streamer-comms-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         var caster2 = Page.Locator(".streamer-comms-dialog input[placeholder='Caster2']");
@@ -108,7 +109,7 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_CommBoxDisplaySettings_ModeButtons_AreVisible()
     {
-        var dialogOpenButton = Page.Locator(".open-comm-box-settings-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-comm-box-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         await Expect(Page.Locator(".comm-box-settings-dialog .manual-display-mode-button")).ToBeVisibleAsync();
@@ -118,9 +119,29 @@ public class DialogTests : PageTest
     [Test]
     public async Task Dialog_CommBoxDisplaySettings_ShowCommBoxIntervalInput_IsVisible()
     {
-        var dialogOpenButton = Page.Locator(".open-comm-box-settings-dialog-button");
+        var dialogOpenButton = Page.Locator(".sidebar .open-comm-box-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
         await Expect(Page.Locator(".comm-box-settings-dialog .show-comm-box-interval-input")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dialog_ColorSettings_ColorLockToggleSlider_IsVisible()
+    {
+        var dialogOpenButton = Page.Locator(".sidebar .open-colors-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".color-settings-dialog label app-toggle-slider")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dialog_ColorSettings_Colors_HasOptions()
+    {
+        var dialogOpenButton = Page.Locator(".sidebar .open-colors-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        var colorContainers = Page.Locator(".color-settings-dialog .color-display__container");
+        var count = await colorContainers.CountAsync();
+        Assert.That(count, Is.GreaterThanOrEqualTo(2), "Color options containers should have at least two container with colors.");
     }
 }
