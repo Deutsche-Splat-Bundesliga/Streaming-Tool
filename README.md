@@ -142,6 +142,9 @@ http://localhost:4200/
 **End Screen**
 ![End Screen](docs/screenshots/end-screen.png)
 
+**Color Settings**
+![Color Settings](docs/screenshots/color-settings.png)
+
 ---
 
 ## Contributing
