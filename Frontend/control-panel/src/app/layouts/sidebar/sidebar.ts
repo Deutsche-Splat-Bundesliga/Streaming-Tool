@@ -1,10 +1,7 @@
 import { Component, inject, WritableSignal, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BroadcastState } from '../../models/broadcast-state';
-import { Division } from '../../models/division';
 import { BroadcastStateService } from '../../services/broadcast-state';
-import { Socials } from '../../models/socials';
-import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
@@ -15,6 +12,10 @@ import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangeColorsDialog } from '../../dialogs/change-colors-dialog/change-colors-dialog';
+import { SocialsDialog } from '../../dialogs/socials-dialog/socials-dialog';
+import { TourneySettingsDialog } from '../../dialogs/tourney-settings-dialog/tourney-settings-dialog';
+import { StreamerCommsDialog } from '../../dialogs/streamer-comms-dialog/streamer-comms-dialog';
+import { CommBoxSettingsDialog } from '../../dialogs/comm-box-settings-dialog/comm-box-settings-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -49,11 +50,6 @@ export class Sidebar implements OnInit, OnDestroy {
   stateService: BroadcastStateService = inject(BroadcastStateService);
 
   /**
-   * Service that manages social data for the sidebar.
-   */
-  socialsService: SocialsService = inject(SocialsService);
-
-  /**
    * Service that manages commentator box time data.
    */
   commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
@@ -66,20 +62,10 @@ export class Sidebar implements OnInit, OnDestroy {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
-   * Writable signal representing the current social data.
-   */
-  socials: WritableSignal<Socials> = this.socialsService.socials;
-
-  /**
    * Writable signal representing the commentator box time data.
    */
   commentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData> =
     this.commentatorBoxTimeDataService.commentatorBoxTimeData;
-
-  /**
-   * Available divisions for the broadcast state.
-   */
-  availableDivisions: Division[] = this.stateService.availableDivisions;
 
   /**
    * Handle click event for next color button that advances the current color id by one
@@ -90,15 +76,56 @@ export class Sidebar implements OnInit, OnDestroy {
       currentColorsId = 0;
     }
 
+    this.log.trace('Updating match colors to next color in list', {
+      previousColorsId: this.state().currentColorsId,
+      currentColorsId,
+    });
     this.stateService.update({ currentColorsId: currentColorsId });
   }
 
   /**
-   * Handle click event for color settings button that opens our dialog
+   * Handle click event for color settings button that opens the dialog
    */
   handleColorSettingsButtonClick(): void {
     this.dialog.closeAll();
+    this.log.trace('Opening dialog for colors settings');
     this.dialog.open(ChangeColorsDialog, { panelClass: 'color-settings-dialog' });
+  }
+
+  /**
+   * Handle click event for socials settings button that opens the dialog
+   */
+  handleSocialsSettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.log.trace('Opening dialog for socials settings');
+    this.dialog.open(SocialsDialog, { panelClass: 'socials-dialog' });
+  }
+
+  /**
+   * Handle click event for tourney settings button that opens the dialog
+   */
+  handleTourneySettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.log.trace('Opening dialog for tourney settings');
+    this.dialog.open(TourneySettingsDialog, { panelClass: 'tourney-settings-dialog' });
+  }
+
+  /**
+   * Handle click event for streamer and commentators button that opens the dialog
+   */
+  handleStreamerCommsButtonClick(): void {
+    this.dialog.closeAll();
+    this.log.trace('Opening dialog for setting streamer and commentators');
+    this.dialog.open(StreamerCommsDialog, { panelClass: 'streamer-comms-dialog' });
+  }
+
+  /**
+   * Handle click event for commentator box display settings button that opens the dialog
+   */
+  handleCommBoxSettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.log.trace('Opening dialog for commentator box display settings');
+    this.dialog.open(CommBoxSettingsDialog, { panelClass: 'comm-box-settings-dialog' });
   }
 
   /**
@@ -140,12 +167,10 @@ export class Sidebar implements OnInit, OnDestroy {
 
     try {
       this.stateService.loadInitialState();
-      this.socialsService.loadInitialState();
       this.commentatorBoxTimeDataService.loadInitialState();
 
       this.log.debug('Initial state load triggered', {
         hasStateService: !!this.stateService,
-        hasSocialsService: !!this.socialsService,
         hasTimeDataService: !!this.commentatorBoxTimeDataService,
       });
     } catch (err) {

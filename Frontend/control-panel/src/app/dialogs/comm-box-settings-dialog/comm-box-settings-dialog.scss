@@ -1,0 +1,21 @@
+@use '../dialog-theme.scss';
+
+.toggle-button {
+  width: 7rem;
+}
+
+.comm-box-display-state-buttons__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  column-gap: 1rem;
+}
+
+.comm-box-display-state-buttons__container,
+.comm-box-visible-time-input__section {
+  margin-bottom: 1.5rem;
+}
+
+.no-margin {
+  margin: 0;
+}

@@ -14,21 +14,23 @@
     <app-toggle-slider [class.toggled]="state().colorLockActive" />
   </label>
   <h2>Farben</h2>
-  @for (color of visibleColors; track color.id) {
-    <div class="color-display__container">
-      <div class="color-display" [ngStyle]="{ 'background-color': color.colorAlpha }"></div>
-      <div class="color-display" [ngStyle]="{ 'background-color': color.colorBravo }"></div>
-      <app-toggle-slider
-        [class.toggled]="state().currentColorsId === color.id"
-        (onToggleSliderClick)="
-          stateService.update({
-            currentColorsId: color.id,
-          })
-        "
-      />
-    </div>
-  }
+  <div class="colors__container">
+    @for (color of visibleColors; track color.id) {
+      <div class="color-display__container">
+        <div class="color-display" [ngStyle]="{ 'background-color': color.colorAlpha }"></div>
+        <div class="color-display" [ngStyle]="{ 'background-color': color.colorBravo }"></div>
+        <app-toggle-slider
+          [class.toggled]="state().currentColorsId === color.id"
+          (onToggleSliderClick)="
+            stateService.update({
+              currentColorsId: color.id,
+            })
+          "
+        />
+      </div>
+    }
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-dialog-close>✖</button>
+  <button class="click-button" mat-dialog-close>✖</button>
 </mat-dialog-actions>

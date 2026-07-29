@@ -1,46 +1,5 @@
 <div class="sidebar">
   <section>
-    <h2>Division</h2>
-    <select
-      [ngModel]="state().division"
-      (ngModelChange)="
-        stateService.update({
-          division: $event,
-        })
-      "
-    >
-      @for (division of availableDivisions; track division) {
-        <option [ngValue]="division.id">
-          {{ division.name }}
-        </option>
-      }
-    </select>
-  </section>
-  <section>
-    <h2>Startzeit</h2>
-    <input
-      type="datetime-local"
-      [ngModel]="state().startTime"
-      (ngModelChange)="
-        stateService.update({
-          startTime: $event,
-        })
-      "
-    />
-  </section>
-  <section>
-    <h2>Woche</h2>
-    <input
-      type="number"
-      [ngModel]="state().week"
-      (ngModelChange)="
-        stateService.update({
-          week: $event,
-        })
-      "
-    />
-  </section>
-  <section>
     <h2>Teams</h2>
     <input
       [ngModel]="state().teamAlphaName"
@@ -61,6 +20,7 @@
       maxLength="30"
     />
   </section>
+
   <section>
     <h2>Farben</h2>
     @if (!state().colorLockActive) {
@@ -92,39 +52,7 @@
       </label>
     </div>
   </section>
-  <section>
-    <h2>Streamer</h2>
-    <input
-      placeholder="Streamer"
-      [ngModel]="state().streamer"
-      (ngModelChange)="
-        stateService.update({
-          streamer: $event,
-        })
-      "
-    />
-  </section>
-  <section>
-    <h2>Kommentatoren</h2>
-    <input
-      placeholder="Caster1"
-      [ngModel]="state().commentator1"
-      (ngModelChange)="
-        stateService.update({
-          commentator1: $event,
-        })
-      "
-    />
-    <input
-      placeholder="Caster2"
-      [ngModel]="state().commentator2"
-      (ngModelChange)="
-        stateService.update({
-          commentator2: $event,
-        })
-      "
-    />
-  </section>
+
   <section>
     <h2>Sichtbarkeit des Overlays</h2>
     <label
@@ -172,126 +100,60 @@
       Kommentatoren
     </label>
   </section>
+
   <section>
     <h2>Ein- / Ausblenden Kommentatorenbox</h2>
-    <details class="comm-box-time-data__details-container">
-      <summary>Einstellungen</summary>
-      <div class="commentator-box-display-inputs__container">
-        <h3>Ein- / Ausblendemodus</h3>
-        <div class="comm-box-display-state-buttons__container">
-          <button
-            class="toggle-button display-mode-button manual-display-mode-button"
-            [class.toggled]="commentatorBoxTimeData().displayMode === commBoxDisplayMode.Manual"
-            (click)="
-              commentatorBoxTimeDataService.update({
-                displayMode: commBoxDisplayMode.Manual,
-              })
-            "
-          >
-            Manuell
-          </button>
-          <button
-            class="toggle-button display-mode-button auto-display-mode-button"
-            [class.toggled]="commentatorBoxTimeData().displayMode === commBoxDisplayMode.Auto"
-            (click)="
-              commentatorBoxTimeDataService.update({
-                displayMode: commBoxDisplayMode.Auto,
-              })
-            "
-          >
-            Automatisch
-          </button>
-        </div>
+    <button
+      class="click-button hide-comm-box-button"
+      [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
+      (click)="handleHideButtonClick()"
+    >
+      Ausblenden
+    </button>
 
-        @if (commentatorBoxTimeData().displayMode === commBoxDisplayMode.Manual) {
-          <h3>Einstellungen</h3>
-          <button class="click-button hide-comm-box-button" (click)="handleHideButtonClick()">
-            Ausblenden
-          </button>
+    <button
+      class="click-button show-comm-box-button"
+      [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
+      (click)="handleShowButtonClick()"
+    >
+      Einblenden
+    </button>
 
-          <button class="click-button show-comm-box-button" (click)="handleShowButtonClick()">
-            Einblenden
-          </button>
-
-          <button
-            class="click-button show-comm-box-temp-button"
-            (click)="handleShowTempButtonClick()"
-          >
-            Temporär Einblenden
-          </button>
-
-          <h3>Zeit sichtbar (In Sekunden)</h3>
-          <input
-            class="show-temp-comm-box-interval-input"
-            type="number"
-            min="5"
-            [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
-            (ngModelChange)="
-              commentatorBoxTimeDataService.update({
-                hideDisplayIntervalInSeconds: $event,
-              })
-            "
-          />
-        } @else if (commentatorBoxTimeData().displayMode === commBoxDisplayMode.Auto) {
-          <h3>Zeit sichtbar (In Sekunden)</h3>
-          <input
-            class="show-comm-box-interval-input"
-            type="number"
-            min="5"
-            [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
-            (ngModelChange)="
-              commentatorBoxTimeDataService.update({
-                hideDisplayIntervalInSeconds: $event,
-              })
-            "
-          />
-
-          <h3>Zeit unsichtbar (In Sekunden)</h3>
-          <input
-            class="hide-comm-box-interval-input"
-            type="number"
-            min="5"
-            [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
-            (ngModelChange)="
-              commentatorBoxTimeDataService.update({
-                showDisplayIntervalInSeconds: $event,
-              })
-            "
-          />
-        }
-      </div>
-    </details>
+    <button
+      class="click-button show-comm-box-temp-button"
+      [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
+      (click)="handleShowTempButtonClick()"
+    >
+      Temporär Einblenden
+    </button>
   </section>
-  <section>
-    <h2>Socials</h2>
-    <details class="socials__details-container">
-      <summary>Socials</summary>
-      <div class="socials-inputs__container">
-        <h3>Twitter/X</h3>
-        <input
-          class="twitter-handle-input"
-          placeholder="@TwitterHandle"
-          [ngModel]="socials().xHandle"
-          (ngModelChange)="
-            socialsService.update({
-              xHandle: $event,
-            })
-          "
-        />
 
-        <h3>Discord-Invite</h3>
-        <input
-          class="discord-invite-input"
-          placeholder="Invite"
-          [ngModel]="socials().discordInvite"
-          (ngModelChange)="
-            socialsService.update({
-              discordInvite: $event,
-            })
-          "
-        />
-      </div>
-    </details>
+  <section>
+    <h2>Restliche Einstellungen</h2>
+    <button
+      class="click-button open-tourney-settings-dialog-button"
+      (click)="handleTourneySettingsButtonClick()"
+    >
+      Turniereinstellungen
+    </button>
+    <button
+      class="click-button open-streamer-comms-dialog-button"
+      (click)="handleStreamerCommsButtonClick()"
+    >
+      Streamer & Kommentatoren
+    </button>
+    <button
+      class="click-button open-comm-box-settings-dialog-button"
+      (click)="handleCommBoxSettingsButtonClick()"
+    >
+      Ein- / Ausblenden Kommentatorenbox
+    </button>
+    <button
+      class="click-button open-socials-dialog-button"
+      (click)="handleSocialsSettingsButtonClick()"
+    >
+      Socials
+    </button>
   </section>
   <img src="assets/dsb/DSB_Logo.png" width="100px" />
 </div>

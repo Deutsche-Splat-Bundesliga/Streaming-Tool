@@ -18,7 +18,8 @@
   @include mat.dialog-overrides(
     (
       container-color: rgb(68, 72, 88),
-      subhead-size: 1.5rem,
+      headline-padding: 1rem 1rem 2rem 1rem,
+      subhead-size: 2rem,
       subhead-weight: 600,
       subhead-color: white,
       supporting-text-color: white,

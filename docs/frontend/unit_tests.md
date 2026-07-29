@@ -67,6 +67,61 @@ ng test path-to-test/[name].spec.ts
 </details>
 
 <details>
+  <summary>Dialogs</summary>
+  <h3>src/app/dialogs/change-colors-dialog.spec.ts</h3>
+
+| Test                                                    | What it verifies                                                                                                               |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `should create the dialog`                              | Checks whether the `ChangeColorsDialog` component is created successfully.                                                     |
+| `should inject BroadcastStateService`                   | Checks whether the component correctly injects and exposes the `BroadcastStateService` instance.                               |
+| `should expose state signal from BroadcastStateService` | Checks whether the component exposes the `state` signal from `BroadcastStateService` and reflects the default broadcast state. |
+
+---
+
+<h3>src/app/dialogs/comm-box-settings-dialog.spec.ts</h3>
+  
+| Test                                                              | What it verifies                                                                                                                                                  |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `should create the dialog`                                        | Checks whether the `CommBoxSettingsDialog` component is created successfully.                                                                                     |
+| `should inject BroadcastStateService`                   | Checks whether the component correctly injects and exposes the `BroadcastStateService` instance.                               |
+| `should reflect state changes from CommentatorBoxTimeDataService` | Checks whether the component exposes the `commentatorBoxTimeData` signal from `CommentatorBoxTimeDataService` and reflects the default commentator box time data. |
+| `should reflect commBoxDisplayMode enum property`                 | Checks whether the component correctly exposes the `commBoxDisplayMode` getter with type `CommBoxDisplayMode`                                                     |
+
+---
+
+<h3>src/app/dialogs/socials-dialog.spec.ts</h3>
+
+| Test                                               | What it verifies                                                                                                  |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `should create the dialog`                         | Checks whether the `SocialsDialog` component is created successfully.                                             |
+| `should inject SocialsService`                     | Checks whether the component correctly injects and exposes the `SocialsService` instance.                         |
+| `should expose socials signal from SocialsService` | Checks whether the component exposes the `socials` signal from `SocialsService` and reflects the default socials. |
+| `should reflect state changes from SocialsService` | Checks whether the component correctly reacts to updates in the socials signal.                                   |
+
+---
+
+<h3>src/app/dialogs/streamer-comms-dialog.spec.ts</h3>
+
+| Test                                                      | What it verifies                                                                                                               |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `should create the dialog`                                | Checks whether the `StreamerCommsDialog` component is created successfully.                                                    |
+| `should inject BroadcastStateService`                     | Checks whether the component correctly injects and exposes the `BroadcastStateService` instance.                               |
+| `should expose socials signal from BroadcastStateService` | Checks whether the component exposes the `state` signal from `BroadcastStateService` and reflects the default broadcast state. |
+
+---
+
+<h3>src/app/dialogs/tourney-settings-dialog.spec.ts</h3>
+
+| Test                                                           | What it verifies                                                                                                               |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `should create the dialog`                                     | Checks whether the `TourneySettingsDialog` component is created successfully.                                                  |
+| `should inject BroadcastStateService`                          | Checks whether the component correctly injects and exposes the `BroadcastStateService` instance.                               |
+| `should expose socials signal from BroadcastStateService`      | Checks whether the component exposes the `state` signal from `BroadcastStateService` and reflects the default broadcast state. |
+| `should expose available divisions from BroadcastStateService` | Checks whether the component exposes the list of available divisions from the service.                                         |
+
+</details>
+
+<details>
   <summary>Features</summary>
   <h3>src/app/features/edit-card/edit-card.spec.ts (4 tests)</h3>
   
@@ -129,14 +184,12 @@ ng test path-to-test/[name].spec.ts
 
   <h3>src/app/layouts/sidebar/sidebar.spec.ts (6 Tests)</h3>
 
-| Test                                                           | What it verifies                                                                                                             |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `should be created`                                            | Checks whether the `Sidebar` component is created successfully.                                                              |
-| `should inject BroadcastStateService`                          | Checks whether the component correctly injects and exposes the `BroadcastStateService` instance.                             |
-| `should expose state signal from BroadcastStateService`        | Checks whether the component exposes the `state` signal from `BroadcastStateService` and returns the expected initial state. |
-| `should reflect state changes from BroadcastStateService`      | Checks whether the component correctly reacts to updates in the broadcast state signal.                                      |
-| `should expose available divisions from BroadcastStateService` | Checks whether the component exposes the list of available divisions from the service.                                       |
-| `should reflect state changes from SocialsService`             | Checks whether the component correctly reacts to updates in the `SocialsService` socials signal.                             |
+| Test                                                      | What it verifies                                                                                                             |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `should be created`                                       | Checks whether the `Sidebar` component is created successfully.                                                              |
+| `should inject BroadcastStateService`                     | Checks whether the component correctly injects and exposes the `BroadcastStateService` instance.                             |
+| `should expose state signal from BroadcastStateService`   | Checks whether the component exposes the `state` signal from `BroadcastStateService` and returns the expected initial state. |
+| `should reflect state changes from BroadcastStateService` | Checks whether the component correctly reacts to updates in the broadcast state signal.                                      |
 
 ---
 

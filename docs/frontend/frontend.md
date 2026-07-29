@@ -19,6 +19,8 @@
 Frontend/control-panel/
 ├── src/
 │   ├── app/
+│   │   ├── dialogs/                # dialog components
+│   │   ├── enums/                  # enums
 │   │   ├── features/               # feature components
 │   │   ├── layouts/                # layout components
 │   │   ├── logging/                # logging components

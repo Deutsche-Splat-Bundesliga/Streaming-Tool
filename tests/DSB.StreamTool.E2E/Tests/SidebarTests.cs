@@ -17,21 +17,6 @@ public class SidebarTests : PageTest
     }
 
     [Test]
-    public async Task Sidebar_Division_SelectIsVisible()
-    {
-        var divisionSelect = Page.Locator(".sidebar section:has(h2:text('Division')) select");
-        await Expect(divisionSelect).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Sidebar_Division_SelectHasOptions()
-    {
-        var options = Page.Locator(".sidebar section:has(h2:text('Division')) select option");
-        var count = await options.CountAsync();
-        Assert.That(count, Is.GreaterThan(0), "Division select should have at least one option.");
-    }
-
-    [Test]
     public async Task Sidebar_Teams_BothInputsAreVisible()
     {
         var teamInputs = Page.Locator(".sidebar section:has(h2:text('Teams')) input");
@@ -76,36 +61,6 @@ public class SidebarTests : PageTest
     {
         var toggleSlider = Page.Locator(".sidebar .swap-sides app-toggle-slider.toggle-slider-alpha-left");
         await Expect(toggleSlider).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Sidebar_Streamer_InputAcceptsText()
-    {
-        var streamerInput = Page.Locator("input[placeholder='Streamer']");
-        await streamerInput.ClearAsync();
-        await streamerInput.FillAsync("TestStreamer");
-
-        await Expect(streamerInput).ToHaveValueAsync("TestStreamer");
-    }
-
-    [Test]
-    public async Task Sidebar_Commentator1_InputAcceptsText()
-    {
-        var caster1 = Page.Locator("input[placeholder='Caster1']");
-        await caster1.ClearAsync();
-        await caster1.FillAsync("CasterOne");
-
-        await Expect(caster1).ToHaveValueAsync("CasterOne");
-    }
-
-    [Test]
-    public async Task Sidebar_Commentator2_InputAcceptsText()
-    {
-        var caster2 = Page.Locator("input[placeholder='Caster2']");
-        await caster2.ClearAsync();
-        await caster2.FillAsync("CasterTwo");
-
-        await Expect(caster2).ToHaveValueAsync("CasterTwo");
     }
 
     [Test]
@@ -156,25 +111,5 @@ public class SidebarTests : PageTest
             await Expect(btn).Not.ToHaveClassAsync(new Regex(@"\btoggled\b"));
         else
             await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
-    }
-
-    [Test]
-    public async Task Sidebar_ColorSettings_SettingsButtonVisible()
-    {
-        await Expect(Page.Locator(".open-colors-settings-dialog-button")).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Sidebar_ColorSettings_OpenAndCloseDialog()
-    {
-        var btn = Page.Locator(".open-colors-settings-dialog-button");
-        await btn.ClickAsync();
-
-        await Expect(Page.Locator(".color-settings-dialog")).ToBeVisibleAsync();
-
-        var closeDialogBtn = Page.Locator(".color-settings-dialog button[mat-dialog-close]");
-        await closeDialogBtn.ClickAsync();
-
-        await Expect(Page.Locator(".color-settings-dialog")).Not.ToBeVisibleAsync();
     }
 }

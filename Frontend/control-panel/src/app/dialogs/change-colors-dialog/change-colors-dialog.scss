@@ -1,39 +1,15 @@
-button {
-  border-radius: 0.625rem;
-  background: #343744;
-  color: white;
-  cursor: pointer;
-  border: 0.125rem solid #343744;
-  padding: 0.25rem 0.75rem;
-  transition: border-color 50ms ease;
-  font-size: 1.125rem;
-}
-
-button:active {
-  border-color: #6d28d9;
-}
+@use '../dialog-theme.scss';
 
 h2 {
-  margin: 0;
-  font-weight: 400;
+  margin-top: 0.5rem;
 }
 
-label {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  column-gap: 1rem;
-  font-size: 1.125rem;
-}
-
-label:hover {
-  cursor: pointer;
-}
-
-mat-dialog-content {
+.colors__container {
   display: flex;
   flex-flow: column nowrap;
-  row-gap: 1rem;
+  justify-content: flex-start;
+  align-items: start;
+  row-gap: 0.75rem;
 }
 
 .color-display__container {

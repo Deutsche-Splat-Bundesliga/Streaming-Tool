@@ -6,9 +6,8 @@ import { Sidebar } from './sidebar';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { Division } from '../../models/division';
-import { Socials } from '../../models/socials';
-import { SocialsService } from '../../services/socials';
 import { LogService } from '../../services/log';
+import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 
 describe('Sidebar', () => {
   let component: Sidebar;
@@ -36,11 +35,6 @@ describe('Sidebar', () => {
     colorLockActive: false,
   };
 
-  const defaultSocials: Socials = {
-    xHandle: '',
-    discordInvite: '',
-  };
-
   const availableDivisions: Division[] = [
     { id: 1, name: 'Division 1' },
     { id: 2, name: 'Division 2' },
@@ -48,14 +42,10 @@ describe('Sidebar', () => {
   ];
 
   const mockState = signal<BroadcastState>(defaultState);
-  const mockSocials = signal<Socials>(defaultSocials);
 
   const mockStateService = {
     state: mockState,
     availableDivisions,
-  };
-  const mockSocialsService = {
-    socials: mockSocials,
   };
 
   const mockLogService = {
@@ -79,10 +69,6 @@ describe('Sidebar', () => {
         {
           provide: BroadcastStateService,
           useValue: mockStateService,
-        },
-        {
-          provide: SocialsService,
-          useValue: mockSocialsService,
         },
         {
           provide: LogService,
@@ -128,25 +114,7 @@ describe('Sidebar', () => {
     expect(component.state()).toEqual(updatedState);
   });
 
-  it('should expose available divisions from BroadcastStateService', () => {
-    expect(component.availableDivisions).toBe(mockStateService.availableDivisions);
-
-    expect(component.availableDivisions).toEqual([
-      { id: 1, name: 'Division 1' },
-      { id: 2, name: 'Division 2' },
-      { id: 3, name: 'Division 3' },
-    ]);
-  });
-
-  it('should reflect state changes from SocialsService', () => {
-    const updatedSocials: Socials = {
-      ...defaultSocials,
-      xHandle: 'testxhandle',
-      discordInvite: 'testinvite',
-    };
-
-    mockSocials.set(updatedSocials);
-
-    expect(component.socials()).toEqual(updatedSocials);
+  it('should reflect commBoxDisplayMode enum property', () => {
+    expect(component.commBoxDisplayMode).toEqual(CommBoxDisplayMode);
   });
 });

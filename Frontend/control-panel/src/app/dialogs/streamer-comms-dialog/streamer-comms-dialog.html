@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Streamer & Kommentatoren</h1>
+<mat-dialog-content>
+  <section class="streamer-section">
+    <h2>Streamer</h2>
+    <input
+      class="streamer-input"
+      placeholder="Streamer"
+      [ngModel]="state().streamer"
+      (ngModelChange)="
+        stateService.update({
+          streamer: $event,
+        })
+      "
+    />
+  </section>
+
+  <section>
+    <h2>Kommentatoren</h2>
+    <input
+      class="caster1-input"
+      placeholder="Caster1"
+      [ngModel]="state().commentator1"
+      (ngModelChange)="
+        stateService.update({
+          commentator1: $event,
+        })
+      "
+    />
+    <input
+      class="caster2-input"
+      placeholder="Caster2"
+      [ngModel]="state().commentator2"
+      (ngModelChange)="
+        stateService.update({
+          commentator2: $event,
+        })
+      "
+    />
+  </section>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="click-button" mat-dialog-close>✖</button>
+</mat-dialog-actions>
