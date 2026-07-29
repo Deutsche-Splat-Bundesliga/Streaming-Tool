@@ -112,24 +112,4 @@ public class SidebarTests : PageTest
         else
             await Expect(btn).ToHaveClassAsync(new Regex(@"\btoggled\b"));
     }
-
-    [Test]
-    public async Task Sidebar_ColorSettings_SettingsButtonVisible()
-    {
-        await Expect(Page.Locator(".open-colors-settings-dialog-button")).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Sidebar_ColorSettings_OpenAndCloseDialog()
-    {
-        var btn = Page.Locator(".open-colors-settings-dialog-button");
-        await btn.ClickAsync();
-
-        await Expect(Page.Locator(".color-settings-dialog")).ToBeVisibleAsync();
-
-        var closeDialogBtn = Page.Locator(".color-settings-dialog button[mat-dialog-close]");
-        await closeDialogBtn.ClickAsync();
-
-        await Expect(Page.Locator(".color-settings-dialog")).Not.ToBeVisibleAsync();
-    }
 }

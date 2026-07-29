@@ -81,7 +81,7 @@ public class DialogTests : PageTest
     }
 
     [Test]
-    public async Task Dialog_StreamerCommsSettings_Commentator_InputAcceptsText()
+    public async Task Dialog_StreamerCommsSettings_Commentator1_InputAcceptsText()
     {
         var dialogOpenButton = Page.Locator(".sidebar .open-streamer-comms-dialog-button");
         await dialogOpenButton.ClickAsync();
