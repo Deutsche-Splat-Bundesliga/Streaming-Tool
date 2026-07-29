@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added SECURITY.md for vulnerability reporting guidelines
 - Added PR Template Base documentation
 - Added CHANGELOG.md for version tracking
+- Added dialogs for tournament settings, socials, commentator box time data and streamer and commentator settings to remove clutter from sidebar
+- Added dialog for color settings, as well as the option to set the colors for each team globally from a list of colors
 
 ### Changed
 
@@ -72,18 +74,22 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 ## [2.0.0] - 2026-06-15
 
 ### Added
+
 - New overlay component: Custom Timer
 - WebSocket optimization for real-time updates
 
 ### Changed
+
 - Refactored database schema for better performance
 - Updated Angular to version X.X.X
 
 ### Fixed
+
 - Fixed crash when handling large data sets
 - Fixed SignalR connection drops
 
 ### Security
+
 - Updated dependencies to patch security vulnerabilities
 ```
 
