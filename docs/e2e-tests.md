@@ -19,6 +19,7 @@ tests/
     ├── DSB.StreamTool.E2E.csproj
     └── Tests/
         ├── DashboardTests.cs    # Control panel page tests
+        ├── DialogTests.cs       # Control panel dialog popup tests
         ├── SidebarTests.cs      # Sidebar input and toggle tests
         └── OverlayTests.cs      # All four overlay route tests
 ```
@@ -94,28 +95,40 @@ Covers the main control panel page at `/`.
 
 ---
 
-### `SidebarTests` (13 tests)
+### `DialogTests` (12 tests)
+
+| Test                                                               | What it verifies                                                                |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `Dialog_OpenButtons_IsVisible`                                     | Verifies that all buttons to open dialogs are visible                           |
+| `Dialog_TourneySettings_Division_SelectIsVisible`                  | Division dropdown is visible                                                    |
+| `Dialog_TourneySettings_Division_SelectHasOptions`                 | Dropdown contains at least one option                                           |
+| `Dialog_TourneySettings_Week_IsVisible`                            | Week input is visible                                                           |
+| `Dialog_TourneySettings_StartTime_IsVisible`                       | Match start time input is visible                                               |
+| `Dialog_StreamerCommsSettings_Streamer_InputAcceptsText`           | Streamer input accepts and retains text                                         |
+| `Dialog_StreamerCommsSettings_Commentator1_InputAcceptsText`       | First commentator input accepts and retains text                                |
+| `Dialog_StreamerCommsSettings_Commentator2_InputAcceptsText`       | Second commentator input accepts and retains text                               |
+| `Dialog_CommBoxDisplaySettings_ModeButtons_AreVisible`             | Manual and automatic mode buttons for commentator box display modes are visible |
+| `Dialog_CommBoxDisplaySettings_ShowCommBoxIntervalInput_IsVisible` | Input to set interval for showing comm box is visible                           |
+| `Dialog_ColorSettings_ColorLockToggleSlider_IsVisible`             | Slider to toggle color lock is visible                                          |
+| `Dialog_ColorSettings_Colors_HasOptions`                           | At least 2 options to select colors are visible                                 |
+
+---
+
+### `SidebarTests` (9 tests)
 
 Covers all sidebar controls. Each test navigates to the dashboard in `[SetUp]`.
 
-| Test                                                      | What it verifies                                                      |
-| --------------------------------------------------------- | --------------------------------------------------------------------- |
-| `Sidebar_Division_SelectIsVisible`                        | Division dropdown is visible                                          |
-| `Sidebar_Division_SelectHasOptions`                       | Dropdown contains at least one option                                 |
-| `Sidebar_Teams_BothInputsAreVisible`                      | Both team name inputs are rendered                                    |
-| `Sidebar_TeamAlphaName_UpdatesTopbar`                     | Filling the alpha input reflects in the topbar score display          |
-| `Sidebar_TeamBravoName_UpdatesTopbar`                     | Filling the bravo input reflects in the topbar score display          |
-| `Sidebar_TeamAlphaName_RespectsMaxLength`                 | Team name is capped at 13 characters (HTML `maxlength`)               |
-| `Sidebar_AlphaIsLeft_ToggleSliderIsVisible`               | "Alpha links" toggle slider is rendered                               |
-| `Sidebar_Streamer_InputAcceptsText`                       | Streamer input accepts and retains text                               |
-| `Sidebar_Commentator1_InputAcceptsText`                   | First commentator input accepts and retains text                      |
-| `Sidebar_Commentator2_InputAcceptsText`                   | Second commentator input accepts and retains text                     |
-| `Sidebar_Visibility_AllThreeButtonsPresent`               | All three visibility toggle buttons are shown                         |
-| `Sidebar_Visibility_MapScreenButton_TogglesActiveClass`   | Clicking "Kartenanzeige" toggles the `active` CSS class               |
-| `Sidebar_Visibility_ScoreBoxButton_TogglesActiveClass`    | Clicking "Spielstand" toggles the `active` CSS class                  |
-| `Sidebar_Visibility_CommentatorButton_TogglesActiveClass` | Clicking "Kommentatoren" toggles the `active` CSS class               |
-| `Sidebar_ColorSettings_SettingsButtonVisible`             | Checks if button to open settings dialog for colors is visible        |
-| `Sidebar_ColorSettings_OpenAndCloseDialog`                | Checks colors settings dialog gets opened and closed on button clicks |
+| Test                                                      | What it verifies                                             |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| `Sidebar_Teams_BothInputsAreVisible`                      | Both team name inputs are rendered                           |
+| `Sidebar_TeamAlphaName_UpdatesTopbar`                     | Filling the alpha input reflects in the topbar score display |
+| `Sidebar_TeamBravoName_UpdatesTopbar`                     | Filling the bravo input reflects in the topbar score display |
+| `Sidebar_TeamAlphaName_RespectsMaxLength`                 | Team name is capped at 13 characters (HTML `maxlength`)      |
+| `Sidebar_AlphaIsLeft_ToggleSliderIsVisible`               | "Alpha links" toggle slider is rendered                      |
+| `Sidebar_Visibility_AllThreeButtonsPresent`               | All three visibility toggle buttons are shown                |
+| `Sidebar_Visibility_MapScreenButton_TogglesActiveClass`   | Clicking "Kartenanzeige" toggles the `active` CSS class      |
+| `Sidebar_Visibility_ScoreBoxButton_TogglesActiveClass`    | Clicking "Spielstand" toggles the `active` CSS class         |
+| `Sidebar_Visibility_CommentatorButton_TogglesActiveClass` | Clicking "Kommentatoren" toggles the `active` CSS class      |
 
 > [!NOTE]
 > **Visibility toggle assertions:** The state update calls the backend API asynchronously before Angular updates the DOM. Playwright's `Expect(...).ToHaveClassAsync(new Regex(@"\bactive\b"))` is used (not `EvaluateAsync`) so the assertion auto-retries until the DOM reflects the change.
