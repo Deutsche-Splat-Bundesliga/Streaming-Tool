@@ -1,40 +1,34 @@
 name: "Check Pull Request labels for merge block"
 
 on:
-  pull_request:
-    types:
-      - opened
-      - labeled
-      - unlabeled
+    pull_request:
+        types:
+            - opened
+            - labeled
+            - unlabeled
 
 permissions:
-  contents: read
-  pull-requests: write
+    contents: read
+    pull-requests: write
 
 jobs:
-  fail-by-label:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Comment PR on fail
-        if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          message: |
-            Label "NoMerge" on Pull Request. Merging blocked.
-      - name: Fail in case Pull Request is labeled with "NoMerge"
-        if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
-        run: |
-          echo "Pull Request labeled as NoMerge!"
-          exit 1
-      - name: Comment PR on pass
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'NoMerge') }}
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          message: |
-            Label "NoMerge" not applied. Merging enabled.
-      - name: Pass in case Pull Request is not labeled with "NoMerge"
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'NoMerge') }}
-        run: |
-          echo "Merge permitted!"
-          exit 0
+    fail-by-label:
+        runs-on: ubuntu-latest
+        continue-on-error: true
+        steps:
+            - name: Comment PR on fail
+              if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
+              uses: thollander/actions-comment-pull-request@v3
+            - name: Fail in case Pull Request is labeled with "NoMerge"
+              if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
+              run: |
+                  echo "Pull Request labeled as NoMerge!"
+                  exit 1
+            - name: Comment PR on pass
+              if: ${{ !contains(github.event.pull_request.labels.*.name, 'NoMerge') }}
+              uses: thollander/actions-comment-pull-request@v3
+            - name: Pass in case Pull Request is not labeled with "NoMerge"
+              if: ${{ !contains(github.event.pull_request.labels.*.name, 'NoMerge') }}
+              run: |
+                  echo "Merge permitted!"
+                  exit 0
