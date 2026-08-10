@@ -8,11 +8,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Added CODE_OF_CONDUCT.md for community standards
-- Added SECURITY.md for vulnerability reporting guidelines
-- Added PR Template Base documentation
-- Added CHANGELOG.md for version tracking
-- Added dialogs for tournament settings, socials, commentator box time data and streamer and commentator settings to remove clutter from sidebar
 - Added dialog for color settings, as well as the option to set the colors for each team globally from a list of colors
 - Added FAQ.md for frequently asked questions
 - Added Manual for assistance when getting started with the Streaming Tool
@@ -29,7 +24,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated Angular to latest version
 - Updated various dependencies to fixed version
 
-## [1.0.0] - TBD
+## [1.1.0-Beta.1] - 2026-06-26
+
+### Added
+- Added CODE_OF_CONDUCT.md for community standards
+- Added SECURITY.md for vulnerability reporting guidelines
+- Added PR Template Base documentation
+- Added CHANGELOG.md for version tracking
+- Added dialogs for tournament settings, socials, commentator box time data and streamer and commentator settings to remove clutter from sidebar
+
+## [1.0.0] - 2026-06-03
 
 ### Added
 
@@ -103,5 +107,6 @@ Add links at the bottom for easy version comparison:
 
 ```markdown
 [Unreleased]: https://github.com/Hazeolation/Streaming-Tool/compare/v1.0.0...master
+[1.1.0-beta.1]: https://github.com/Hazeolation-Productions/Streaming-Tool/releases#release-v1.1.0-beta.1
 [1.0.0]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.0.0
 ```
