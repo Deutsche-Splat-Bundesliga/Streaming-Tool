@@ -4,7 +4,7 @@ All notable changes to the DSB Streaming Tool will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Unreleased](Unreleased)
 
 ### Added
 
@@ -24,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated Angular to latest version
 - Updated various dependencies to fixed version
 
-## [1.1.0-Beta.1] - 2026-06-26
+## [1.1.0-Beta.1](1.1.0-Beta.1) - 2026-06-26
 
 ### Added
 - Added CODE_OF_CONDUCT.md for community standards
@@ -33,7 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added CHANGELOG.md for version tracking
 - Added dialogs for tournament settings, socials, commentator box time data and streamer and commentator settings to remove clutter from sidebar
 
-## [1.0.0] - 2026-06-03
+## [1.0.0](1.0.0) - 2026-06-03
 
 ### Added
 
@@ -79,7 +79,7 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 ### Example Entry
 
 ```markdown
-## [2.0.0] - 2026-06-15
+## 2.0.0 - 2026-06-15
 
 ### Added
 
