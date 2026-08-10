@@ -17,13 +17,14 @@ jobs:
             - name: Fail in case Pull Request is labeled with "NoMerge"
               if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
               run: |
+                  echo "::error title=🚫 Merge blocked::The NoMerge label is applied to this pull request. Remove the NoMerge label to allow merging."
+
                   echo "## 🚫 Merge blocked" >> "$GITHUB_STEP_SUMMARY"
                   echo "" >> "$GITHUB_STEP_SUMMARY"
                   echo "This PR cannot be merged because the **NoMerge** label is applied." >> "$GITHUB_STEP_SUMMARY"
                   echo "" >> "$GITHUB_STEP_SUMMARY"
                   echo "Remove the **NoMerge** label to allow this check to pass." >> "$GITHUB_STEP_SUMMARY"
-                  echo ""
-                  echo "The NoMerge label is applied."
+
                   exit 1
 
             - name: Pass in case Pull Request is not labeled with "NoMerge"
