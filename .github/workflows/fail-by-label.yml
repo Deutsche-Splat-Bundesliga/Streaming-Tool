@@ -16,17 +16,11 @@ jobs:
         runs-on: ubuntu-latest
         continue-on-error: true
         steps:
-            - name: Comment PR on fail
-              if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
-              uses: thollander/actions-comment-pull-request@v3
             - name: Fail in case Pull Request is labeled with "NoMerge"
               if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
               run: |
                   echo "Pull Request labeled as NoMerge!"
                   exit 1
-            - name: Comment PR on pass
-              if: ${{ !contains(github.event.pull_request.labels.*.name, 'NoMerge') }}
-              uses: thollander/actions-comment-pull-request@v3
             - name: Pass in case Pull Request is not labeled with "NoMerge"
               if: ${{ !contains(github.event.pull_request.labels.*.name, 'NoMerge') }}
               run: |
