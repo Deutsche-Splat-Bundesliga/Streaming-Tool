@@ -47,8 +47,7 @@
   flex-flow: column nowrap;
 }
 
-.streamer-icon,
-.commentators-icon {
+.icon {
   height: 2.5rem;
   width: auto;
   padding-right: 0.75rem;
@@ -67,6 +66,6 @@
   white-space: nowrap;
 }
 
-.use-padding {
+.commentator-box:not(.on-score-box) .commentator1-text {
   padding-right: 1.5rem;
 }
