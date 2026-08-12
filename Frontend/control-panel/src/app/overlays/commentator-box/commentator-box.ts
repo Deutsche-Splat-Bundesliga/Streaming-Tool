@@ -176,21 +176,6 @@ export class CommentatorBox implements OnInit, OnDestroy {
   }
 
   /**
-   * Get the formatted commentator text based on the current broadcast state.
-   * @returns {string} The formatted commentator text for the current broadcast state.
-   */
-  get commentatorsText(): string {
-    const c1 = this.state().commentator1;
-    const c2 = this.state().commentator2;
-
-    return c1 && !c2
-      ? `Kommentator: ${c1}`
-      : c2 && !c1
-        ? `Kommentator: ${c2}`
-        : `Kommentatoren: ${c1 || 'Kommentator 1'}, ${c2 || 'Kommentator 2'}`;
-  }
-
-  /**
    * Handles the hide commentator box event that gets received from signalr event hub
    */
   handleHideEvent = () => {
