@@ -5,16 +5,12 @@
 >
   <div class="streamer__container">
     <img class="streamer-icon icon" src="assets/misc/Camera_Streamer.svg" />
-    <span class="streamer-text">{{ state().streamer }}</span>
+    <span class="streamer-text info-text">{{ state().streamer || 'Streamer' }}</span>
   </div>
 
   <div class="commentators__container">
     <img class="commentators-icon icon" src="assets/misc/Microphone_Commentators.svg" />
-    <span
-      class="commentator1-text"
-      [class.use-padding]="state().commentator1 && state().commentator2 && !onScoreBox"
-      >{{ state().commentator1 }}
-    </span>
-    <span class="commentator2-text">{{ state().commentator2 }}</span>
+    <span class="commentator1-text info-text">{{ state().commentator1 || 'Kommentator 1' }} </span>
+    <span class="commentator2-text info-text">{{ state().commentator2 || 'Kommentator 2' }}</span>
   </div>
 </div>
