@@ -10,18 +10,22 @@
 
 .commentator-box {
   position: relative;
-  min-width: 500px;
   padding: 1rem 3rem;
   text-align: center;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
+  column-gap: 2.5rem;
   border: 0.25rem solid black;
   background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 31%);
   transition:
     opacity 420ms ease,
     transform 420ms ease;
+}
+
+.on-score-box.commentator-box {
+  padding: 0.75rem 2rem;
 }
 
 :host(.scorebox-hidden) .commentator-box,
@@ -30,26 +34,38 @@
   pointer-events: none;
 }
 
+.streamer__container,
+.commentators__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.on-score-box .streamer__container,
+.on-score-box .commentators__container {
+  flex-flow: column nowrap;
+}
+
+.icon {
+  height: 2.5rem;
+  width: auto;
+  padding-right: 0.75rem;
+}
+
+.on-score-box .icon {
+  padding-right: 0;
+  margin-bottom: 0.5rem;
+}
+
 .streamer-text,
-.casters-text {
-  font-size: 1.875rem;
+.commentator1-text,
+.commentator2-text {
+  font-size: 1.5625rem;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.streamer-text {
-  padding-right: 0.75em;
-  border-right: 0.1875rem solid #ffffff;
-}
-
-.casters-text {
-  padding-left: 0.75em;
-}
-
-.dsb-logo-small {
-  position: absolute;
-  width: 2.5rem;
-  height: auto;
-  bottom: 0;
-  right: 0;
+.commentator-box:not(.on-score-box) .commentator1-text {
+  padding-right: 1.5rem;
 }

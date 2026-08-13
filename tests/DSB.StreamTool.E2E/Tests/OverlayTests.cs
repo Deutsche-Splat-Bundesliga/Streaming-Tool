@@ -47,6 +47,7 @@ public partial class OverlayTests : PageTest
     public async Task CommentatorBox_ShowsStreamerElement()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/commentator-box");
+        await Expect(Page.Locator(".commentator-box .streamer-icon")).ToBeAttachedAsync();
         await Expect(Page.Locator(".commentator-box .streamer-text")).ToBeAttachedAsync();
     }
 
@@ -54,21 +55,9 @@ public partial class OverlayTests : PageTest
     public async Task CommentatorBox_ShowsCastersElement()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/commentator-box");
-        await Expect(Page.Locator(".commentator-box .casters-text")).ToBeAttachedAsync();
-    }
-
-    [Test]
-    public async Task CommentatorBox_StreamerText_ContainsLabel()
-    {
-        await Page.GotoAsync($"{BaseUrl}/overlay/commentator-box");
-        await Expect(Page.Locator(".commentator-box .streamer-text")).ToContainTextAsync("Streamer:");
-    }
-
-    [Test]
-    public async Task CommentatorBox_CastersText_ContainsLabel()
-    {
-        await Page.GotoAsync($"{BaseUrl}/overlay/commentator-box");
-        await Expect(Page.Locator(".commentator-box .casters-text")).ToContainTextAsync("Kommentatoren:");
+        await Expect(Page.Locator(".commentator-box .commentators-icon")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".commentator-box .commentator1-text")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".commentator-box .commentator2-text")).ToBeAttachedAsync();
     }
 
     // --- Infobox ---
