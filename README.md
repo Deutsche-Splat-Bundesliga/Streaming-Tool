@@ -20,6 +20,7 @@ Overlays run as Browser Sources in OBS and are controlled through a dedicated Co
 
 - [Quickstart](#quickstart)
 - [Tech Stack & Overlay Routes](#technical-documentation)
+- [Streamer Manual](#streamer-manual)
 - [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [Credits](#credits)
@@ -87,6 +88,12 @@ For in-depth technical documentation, see the [`docs/`](docs/) folder.
 | `/overlay/info-box`        | General info box                                 |
 | `/overlay/start-screen`    | Start screen with team names and countdown timer |
 | `/overlay/end-screen`      | End screen with Discord and Twitter/X socials    |
+
+---
+
+## Streamer Manual
+
+For streamers and broadcast operators, see the [Streamer Manual](https://github.com/Hazeolation-Productions/Streaming-Tool/wiki/Manual_Home).
 
 ---
 
