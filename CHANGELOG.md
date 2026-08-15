@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased](Unreleased)
 
+## [1.1](1.1) - 2026-08-15
+
 ### Added
 
 - Added dialog for color settings, as well as the option to set the colors for each team globally from a list of colors
@@ -13,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added Manual for assistance when getting started with the Streaming Tool
 
 ### Changed
+
+- Changed the commentator box design
 
 ### Deprecated
 
@@ -106,7 +110,8 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 Add links at the bottom for easy version comparison:
 
 ```markdown
-[Unreleased]: https://github.com/Hazeolation/Streaming-Tool/compare/v1.0.0...master
+[Unreleased]: https://github.com/Hazeolation/Streaming-Tool/compare/v1.1...master
+[1.1]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.1
 [1.1.0-beta.1]: https://github.com/Hazeolation-Productions/Streaming-Tool/releases#release-v1.1.0-beta.1
 [1.0.0]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.0.0
 ```
