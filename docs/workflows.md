@@ -13,7 +13,8 @@ The workflows defined in `.github/workflows/` automate build, test, quality chec
 | E2E Tests                                 | `.github/workflows/e2e.yml`                | Builds and runs all End-to-End Tests.                                                                                   |
 | Run Node.js Tests CI                      | `.github/workflows/test-nodejs.yml`        | Builds and runs all Frontend unit tests.                                                                                |
 | Generate Release Notes                    | `.github/workflows/release-notes.yml`      | Generates release notes when a new release with a milestone is created.                                                 |
-| Check Pull Request labels for merge block | `.github/workflos/fail-by-label.yml`       | Let workflows fail whenever a pull request has the label `NoMerge`                                                      |
+| Check Pull Request labels for merge block | `.github/workflows/fail-by-label.yml`       | Let workflows fail whenever a pull request has the label `NoMerge`                                                      |
+| Dependabot Issues | `.github/workflows/dependabot-issues.yml` | Periodically manages Dependabot Alert issues |
 
 ## Workflow details
 
@@ -56,3 +57,8 @@ Description: Generates release notes automatically for tagged release events wit
 
 File: `.github/workflows/fail-by-label.yml`
 Description: Let workflows fail whenever a pull request has the label
+
+### Dependabot Issues
+
+File: `.github/workflows/dependabot-issues.yml`
+Description: Periodically manages all Issues based on Dependabot Alerts
