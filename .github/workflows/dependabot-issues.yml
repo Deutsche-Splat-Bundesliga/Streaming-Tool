@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Sync Dependabot alerts
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.DEPENDABOT_SYNC_TOKEN }}
           REPO: ${{ github.repository }}
         shell: bash
         run: |
