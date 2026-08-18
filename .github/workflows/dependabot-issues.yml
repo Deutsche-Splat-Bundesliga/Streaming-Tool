@@ -1,0 +1,315 @@
+name: Sync Dependabot alerts to issues
+
+on:
+  schedule:
+    # Run every 30 minutes.
+    - cron: "*/30 * * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync Dependabot alerts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          OWNER="Hazeolation-Productions"
+          REPO_NAME="Streaming-Tool"
+
+          echo "Synchronizing Dependabot alerts for ${OWNER}/${REPO_NAME}"
+
+          # ------------------------------------------------------------
+          # Helpers
+          # ------------------------------------------------------------
+
+          api() {
+            gh api \
+              --header "Accept: application/vnd.github+json" \
+              --header "X-GitHub-Api-Version: 2026-03-10" \
+              "$@"
+          }
+
+          issue_for_alert() {
+            local alert_number="$1"
+
+            gh issue list \
+              --repo "$REPO" \
+              --state all \
+              --label "dependabot" \
+              --search "\"Dependabot alert #${alert_number}\" in:body" \
+              --json number,state,url \
+              --jq '.[0] // empty'
+          }
+
+          # ------------------------------------------------------------
+          # Get all Dependabot alerts.
+          #
+          # We fetch both open and closed alerts so that Issues can also
+          # be closed when GitHub has resolved an alert.
+          # ------------------------------------------------------------
+
+          alerts="$(
+            api \
+              "/repos/${OWNER}/${REPO_NAME}/dependabot/alerts?state=open&per_page=100" \
+              --paginate
+          )"
+
+          closed_alerts="$(
+            api \
+              "/repos/${OWNER}/${REPO_NAME}/dependabot/alerts?state=dismissed&per_page=100" \
+              --paginate
+          )"
+
+          fixed_alerts="$(
+            api \
+              "/repos/${OWNER}/${REPO_NAME}/dependabot/alerts?state=fixed&per_page=100" \
+              --paginate
+          )"
+
+          # ------------------------------------------------------------
+          # Process OPEN alerts.
+          # ------------------------------------------------------------
+
+          echo "$alerts" | jq -c '.[]' | while read -r alert; do
+            number="$(jq -r '.number' <<< "$alert")"
+            state="$(jq -r '.state' <<< "$alert")"
+
+            package="$(
+              jq -r '.dependency.package.name // "unknown"' <<< "$alert"
+            )"
+
+            ecosystem="$(
+              jq -r '.dependency.package.ecosystem // "unknown"' <<< "$alert"
+            )"
+
+            manifest="$(
+              jq -r '.dependency.manifest_path // "unknown"' <<< "$alert"
+            )"
+
+            severity="$(
+              jq -r '.security_advisory.severity // "unknown"' <<< "$alert"
+            )"
+
+            summary="$(
+              jq -r '.security_advisory.summary // "Dependabot vulnerability"' <<< "$alert"
+            )"
+
+            ghsa="$(
+              jq -r '.security_advisory.ghsa_id // empty' <<< "$alert"
+            )"
+
+            cve="$(
+              jq -r '.security_advisory.cve_id // empty' <<< "$alert"
+            )"
+
+            vulnerable_versions="$(
+              jq -r '.security_vulnerability.vulnerable_version_range // empty' <<< "$alert"
+            )"
+
+            first_patched="$(
+              jq -r '.security_vulnerability.first_patched_version.identifier // empty' <<< "$alert"
+            )"
+
+            alert_url="https://github.com/${OWNER}/${REPO_NAME}/security/dependabot/${number}"
+
+            echo ""
+            echo "============================================================"
+            echo "Dependabot alert #${number}"
+            echo "Package: ${package}"
+            echo "Severity: ${severity}"
+            echo "Manifest: ${manifest}"
+            echo "============================================================"
+
+            # ----------------------------------------------------------
+            # Find or create the corresponding Issue.
+            # ----------------------------------------------------------
+
+            existing="$(
+              issue_for_alert "$number"
+            )"
+
+            # ----------------------------------------------------------
+            # Try to find a Dependabot PR associated with this alert.
+            #
+            # Dependabot security PRs contain references to the
+            # vulnerability in their body/title. We search all Dependabot
+            # PRs and inspect their metadata.
+            # ----------------------------------------------------------
+
+            fixing_pr=""
+
+            prs="$(
+              gh pr list \
+                --repo "$REPO" \
+                --state all \
+                --author "app/dependabot" \
+                --limit 100 \
+                --json number,title,body,url,state,headRefName \
+            )"
+
+            while read -r pr; do
+              [ -z "$pr" ] && continue
+
+              pr_number="$(jq -r '.number' <<< "$pr")"
+              pr_title="$(jq -r '.title // ""' <<< "$pr")"
+              pr_body="$(jq -r '.body // ""' <<< "$pr")"
+              pr_url="$(jq -r '.url' <<< "$pr")"
+
+              # Strongest match: GHSA or CVE mentioned in PR.
+              if [ -n "$ghsa" ] &&
+                 printf '%s\n%s\n' "$pr_title" "$pr_body" |
+                 grep -Fqi "$ghsa"; then
+                fixing_pr="$pr_url"
+                break
+              fi
+
+              if [ -n "$cve" ] &&
+                 printf '%s\n%s\n' "$pr_title" "$pr_body" |
+                 grep -Fqi "$cve"; then
+                fixing_pr="$pr_url"
+                break
+              fi
+
+              # Fallback: package name + manifest in PR metadata.
+              if printf '%s\n%s\n' "$pr_title" "$pr_body" |
+                   grep -Fqi "$package" &&
+                 printf '%s\n%s\n' "$pr_title" "$pr_body" |
+                   grep -Fqi "$manifest"; then
+                fixing_pr="$pr_url"
+                break
+              fi
+            done < <(echo "$prs" | jq -c '.[]')
+
+            if [ -n "$fixing_pr" ]; then
+              fixing_pr_line="**Fixing PR:** ${fixing_pr}"
+            else
+              fixing_pr_line="**Fixing PR:** _No Dependabot fixing PR found yet._"
+            fi
+
+            body="$(
+              cat <<EOF
+          ## Dependabot vulnerability
+
+          ${summary}
+
+          | Field | Value |
+          |---|---|
+          | Dependabot alert | [#${number}](${alert_url}) |
+          | Package | \`${package}\` |
+          | Ecosystem | \`${ecosystem}\` |
+          | Manifest | \`${manifest}\` |
+          | Severity | **${severity}** |
+          | GHSA | ${ghsa:-_none_} |
+          | CVE | ${cve:-_none_} |
+          | Vulnerable versions | \`${vulnerable_versions:-unknown}\` |
+          | First patched version | \`${first_patched:-unknown}\` |
+
+          ${fixing_pr_line}
+
+          ---
+
+          This issue is automatically synchronized with Dependabot.
+
+          **Do not close this issue manually.**
+
+          The issue will be closed automatically when the corresponding
+          Dependabot alert is resolved.
+          EOF
+            )"
+
+            if [ -z "$existing" ]; then
+              echo "Creating issue for alert #${number}"
+
+              issue_url="$(
+                gh issue create \
+                  --repo "$REPO" \
+                  --title "[Dependabot] ${package}: ${summary}" \
+                  --body "$body" \
+                  --label "dependabot"
+              )"
+
+              echo "Created: ${issue_url}"
+
+            else
+              issue_number="$(
+                jq -r '.number' <<< "$existing"
+              )"
+
+              issue_state="$(
+                jq -r '.state' <<< "$existing"
+              )"
+
+              echo "Existing issue #${issue_number} (${issue_state})"
+
+              # If an alert was reopened, reopen its Issue too.
+              if [ "$issue_state" = "CLOSED" ]; then
+                echo "Reopening issue #${issue_number}"
+
+                gh issue reopen \
+                  "$issue_number" \
+                  --repo "$REPO"
+              fi
+
+              # Keep the issue synchronized with the current alert/PR.
+              gh issue edit \
+                "$issue_number" \
+                --repo "$REPO" \
+                --body "$body"
+            fi
+          done
+
+          # ------------------------------------------------------------
+          # Process RESOLVED alerts.
+          #
+          # An alert can be fixed or dismissed. In either case we close
+          # the corresponding Issue.
+          # ------------------------------------------------------------
+
+          for resolved_alerts in "$closed_alerts" "$fixed_alerts"; do
+            echo "$resolved_alerts" | jq -c '.[]' | while read -r alert; do
+              number="$(jq -r '.number' <<< "$alert")"
+              state="$(jq -r '.state' <<< "$alert")"
+
+              existing="$(
+                issue_for_alert "$number"
+              )"
+
+              if [ -z "$existing" ]; then
+                continue
+              fi
+
+              issue_number="$(
+                jq -r '.number' <<< "$existing"
+              )"
+
+              issue_state="$(
+                jq -r '.state' <<< "$existing"
+              )"
+
+              if [ "$issue_state" = "OPEN" ]; then
+                echo "Closing issue #${issue_number}: alert #${number} is ${state}"
+
+                gh issue close \
+                  "$issue_number" \
+                  --repo "$REPO" \
+                  --comment \
+                    "Dependabot alert #${number} is now **${state}**. Closing this tracking issue automatically."
+              fi
+            done
+          done
+
+          echo ""
+          echo "Dependabot synchronization complete."
