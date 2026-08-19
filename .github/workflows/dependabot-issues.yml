@@ -26,7 +26,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          OWNER="Hazeolation-Productions"
+          OWNER="Deutsche-Splat-Bundesliga"
           REPO_NAME="Streaming-Tool"
 
           echo "Synchronizing Dependabot alerts for ${OWNER}/${REPO_NAME}"
