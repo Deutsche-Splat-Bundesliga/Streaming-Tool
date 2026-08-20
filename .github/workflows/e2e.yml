@@ -22,15 +22,15 @@ jobs:
         name: E2E – ${{ matrix.browser }}
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
 
             - name: Setup .NET
-              uses: actions/setup-dotnet@v4
+              uses: actions/setup-dotnet@v6
               with:
                   dotnet-version: 9.0.x
 
             - name: Use Node.js 26.x
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v7
               with:
                   node-version: 26.x
                   cache: "npm"
@@ -74,7 +74,7 @@ jobs:
 
             - name: Upload service logs on failure
               if: failure()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: service-logs-${{ matrix.browser }}
                   path: |
