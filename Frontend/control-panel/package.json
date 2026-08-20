@@ -34,7 +34,7 @@
     "@angular/compiler-cli": "^22.1.2",
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.1",
-    "@types/node": "^20.17.19",
+    "@types/node": "^26.2.0",
     "eslint": "^10.8.1",
     "eslint-formatter-gha": "^2.0.1",
     "jsdom": "^30.0.1",
