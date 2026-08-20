@@ -69,21 +69,28 @@ updated state via SignalR just like a full `POST /api/broadcast/state`.
 
 | Method | Path                                              | Description                                            |
 | ------ | ------------------------------------------------- | ------------------------------------------------------ |
-| `POST` | `/api/broadcast/score/increment?team=alpha\|bravo`| Increase a team's score by one.                        |
-| `POST` | `/api/broadcast/score/decrement?team=alpha\|bravo`| Decrease a team's score by one (never below 0).        |
+| `POST` | `/api/broadcast/maps/{mapId}/winner?winner=…`     | Set a map's winner (`alpha`, `bravo`, or `none`).      |
 | `POST` | `/api/broadcast/visibility/{element}/toggle`      | Toggle an overlay element's visibility.                |
 
 `{element}` is one of `map-screen`, `score-box`, `commentator-box`, `info-box`.
-An unknown team or element is answered with `400 Bad Request`.
+An unknown element is answered with `400 Bad Request`.
+
+**Setting a map winner:** `winner` accepts `alpha`, `bravo`, or `none` (also `null`/empty) to clear
+it. An unknown value returns `400`; an unknown `mapId` returns `404`. The team score is **derived
+from the map winners** — this endpoint recomputes both scores from all maps after setting the
+winner, matching the Control Panel. There is intentionally no endpoint to set the score directly.
 
 **Example (Stream Deck / curl):**
 
 ```bash
-# No auth (default)
-curl -X POST "http://localhost:7000/api/broadcast/score/increment?team=alpha"
+# No auth (default): mark a map as won by Alpha
+curl -X POST "http://localhost:7000/api/broadcast/maps/<mapId>/winner?winner=alpha"
 
-# With enforced auth
-curl -X POST "http://localhost:7000/api/broadcast/score/increment?team=alpha" \
+# Clear a map's winner
+curl -X POST "http://localhost:7000/api/broadcast/maps/<mapId>/winner?winner=none"
+
+# Toggle the score box, with enforced auth
+curl -X POST "http://localhost:7000/api/broadcast/visibility/score-box/toggle" \
      -H "X-Api-Key: stt_3250c04c8028..."
 ```
 
