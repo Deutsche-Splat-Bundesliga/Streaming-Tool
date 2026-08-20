@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using DSB.StreamBackend.Context;
 using DSB.StreamBackend.Hubs;
+using DSB.StreamBackend.Middleware;
 using DSB.StreamBackend.Services;
 using DSB.StreamBackend.Logging;
 
@@ -23,6 +24,9 @@ builder.Services.AddSingleton<ILogSink, ConsoleLogSink>();
 builder.Services.AddScoped<BroadcastStateService>();
 builder.Services.AddScoped<SocialsService>();
 builder.Services.AddScoped<CommentatorBoxTimeDataService>();
+builder.Services.AddScoped<ApiSettingsService>();
+builder.Services.AddScoped<ApiKeyService>();
+builder.Services.AddSingleton<ApiRequestLog>();
 
 builder.Services.AddCors(options =>
 {
@@ -45,6 +49,10 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.UseCors("AllowFrontend");
+
+// Guards /api endpoints (optional API key authentication) and records
+// every API request in the in-memory session log.
+app.UseMiddleware<ApiAuthenticationMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

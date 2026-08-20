@@ -17,24 +17,36 @@
 ```
 DSB.StreamBackend/
 ├── Controllers/                            # REST-Endpoints
-│   ├── BroadcastController.cs
+│   ├── ApiKeysController.cs                # API key management (list/create/revoke)
+│   ├── ApiLogController.cs                 # API session request log
+│   ├── ApiSettingsController.cs            # API authentication settings
+│   ├── BroadcastController.cs             # + Stream Deck convenience endpoints
 │   ├── CommentatorBoxTimedataController.cs
 │   └── SocialsController.cs
+├── Middleware/
+│   └── ApiAuthenticationMiddleware.cs      # Guards /api, records the session log
 ├── Hubs/
 │   ├── EventHub.cs                         # SignalR-Hub for Events
 │   ├── IEventClient.cs                     # SignalR-Interface for Events
 │   ├── IOverlayClient.cs                   # SignalR-Interface for Overlays
 │   └── OverlayHub.cs                       # SignalR-Hub for Overlays
 ├── Services/                               # Business Logic + DB Access
+│   ├── ApiKeyService.cs                    # Key generation, hashing, validation
+│   ├── ApiRequestLog.cs                    # In-memory session log (singleton)
+│   ├── ApiSettingsService.cs
 │   ├── BroadcastStateService.cs
 │   ├── CommentatorBoxTimeDataService.cs
 │   └── LogService.cs
 ├── Models/                                 # EF-Entities
+│   ├── ApiKeyEntity.cs                     # Issued API keys (hash only)
+│   ├── ApiSettingsEntity.cs               # API authentication settings
 │   ├── BroadcastStateEntity.cs             # Main State
 │   ├── CommentatorBoxTimeDataEntity.cs     # Commentator Box Timing Information
 │   ├── MapStateEntity.cs                   # Maps (1:N)
 │   └── SocialsEntity.cs                    # Socials Information
 ├── Dtos/
+│   ├── ApiKeyDto.cs / ApiKeyCreatedDto.cs / CreateApiKeyRequestDto.cs
+│   ├── ApiLogEntryDto.cs / ApiSettingsDto.cs
 │   ├── BroadcastStateDto.cs
 │   ├── CommentatorBoxTimeDataDto.cs
 │   ├── MapStateDto.cs
@@ -50,6 +62,9 @@ DSB.StreamBackend/
 │   └── LogLevel.cs
 └── Migrations/                             # EF-Migrations (auto-apply on Start)
 ```
+
+> The public REST API, authentication, API keys and the Stream Deck convenience endpoints are
+> documented separately in [`api.md`](./api.md).
 
 ---
 
@@ -110,9 +125,33 @@ Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASC
 | `HideDisplayIntervalInSeconds` | `int` | How long the commentator box is hidden on scorebox overlay (In seconds)                           |
 | `DisplayMode`                  | `int` | Sets the blending mode in which the commentator box gets shown. `0` for manual, `1` for automatic |
 
+### `ApiSettings` (1 Column)
+
+| Column                         | Type   | Description                                                     |
+| ------------------------------ | ------ | --------------------------------------------------------------- |
+| `Id`                           | `int`  | Always `1` (Singleton)                                          |
+| `AllowUnauthenticatedRequests` | `bool` | `true` (default) allows API access without a key. See `api.md`. |
+
+### `ApiKeys` (0..N Rows)
+
+Only a hash of each key is stored; the plaintext is shown once at creation. See [`api.md`](./api.md).
+
+| Column        | Type            | Description                                        |
+| ------------- | --------------- | -------------------------------------------------- |
+| `Id`          | `string` (GUID) | Primary Key                                        |
+| `Name`        | `string`        | Human-readable name (e.g. "Stream Deck")           |
+| `KeyPrefix`   | `string`        | First 12 chars of the key for display (`stt_…`)    |
+| `KeyHash`     | `string`        | SHA-256 hash (hex) of the plaintext key            |
+| `AccessLevel` | `int`           | `0` = read-only, `1` = read-write                  |
+| `CreatedAt`   | `DateTime`      | Creation time (UTC)                                |
+| `LastUsedAt`  | `DateTime?`     | Last time the key authenticated a request, or null |
+
 ---
 
 ## REST API
+
+> The public API surface, authentication, API keys and Stream Deck convenience endpoints are
+> documented in detail in [`api.md`](./api.md). The sections below describe the core data endpoints.
 
 Base URL: `/api/broadcast`
 
@@ -178,11 +217,19 @@ public interface IOverlayClient
 }
 ```
 
-| Event                           | Triggered By                | Payload                     |
-| ------------------------------- | --------------------------- | --------------------------- |
-| `BroadcastStateUpdated`         | `POST /api/broadcast/state` | `BroadcastStateDto`         |
-| `socialsUpdated`                | `POST /api/socials/socials` | `SocialsDto`                |
-| `commentatorBoxTimeDataUpdated` | `POST /api/broadcast/state` | `CommentatorBoxTimeDataDto` |
+| Event                           | Triggered By                          | Payload                     |
+| ------------------------------- | ------------------------------------- | --------------------------- |
+| `BroadcastStateUpdated`         | `POST /api/broadcast/state`           | `BroadcastStateDto`         |
+| `socialsUpdated`                | `POST /api/socials/socials`           | `SocialsDto`                |
+| `commentatorBoxTimeDataUpdated` | `POST /api/broadcast/state`           | `CommentatorBoxTimeDataDto` |
+| `apiSettingsUpdated`            | `POST /api/api-settings`              | `ApiSettingsDto`            |
+| `apiKeysUpdated`                | `POST`/`DELETE /api/api-keys`         | `ApiKeyDto[]`               |
+| `apiLogEntryAdded`              | Any handled `/api` request            | `ApiLogEntryDto`            |
+| `apiLogCleared`                 | `DELETE /api/api-log`                 | *(none)*                    |
+
+The `api*` events keep the Control Panel's **API-Einstellungen** dialog in sync live — settings,
+issued keys and the request log update immediately regardless of which client triggered the change.
+See [`api.md`](./api.md) for the full API documentation.
 
 ---
 

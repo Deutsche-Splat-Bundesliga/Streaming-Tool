@@ -16,6 +16,7 @@ import { SocialsDialog } from '../../dialogs/socials-dialog/socials-dialog';
 import { TourneySettingsDialog } from '../../dialogs/tourney-settings-dialog/tourney-settings-dialog';
 import { StreamerCommsDialog } from '../../dialogs/streamer-comms-dialog/streamer-comms-dialog';
 import { CommBoxSettingsDialog } from '../../dialogs/comm-box-settings-dialog/comm-box-settings-dialog';
+import { ApiSettingsDialog } from '../../dialogs/api-settings-dialog/api-settings-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -126,6 +127,15 @@ export class Sidebar implements OnInit, OnDestroy {
     this.dialog.closeAll();
     this.log.trace('Opening dialog for commentator box display settings');
     this.dialog.open(CommBoxSettingsDialog, { panelClass: 'comm-box-settings-dialog' });
+  }
+
+  /**
+   * Handle click event for API settings button that opens the dialog
+   */
+  handleApiSettingsButtonClick(): void {
+    this.dialog.closeAll();
+    this.log.trace('Opening dialog for API settings');
+    this.dialog.open(ApiSettingsDialog, { panelClass: 'api-settings-dialog' });
   }
 
   /**

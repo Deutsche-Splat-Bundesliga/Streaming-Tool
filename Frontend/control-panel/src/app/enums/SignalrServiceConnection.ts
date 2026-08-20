@@ -6,5 +6,6 @@ export enum SignalrServiceConnection {
   BroadcastState,
   Socials,
   CommentatorBoxTimeData,
+  Api,
   Max,
 }
