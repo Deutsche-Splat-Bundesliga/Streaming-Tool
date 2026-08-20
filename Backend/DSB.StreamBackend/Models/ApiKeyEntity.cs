@@ -11,7 +11,7 @@ public class ApiKeyEntity
     /// <summary>
     /// Unique identifier for the API key entity.
     /// </summary>
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Gets or sets the human-readable name of the key (e.g. "Stream Deck").
@@ -32,7 +32,7 @@ public class ApiKeyEntity
     /// <summary>
     /// Gets or sets the access level of the key.
     /// </summary>
-    public int AccessLevel { get; set; } = (int)ApiKeyAccessLevel.ReadWrite;
+    public ApiKeyAccessLevel AccessLevel { get; set; } = ApiKeyAccessLevel.ReadWrite;
 
     /// <summary>
     /// Gets or sets when the key was created (UTC).

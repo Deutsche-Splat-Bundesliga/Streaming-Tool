@@ -70,9 +70,9 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
             throw new ArgumentException("API key name must not be empty", nameof(request));
         }
 
-        int accessLevel = Enum.IsDefined(typeof(ApiKeyAccessLevel), request.AccessLevel)
+        ApiKeyAccessLevel accessLevel = Enum.IsDefined(request.AccessLevel)
             ? request.AccessLevel
-            : (int)ApiKeyAccessLevel.ReadWrite;
+            : ApiKeyAccessLevel.ReadWrite;
 
         await log.InfoAsync("Creating API key", new { name, accessLevel });
 
@@ -113,7 +113,7 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
     /// </summary>
     /// <param name="id">The id of the key to delete</param>
     /// <returns>True if the key was found and deleted, otherwise false</returns>
-    public async Task<bool> DeleteKeyAsync(string id)
+    public async Task<bool> DeleteKeyAsync(Guid id)
     {
         using IDisposable scope = log.BeginScope(nameof(DeleteKeyAsync));
 

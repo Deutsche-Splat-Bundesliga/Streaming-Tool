@@ -1,3 +1,4 @@
+using System.Net;
 using DSB.StreamBackend.Dtos;
 using DSB.StreamBackend.Enums;
 using DSB.StreamBackend.Hubs;
@@ -84,7 +85,7 @@ public class ApiAuthenticationMiddleware(
 
         string source = AnonymousSource;
         bool rejected = false;
-        int rejectionStatusCode = StatusCodes.Status401Unauthorized;
+        HttpStatusCode rejectionStatusCode = HttpStatusCode.Unauthorized;
         string rejectionReason = string.Empty;
 
         string origin = context.Request.Headers.Origin.ToString();
@@ -108,25 +109,25 @@ public class ApiAuthenticationMiddleware(
             {
                 source = apiKey.Name;
 
-                if (apiKey.AccessLevel == (int)ApiKeyAccessLevel.ReadOnly
+                if (apiKey.AccessLevel == ApiKeyAccessLevel.ReadOnly
                     && !HttpMethods.IsGet(context.Request.Method)
                     && !HttpMethods.IsHead(context.Request.Method))
                 {
                     rejected = true;
-                    rejectionStatusCode = StatusCodes.Status403Forbidden;
+                    rejectionStatusCode = HttpStatusCode.Forbidden;
                     rejectionReason = "This API key is read-only and cannot perform write requests.";
                 }
                 else if (!settings.AllowUnauthenticatedRequests && IsManagementPath(context.Request.Path))
                 {
                     rejected = true;
-                    rejectionStatusCode = StatusCodes.Status403Forbidden;
+                    rejectionStatusCode = HttpStatusCode.Forbidden;
                     rejectionReason = "API management endpoints are reserved for the Control Panel.";
                 }
             }
             else if (!settings.AllowUnauthenticatedRequests)
             {
                 rejected = true;
-                rejectionStatusCode = StatusCodes.Status401Unauthorized;
+                rejectionStatusCode = HttpStatusCode.Unauthorized;
                 rejectionReason = string.IsNullOrEmpty(providedKey)
                     ? $"Authentication is enabled. Provide an API key via the '{ApiKeyHeaderName}' header."
                     : "The provided API key is unknown.";
@@ -144,7 +145,7 @@ public class ApiAuthenticationMiddleware(
                 rejectionReason
             });
 
-            context.Response.StatusCode = rejectionStatusCode;
+            context.Response.StatusCode = (int)rejectionStatusCode;
             await context.Response.WriteAsJsonAsync(new { error = rejectionReason });
         }
         else
@@ -155,7 +156,7 @@ public class ApiAuthenticationMiddleware(
             }
             catch (Exception)
             {
-                await RecordAsync(context, source, rejected: false, statusCodeOverride: StatusCodes.Status500InternalServerError);
+                await RecordAsync(context, source, rejected: false, statusCodeOverride: HttpStatusCode.InternalServerError);
                 throw;
             }
         }
@@ -184,14 +185,14 @@ public class ApiAuthenticationMiddleware(
     /// <param name="source">Who issued the request.</param>
     /// <param name="rejected">Whether the request was rejected by this middleware.</param>
     /// <param name="statusCodeOverride">Optional status code overriding the response's one (used for exceptions).</param>
-    private async Task RecordAsync(HttpContext context, string source, bool rejected, int? statusCodeOverride)
+    private async Task RecordAsync(HttpContext context, string source, bool rejected, HttpStatusCode? statusCodeOverride)
     {
         ApiLogEntryDto entry = new()
         {
             Timestamp = DateTime.UtcNow,
             Method = context.Request.Method,
             Path = context.Request.Path.ToString(),
-            StatusCode = statusCodeOverride ?? context.Response.StatusCode,
+            StatusCode = statusCodeOverride ?? (HttpStatusCode)context.Response.StatusCode,
             Source = source,
             WasRejected = rejected
         };

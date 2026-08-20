@@ -137,7 +137,7 @@ public class ApiAuthenticationMiddlewareTests
         var created = await _keyService.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "Stream Deck",
-            AccessLevel = (int)ApiKeyAccessLevel.ReadWrite
+            AccessLevel = ApiKeyAccessLevel.ReadWrite
         });
 
         var context = CreateContext("POST", "/api/broadcast/state");
@@ -168,7 +168,7 @@ public class ApiAuthenticationMiddlewareTests
         var created = await _keyService.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "Read Only",
-            AccessLevel = (int)ApiKeyAccessLevel.ReadOnly
+            AccessLevel = ApiKeyAccessLevel.ReadOnly
         });
 
         var context = CreateContext("POST", "/api/broadcast/state");
@@ -186,7 +186,7 @@ public class ApiAuthenticationMiddlewareTests
         var created = await _keyService.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "Read Only",
-            AccessLevel = (int)ApiKeyAccessLevel.ReadOnly
+            AccessLevel = ApiKeyAccessLevel.ReadOnly
         });
 
         var context = CreateContext("GET", "/api/broadcast/state");
@@ -204,7 +204,7 @@ public class ApiAuthenticationMiddlewareTests
         var created = await _keyService.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "Sneaky",
-            AccessLevel = (int)ApiKeyAccessLevel.ReadWrite
+            AccessLevel = ApiKeyAccessLevel.ReadWrite
         });
 
         var context = CreateContext("POST", "/api/api-keys");

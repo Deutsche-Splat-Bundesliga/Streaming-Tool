@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace DSB.StreamBackend.Dtos;
 
 /// <summary>
@@ -23,7 +25,7 @@ public class ApiLogEntryDto
     /// <summary>
     /// Gets or sets the HTTP status code the request was answered with
     /// </summary>
-    public int StatusCode { get; set; }
+    public HttpStatusCode StatusCode { get; set; }
 
     /// <summary>
     /// Gets or sets who issued the request:

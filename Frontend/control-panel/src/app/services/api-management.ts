@@ -103,6 +103,7 @@ export class ApiManagementService {
 
   /**
    * Updates whether unauthenticated API requests are allowed.
+   * @param allow Whether unauthenticated requests should be allowed.
    */
   setAllowUnauthenticatedRequests(allow: boolean): void {
     const scope = this.log.beginScope('ApiManagementService.setAllowUnauthenticatedRequests');
@@ -121,6 +122,9 @@ export class ApiManagementService {
 
   /**
    * Creates a new API key. The returned observable yields the plaintext key exactly once.
+   * @param name The human-readable name of the key (e.g. "Stream Deck").
+   * @param accessLevel The access level of the key (0 = read-only, 1 = read-write).
+   * @returns An observable emitting the created {@link ApiKeyCreated}, including the plaintext key.
    */
   createKey(name: string, accessLevel: number): Observable<ApiKeyCreated> {
     this.log.info('Creating API key', { name, accessLevel });
@@ -134,6 +138,7 @@ export class ApiManagementService {
 
   /**
    * Deletes (revokes) an API key by id.
+   * @param id The id of the key to delete.
    */
   deleteKey(id: string): void {
     this.log.info('Deleting API key', { id });

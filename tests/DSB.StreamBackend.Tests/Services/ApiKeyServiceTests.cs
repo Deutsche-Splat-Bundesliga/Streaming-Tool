@@ -38,7 +38,7 @@ public class ApiKeyServiceTests
         var result = await _service.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "Stream Deck",
-            AccessLevel = (int)ApiKeyAccessLevel.ReadWrite
+            AccessLevel = ApiKeyAccessLevel.ReadWrite
         });
 
         Assert.That(result.Key, Does.StartWith(ApiKeyService.KeyPrefix));
@@ -52,7 +52,7 @@ public class ApiKeyServiceTests
         var result = await _service.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "Secret Test",
-            AccessLevel = (int)ApiKeyAccessLevel.ReadWrite
+            AccessLevel = ApiKeyAccessLevel.ReadWrite
         });
 
         var entity = await _db.ApiKeys.FirstAsync();
@@ -67,7 +67,7 @@ public class ApiKeyServiceTests
         Assert.ThrowsAsync<ArgumentException>(() => _service.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "   ",
-            AccessLevel = (int)ApiKeyAccessLevel.ReadWrite
+            AccessLevel = ApiKeyAccessLevel.ReadWrite
         }));
     }
 
@@ -116,7 +116,7 @@ public class ApiKeyServiceTests
     [Test]
     public async Task DeleteKeyAsync_WithUnknownId_ReturnsFalse()
     {
-        var deleted = await _service.DeleteKeyAsync("does-not-exist");
+        var deleted = await _service.DeleteKeyAsync(Guid.NewGuid());
 
         Assert.That(deleted, Is.False);
     }
@@ -138,9 +138,9 @@ public class ApiKeyServiceTests
         var created = await _service.CreateKeyAsync(new CreateApiKeyRequestDto
         {
             Name = "Weird Level",
-            AccessLevel = 42
+            AccessLevel = (ApiKeyAccessLevel)42
         });
 
-        Assert.That(created.ApiKey.AccessLevel, Is.EqualTo((int)ApiKeyAccessLevel.ReadWrite));
+        Assert.That(created.ApiKey.AccessLevel, Is.EqualTo(ApiKeyAccessLevel.ReadWrite));
     }
 }

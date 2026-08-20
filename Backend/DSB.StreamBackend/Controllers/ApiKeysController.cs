@@ -85,8 +85,8 @@ public class ApiKeysController(
     /// </summary>
     /// <param name="id">The id of the key to delete.</param>
     /// <returns>204 if the key was deleted, 404 if it does not exist.</returns>
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteKey(string id)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteKey(Guid id)
     {
         using IDisposable scope = log.BeginScope(nameof(DeleteKey));
 

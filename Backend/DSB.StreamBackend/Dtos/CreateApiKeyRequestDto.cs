@@ -1,3 +1,5 @@
+using DSB.StreamBackend.Enums;
+
 namespace DSB.StreamBackend.Dtos;
 
 /// <summary>
@@ -11,7 +13,7 @@ public class CreateApiKeyRequestDto
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the access level of the key (0 = read-only, 1 = read-write)
+    /// Gets or sets the access level of the key
     /// </summary>
-    public int AccessLevel { get; set; }
+    public ApiKeyAccessLevel AccessLevel { get; set; }
 }

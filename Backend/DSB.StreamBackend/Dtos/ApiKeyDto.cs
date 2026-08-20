@@ -1,3 +1,5 @@
+using DSB.StreamBackend.Enums;
+
 namespace DSB.StreamBackend.Dtos;
 
 /// <summary>
@@ -9,7 +11,7 @@ public class ApiKeyDto
     /// <summary>
     /// Unique identifier of the key
     /// </summary>
-    public string Id { get; set; } = string.Empty;
+    public Guid Id { get; set; }
 
     /// <summary>
     /// Gets or sets the human-readable name of the key
@@ -22,9 +24,9 @@ public class ApiKeyDto
     public string KeyPrefix { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the access level of the key (0 = read-only, 1 = read-write)
+    /// Gets or sets the access level of the key
     /// </summary>
-    public int AccessLevel { get; set; }
+    public ApiKeyAccessLevel AccessLevel { get; set; }
 
     /// <summary>
     /// Gets or sets when the key was created (UTC)
