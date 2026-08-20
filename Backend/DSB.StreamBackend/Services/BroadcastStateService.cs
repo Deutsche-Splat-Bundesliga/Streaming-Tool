@@ -6,146 +6,85 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DSB.StreamBackend.Services;
 
+/// <summary>
+/// Contains all business logic related to the broadcast state
+/// </summary>
+/// <param name="db">The database context</param>
+/// <param name="log">The logging service</param>
 public class BroadcastStateService(StreamToolDbContext db, ILogService log)
+    : SingletonEntityService<BroadcastStateEntity, BroadcastStateDto>(db, log)
 {
+    /// <inheritdoc />
+    protected override string EntityName => "broadcast state";
+
+    /// <inheritdoc />
+    protected override DbSet<BroadcastStateEntity> DbSet => Db.BroadcastStates;
+
+    /// <inheritdoc />
+    protected override IQueryable<BroadcastStateEntity> IncludeRelated(IQueryable<BroadcastStateEntity> query)
+        => query.Include(x => x.Maps);
+
+    /// <inheritdoc />
+    protected override object? GetLogData(BroadcastStateEntity entity) => new
+    {
+        entity.ScoreAlpha,
+        entity.ScoreBravo,
+        Maps = entity.Maps.Count
+    };
+
     /// <summary>
     /// Asynchronously gets the <see cref="BroadcastStateDto"/>
     /// </summary>
     /// <returns>A <see cref="Task"/> returning the state as <see cref="BroadcastStateDto"/></returns>
-    public async Task<BroadcastStateDto> GetStateAsync()
-    {
-        using IDisposable scope = log.BeginScope(nameof(GetStateAsync));
-        await log.DebugAsync("Loading broadcast state");
-
-        try
-        {
-            BroadcastStateEntity entity = await GetOrCreateStateAsync();
-
-            await log.DebugAsync("Broadcast state loaded", new
-            {
-                entity.ScoreAlpha,
-                entity.ScoreBravo,
-                Maps = entity.Maps.Count
-            });
-
-            return ToDto(entity);
-        }
-        catch (Exception ex)
-        {
-            await log.ErrorAsync("Failed to load broadcast state", ex);
-            throw;
-        }
-    }
+    public Task<BroadcastStateDto> GetStateAsync() => GetAsync();
 
     /// <summary>
     /// Asynchronously updates the <see cref="BroadcastStateEntity"/>
     /// </summary>
     /// <param name="dto">The <see cref="BroadcastStateDto"/> containing the updated information</param>
     /// <returns>The updated <see cref="BroadcastStateDto"/></returns>
-    public async Task<BroadcastStateDto> UpdateStateAsync(BroadcastStateDto dto)
+    public Task<BroadcastStateDto> UpdateStateAsync(BroadcastStateDto dto) => UpdateAsync(dto);
+
+    /// <inheritdoc />
+    protected override void Apply(BroadcastStateEntity entity, BroadcastStateDto dto)
     {
-        using IDisposable scope = log.BeginScope(nameof(UpdateStateAsync));
+        entity.TeamAlphaName = dto.TeamAlphaName;
+        entity.TeamBravoName = dto.TeamBravoName;
+        entity.AlphaIsLeft = dto.AlphaIsLeft;
 
-        await log.InfoAsync("Updating broadcast state", new
-        {
-            dto.TeamAlphaName,
-            dto.TeamBravoName,
-            dto.ScoreAlpha,
-            dto.ScoreBravo
-        });
+        entity.ScoreAlpha = dto.ScoreAlpha;
+        entity.ScoreBravo = dto.ScoreBravo;
 
-        try
-        {
-            BroadcastStateEntity entity = await GetOrCreateStateAsync();
+        entity.Streamer = dto.Streamer;
 
-            entity.TeamAlphaName = dto.TeamAlphaName;
-            entity.TeamBravoName = dto.TeamBravoName;
-            entity.AlphaIsLeft = dto.AlphaIsLeft;
+        entity.Commentator1 = dto.Commentator1;
+        entity.Commentator2 = dto.Commentator2;
 
-            entity.ScoreAlpha = dto.ScoreAlpha;
-            entity.ScoreBravo = dto.ScoreBravo;
+        entity.ShowMapScreen = dto.ShowMapScreen;
+        entity.ShowScoreBox = dto.ShowScoreBox;
+        entity.ShowCommentatorBox = dto.ShowCommentatorBox;
+        entity.ShowInfobox = dto.ShowInfobox;
 
-            entity.Streamer = dto.Streamer;
+        entity.Season = dto.Season;
+        entity.Division = dto.Division;
+        entity.Week = dto.Week;
 
-            entity.Commentator1 = dto.Commentator1;
-            entity.Commentator2 = dto.Commentator2;
+        entity.StartTime = dto.StartTime;
 
-            entity.ShowMapScreen = dto.ShowMapScreen;
-            entity.ShowScoreBox = dto.ShowScoreBox;
-            entity.ShowCommentatorBox = dto.ShowCommentatorBox;
-            entity.ShowInfobox = dto.ShowInfobox;
+        entity.CurrentColorsId = dto.CurrentColorsId;
+        entity.ColorLockActive = dto.ColorLockActive;
 
-            entity.Season = dto.Season;
-            entity.Division = dto.Division;
-            entity.Week = dto.Week;
-
-            entity.StartTime = dto.StartTime;
-
-            entity.CurrentColorsId = dto.CurrentColorsId;
-            entity.ColorLockActive = dto.ColorLockActive;
-
-            UpdateMaps(entity, dto.Maps);
-
-            await db.SaveChangesAsync();
-
-            await log.InfoAsync("Broadcast state updated", new
-            {
-                entity.ScoreAlpha,
-                entity.ScoreBravo,
-                Maps = entity.Maps.Count
-            });
-
-            return ToDto(entity);
-        }
-        catch (Exception ex)
-        {
-            await log.ErrorAsync("Failed to update broadcast state", ex, dto);
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Asynchronously gets or creates the <see cref="BroadcastStateEntity"/> database context
-    /// </summary>
-    /// <returns>The <see cref="BroadcastStateEntity"/></returns>
-    private async Task<BroadcastStateEntity> GetOrCreateStateAsync()
-    {
-        await log.DebugAsync("Loading broadcast state entity");
-
-        var entity = await db.BroadcastStates
-            .Include(x => x.Maps)
-            .FirstOrDefaultAsync(x => x.Id == 1);
-
-        if (entity is not null)
-        {
-            await log.TraceAsync("Broadcast state exists");
-            return entity;
-        }
-
-        await log.WarningAsync("Broadcast state not found, creating default");
-
-        entity = new BroadcastStateEntity
-        {
-            Id = 1
-        };
-
-        db.BroadcastStates.Add(entity);
-
-        await db.SaveChangesAsync();
-
-        await log.InfoAsync("Created initial broadcast state");
-
-        return entity;
+        UpdateMaps(entity, dto.Maps);
     }
 
     /// <summary>
     /// Updates the maps contained in the <see cref="BroadcastStateEntity"/>
     /// </summary>
     /// <param name="entity">The <see cref="BroadcastStateEntity"/> database context</param>
-    /// <param name="dtoMaps">A <see cref="List"/> of the <see cref="MapStateDto"/>s to update</param>
+    /// <param name="dtoMaps">A <see cref="List{T}"/> of the <see cref="MapStateDto"/>s to update</param>
     private void UpdateMaps(BroadcastStateEntity entity, List<MapStateDto> dtoMaps)
     {
-        log.DebugAsync("Updating map state collection", new
+        _ = Log.DebugAsync("Updating map state collection", new
         {
             Existing = entity.Maps.Count,
             Incoming = dtoMaps.Count
@@ -162,10 +101,10 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 
         if (removed.Count > 0)
         {
-            log.InfoAsync("Removing maps", removed.Select(x => x.Id));
+            _ = Log.InfoAsync("Removing maps", removed.Select(x => x.Id));
         }
 
-        db.MapStates.RemoveRange(removed);
+        Db.MapStates.RemoveRange(removed);
 
         foreach (var mapDto in dtoMaps.OrderBy(x => x.Order))
         {
@@ -175,7 +114,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 
             if (existing != null)
             {
-                log.TraceAsync("Updating map", new
+                _ = Log.TraceAsync("Updating map", new
                 {
                     existing.Id,
                     mapDto.MapName
@@ -196,7 +135,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
                     ? Guid.NewGuid().ToString()
                     : mapDto.Id;
 
-                log.InfoAsync("Adding map", new
+                _ = Log.InfoAsync("Adding map", new
                 {
                     id,
                     mapDto.MapName,
@@ -220,12 +159,8 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
         }
     }
 
-    /// <summary>
-    /// Converts the <see cref="BroadcastStateEntity"/> database context to a <see cref="BroadcastStateDto"/>
-    /// </summary>
-    /// <param name="entity">The <see cref="BroadcastStateDto"/> to convert</param>
-    /// <returns>The converted <see cref="BroadcastStateDto"/></returns>
-    private static BroadcastStateDto ToDto(BroadcastStateEntity entity)
+    /// <inheritdoc />
+    protected override BroadcastStateDto ToDto(BroadcastStateEntity entity)
     {
         return new BroadcastStateDto
         {
