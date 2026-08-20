@@ -21,7 +21,7 @@ export class ApiManagementApi {
 
   /**
    * Gets the current API settings from the backend.
-   * @returns An observable emitting the current {@link ApiSettings}.
+   * @returns {Observable<ApiSettings>} An observable emitting the current {@link ApiSettings}.
    */
   getSettings(): Observable<ApiSettings> {
     this.log.debug('GET api-settings request started');
@@ -37,8 +37,8 @@ export class ApiManagementApi {
 
   /**
    * Updates the API settings via the backend.
-   * @param settings The new {@link ApiSettings} to persist.
-   * @returns An observable emitting the updated {@link ApiSettings}.
+   * @param {ApiSettings} settings The new {@link ApiSettings} to persist.
+   * @returns {Observable<ApiSettings>} An observable emitting the updated {@link ApiSettings}.
    */
   updateSettings(settings: ApiSettings): Observable<ApiSettings> {
     this.log.debug('POST api-settings request started', settings);
@@ -54,7 +54,7 @@ export class ApiManagementApi {
 
   /**
    * Gets all issued API keys (metadata only).
-   * @returns An observable emitting the list of issued {@link ApiKey}s.
+   * @returns {Observable<ApiKey[]>} An observable emitting the list of issued {@link ApiKey}s.
    */
   getKeys(): Observable<ApiKey[]> {
     this.log.debug('GET api-keys request started');
@@ -70,9 +70,9 @@ export class ApiManagementApi {
 
   /**
    * Creates a new API key. The response contains the plaintext key exactly once.
-   * @param name The human-readable name of the key (e.g. "Stream Deck").
-   * @param accessLevel The access level of the key (0 = read-only, 1 = read-write).
-   * @returns An observable emitting the created {@link ApiKeyCreated}, including the plaintext key.
+   * @param {string} name The human-readable name of the key (e.g. "Stream Deck").
+   * @param {number} accessLevel The access level of the key (0 = read-only, 1 = read-write).
+   * @returns {Observable<ApiKeyCreated>} An observable emitting the created {@link ApiKeyCreated}, including the plaintext key.
    */
   createKey(name: string, accessLevel: number): Observable<ApiKeyCreated> {
     this.log.debug('POST api-keys request started', { name, accessLevel });
@@ -90,8 +90,8 @@ export class ApiManagementApi {
 
   /**
    * Deletes (revokes) an API key by id.
-   * @param id The id of the key to delete.
-   * @returns An observable that completes once the key has been deleted.
+   * @param {string} id The id of the key to delete.
+   * @returns {Observable<void>} An observable that completes once the key has been deleted.
    */
   deleteKey(id: string): Observable<void> {
     this.log.debug('DELETE api-keys request started', { id });
@@ -107,7 +107,7 @@ export class ApiManagementApi {
 
   /**
    * Gets the API request log of the current backend session.
-   * @returns An observable emitting the list of {@link ApiLogEntry}s, oldest first.
+   * @returns {Observable<ApiLogEntry[]>} An observable emitting the list of {@link ApiLogEntry}s, oldest first.
    */
   getLog(): Observable<ApiLogEntry[]> {
     this.log.debug('GET api-log request started');
@@ -123,7 +123,7 @@ export class ApiManagementApi {
 
   /**
    * Clears the API request log.
-   * @returns An observable that completes once the log has been cleared.
+   * @returns {Observable<void>} An observable that completes once the log has been cleared.
    */
   clearLog(): Observable<void> {
     this.log.debug('DELETE api-log request started');
