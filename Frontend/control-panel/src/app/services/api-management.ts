@@ -125,8 +125,10 @@ export class ApiManagementService {
   createKey(name: string, accessLevel: number): Observable<ApiKeyCreated> {
     this.log.info('Creating API key', { name, accessLevel });
 
+    // Intentionally log no data derived from the created key object: it carries the
+    // plaintext key (shown once in the UI) and must never reach the console/log sink.
     return this.api.createKey(name, accessLevel).pipe(
-      tap((created) => this.log.info('API key created', { id: created.apiKey.id })),
+      tap(() => this.log.info('API key created')),
     );
   }
 

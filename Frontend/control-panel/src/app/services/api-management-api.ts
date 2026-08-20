@@ -70,8 +70,10 @@ export class ApiManagementApi {
   createKey(name: string, accessLevel: number): Observable<ApiKeyCreated> {
     this.log.debug('POST api-keys request started', { name, accessLevel });
 
+    // The response carries the plaintext key (shown once in the UI). Do not log any field
+    // derived from it, so the secret can never reach the console/log sink.
     return this.http.post<ApiKeyCreated>(`${this.baseUrl}/api-keys`, { name, accessLevel }).pipe(
-      tap((result) => this.log.info('POST api-keys successful', { id: result.apiKey.id })),
+      tap(() => this.log.info('POST api-keys successful')),
       catchError((err) => {
         this.log.error('POST api-keys failed', err, { name, accessLevel });
         return throwError(() => err);
