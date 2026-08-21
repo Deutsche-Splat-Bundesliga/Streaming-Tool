@@ -1,0 +1,45 @@
+name: Documentation Issue
+description: Report missing, unclear, or outdated documentation
+title: "[Docs] "
+labels: documentation
+body:
+  - type: dropdown
+    attributes:
+      label: Affected Documentation
+      description: What Documentation is affected? Multiple selections possible.
+      options:
+      - README
+      - CONTRIBUTING
+      - Setup Instructions
+      - API Documentation
+      - Overlay Configuration
+      - Deployment Guide
+      - Code Comments
+      - Streamer Manual
+      - Other (Describe below)
+      multiple: true
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Current Documentation
+      description: Please link or describe the current documentation if it exists.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Problem
+      description: Please describe the problem with the documentation.
+      placeholder: |
+        - Is it outdated?
+        - Are there confusing instructions?
+        - Is a section missing entirely?
+        - Are there broken links or examples?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Suggested Improvement
+      description: Please describe how you would imrove the documentation.
+    validations:
+      required: true

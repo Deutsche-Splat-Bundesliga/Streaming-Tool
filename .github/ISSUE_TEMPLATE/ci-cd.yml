@@ -1,0 +1,76 @@
+name: CI/CD Issue
+description: Report issues or improvements related to build, deployment, or automation pipelines
+title: "[Chore] "
+labels: Chore
+body:
+  - type: textarea
+    attributes:
+      label: Summary
+      description: A clear and concise description of the issue or improvement request.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Problem Statement
+      description: Please describe the problem you are experiencing with the Pipeline, Deployment Process or Automation Workflow.
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Affected Pipeline
+      description: Which Pipeline is affected? Multiple selections possible.
+      options:
+      - Build Dotnet CI
+      - Build NodeJS CI
+      - CodeQL
+      - Dependabot Issue Sync
+      - End-To-End Test Pipelines
+      - Fail by Label
+      - Release Notes
+      - Run Dotnet Tests
+      - Run NodeJS Tests
+      - Typescript Code Quality CI
+      multiple: true
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Environment
+      description: Where did the issue occur?
+      options:
+      - Pull Request Validation
+      - Staging
+      - Local CI Environment
+      multiple: true
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Affected Components
+      description: Which components are affected? Multiple selections possible.
+      options:
+      - Frontend
+      - Overlays
+      - Backend
+      - Docker Containers
+      - Deployment / Infrastructure
+      - Documentation
+      multiple: true
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behaviour
+      description: What was expected to happen?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual Behaviour
+      description: What actually happened?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Logs and Error Messages
+      description: Please paste any logs or error messages here.
