@@ -13,7 +13,6 @@ Choose the issue template that best matches your needs:
 - **🐛 [Bug Report](bug_report.md)** — Something is broken or not working as expected
 - **✨ [Feature Request](feature_request.md)** — Suggest a new feature or enhancement
 - **📚 [Documentation](documentation.md)** — Documentation is unclear, missing, or outdated
-- **⚡ [Performance Issue](performance.md)** — Slow performance, memory problems, or crashes
 - **🎬 [Overlay Enhancement](overlay.md)** — Improvements or fixes specific to overlay components
 - **🚀 [CI/CD Issue](ci-cd.md)** — Build failures, deployment problems, workflow automation, or pipeline improvements
 - **🔧 [Setup Help](setup_help.md)** — Need help with installation, configuration, or deployment
