@@ -47,7 +47,7 @@
 
 .tourney-info {
   position: absolute;
-  top: 0px;
+  top: 0;
   left: 50%;
   width: 100%;
   transform: translateX(-50%);
@@ -199,7 +199,7 @@ app-resizable-text {
 }
 
 .map-info {
-  padding: 18px;
+  padding: 1.125rem;
 }
 
 .dsb-logo {
