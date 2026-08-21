@@ -69,13 +69,12 @@ export class App implements OnDestroy {
    * This ensures the header background gradient always reflects the current division's color scheme.
    */
   private _divisionColorEffect = afterRenderEffect(() => {
-    const division = this.state().division;
-    if (!division) return;
-
-    document.documentElement.style.setProperty(
-      '--current-division-color',
-      `var(--division-${division}-color)`,
+    const currentDivision = this.stateService.availableDivisions.find(
+      (div) => div.id === this.state().division,
     );
+    if (!currentDivision) return;
+
+    document.documentElement.style.setProperty('--current-division-color', currentDivision.color);
   });
 
   /**
