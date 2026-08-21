@@ -1,0 +1,77 @@
+name: Overlay Enhancement
+description: Request improvements or fixes for overlay components
+title: "[Overlay] "
+labels: frontend, enhancement
+body:
+  - type: dropdown
+    attributes:
+      label: Affected Overlay
+      description: Please select the overlay that this enhancement targets.
+      options:
+      - Score-Box
+      - Map-Screen
+      - Commentator-Box
+      - Info-Box
+      - Starting Screen
+      - Ending Screen
+      - New Overlay
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Current Behaviour / Issue
+      description: Please describe the current overlay behaviour or problem.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Desired Behaviour
+      description: What should the overlay display or do? How should it look or behave?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Mock-Up / Example
+      description: Please add a mock-up or example.
+      placeholder: |
+        - Sketch or screenshot showing the desired overlay layout
+        - Reference to similar overlays or external examples
+        - CSS/styling suggestions (if applicable)
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Technical Details
+      description: Please give us some details about your proposed enhancement.
+      value: |
+        **Frontend:**
+
+        - Angular component path (if known)
+        - SignalR data that should be displayed
+        - Styling approach (CSS, SCSS)
+
+        **Backend:**
+
+        - What data does this overlay need?
+        - Existing endpoints or data models?
+        - New database fields needed?
+      render: markdown
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Integration Points
+      description: Please select all integration points. Multiple selections possible.
+      options:
+      - Needs Control Panel controls
+      - Needs new database fields
+      - Needs new SignalR messages
+      - Needs CSS / Styling updates
+      - Needs OBS browser source configuration docs
+      multiple: true
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional Information
+      description: Please add any other information here.
