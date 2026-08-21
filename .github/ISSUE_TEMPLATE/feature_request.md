@@ -1,24 +1,27 @@
 ---
 name: Feature Request
 about: Suggest an idea or enhancement for the DSB Streaming Tool
-title: "[FEATURE] "
+title: "[Feature] "
+type: Feature
 labels: enhancement
 assignees: ""
 ---
 
 ## Summary
 
-A clear and concise description of the feature or enhancement you'd like.
+<!-- A clear and concise description of the feature or enhancement you'd like. -->
 
 ## Problem Statement
 
-Is your feature request related to a problem? Describe the current limitation or use case:
+<!-- Is your feature request related to a problem? Describe the current limitation or use case: -->
 
 ## Proposed Solution
 
-Describe the solution you'd like. How would it work? What would it enable?
+<!-- Describe the solution you'd like. How would it work? What would it enable? -->
 
 ## Target Component
+
+<!-- Please select the target component and add the corresponding labels. -->
 
 - [ ] Frontend (Angular Control Panel)
 - [ ] Overlays (Score-Box, Map-Screen, Commentator-Box, Info-Box)
@@ -28,7 +31,7 @@ Describe the solution you'd like. How would it work? What would it enable?
 
 ## Affected Features
 
-Which existing overlays or features would this complement?
+<!-- Which existing overlays or features would this complement? -->
 
 - [ ] Control Panel
 - [ ] Score-Box Overlay
@@ -40,15 +43,8 @@ Which existing overlays or features would this complement?
 
 ## User Impact
 
-Who would benefit from this feature? (Streamers, commentators, tournament organizers, etc.)
+<!-- Who would benefit from this feature? (Streamers, commentators, tournament organizers, etc.) -->
 
-## Alternatives Considered
+## Acceptance Criteria
 
-Describe alternative solutions or workarounds you've considered.
-
-## Additional Context
-
-- Any mockups, screenshots, or diagrams?
-- Related to DSB events or streaming workflows?
-- Priority: Low / Medium / High
-- Estimated complexity: Simple / Medium / Complex
+<!-- Please only fill this out if you have a clear acceptance criteria in mind. Usually, this part will be filled out by @Hazeolation. -->
