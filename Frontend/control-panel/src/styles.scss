@@ -4,16 +4,7 @@
   --team-alpha-color: white;
   --team-bravo-color: black;
 
-  --division-1-color: #ff0000;
-  --division-2-color: #ff8800;
-  --division-3-color: #ffff00;
-  --division-4-color: #00ff00;
-  --division-5-color: #34ab53;
-  --division-6-color: #0088ff;
-  --division-7-color: #0400ff;
-  --division-8-color: #730471;
-
-  --current-division-color: var(--division-1-color);
+  --current-division-color: white;
 
   @include mat.dialog-overrides(
     (
