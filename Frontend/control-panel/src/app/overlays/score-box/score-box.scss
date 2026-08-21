@@ -18,11 +18,7 @@
   width: 24rem;
   align-items: center;
   padding: 1.25rem;
-  background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 24%);
-  border: 0.25rem solid black;
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
+  transition: opacity 180ms ease;
 }
 
 .team-left__container,

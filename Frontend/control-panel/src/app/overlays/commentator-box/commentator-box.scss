@@ -17,11 +17,7 @@
   justify-content: center;
   align-items: center;
   column-gap: 2.5rem;
-  border: 0.25rem solid black;
-  background: linear-gradient(0deg, var(--current-division-color) 0%, rgba(25, 12, 38, 1) 31%);
-  transition:
-    opacity 420ms ease,
-    transform 420ms ease;
+  transition: opacity 420ms ease;
 }
 
 .on-score-box.commentator-box {
