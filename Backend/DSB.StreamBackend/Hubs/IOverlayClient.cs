@@ -24,4 +24,27 @@ public interface IOverlayClient
     /// </summary>
     /// <param name="timeData">The latest commentator box time data.</param>
     Task CommentatorBoxTimeDataUpdated(CommentatorBoxTimeDataDto timeData);
+
+    /// <summary>
+    /// Sends updated API settings to connected clients (Control Panel).
+    /// </summary>
+    /// <param name="settings">The latest API settings.</param>
+    Task ApiSettingsUpdated(ApiSettingsDto settings);
+
+    /// <summary>
+    /// Sends the updated list of issued API keys to connected clients (Control Panel).
+    /// </summary>
+    /// <param name="keys">The current list of API keys.</param>
+    Task ApiKeysUpdated(List<ApiKeyDto> keys);
+
+    /// <summary>
+    /// Sends a new API log entry to connected clients (Control Panel).
+    /// </summary>
+    /// <param name="entry">The log entry describing the handled API request.</param>
+    Task ApiLogEntryAdded(ApiLogEntryDto entry);
+
+    /// <summary>
+    /// Notifies connected clients (Control Panel) that the API log was cleared.
+    /// </summary>
+    Task ApiLogCleared();
 }

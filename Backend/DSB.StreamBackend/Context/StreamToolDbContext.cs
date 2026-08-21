@@ -32,6 +32,16 @@ public class StreamToolDbContext(
     public DbSet<CommentatorBoxTimeDataEntity> CommentatorBoxTimeData => Set<CommentatorBoxTimeDataEntity>();
 
     /// <summary>
+    /// DbSet representing the collection of ApiSettings records in the database.
+    /// </summary>
+    public DbSet<ApiSettingsEntity> ApiSettings => Set<ApiSettingsEntity>();
+
+    /// <summary>
+    /// DbSet representing the collection of ApiKey records in the database.
+    /// </summary>
+    public DbSet<ApiKeyEntity> ApiKeys => Set<ApiKeyEntity>();
+
+    /// <summary>
     /// Configures the model by defining the relationships and seeding initial data for the BroadcastStateEntity and MapStateEntity tables.
     /// </summary>
     /// <param name="modelBuilder">The ModelBuilder instance used to configure the model.</param>
@@ -49,6 +59,12 @@ public class StreamToolDbContext(
         modelBuilder.Entity<CommentatorBoxTimeDataEntity>()
             .HasKey(x => x.Id);
 
+        modelBuilder.Entity<ApiSettingsEntity>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<ApiKeyEntity>()
+            .HasKey(x => x.Id);
+
         modelBuilder.Entity<BroadcastStateEntity>()
             .HasMany(x => x.Maps)
             .WithOne(x => x.BroadcastState)
@@ -61,6 +77,13 @@ public class StreamToolDbContext(
                 Id = 1,
                 XHandle = string.Empty,
                 DiscordInvite = string.Empty
+            });
+
+        modelBuilder.Entity<ApiSettingsEntity>()
+            .HasData(new ApiSettingsEntity
+            {
+                Id = 1,
+                AllowUnauthenticatedRequests = true
             });
 
         modelBuilder.Entity<CommentatorBoxTimeDataEntity>()

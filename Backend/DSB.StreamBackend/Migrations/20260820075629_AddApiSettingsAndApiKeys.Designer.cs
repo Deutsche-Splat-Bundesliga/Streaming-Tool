@@ -3,6 +3,7 @@ using System;
 using DSB.StreamBackend.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,17 +11,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    partial class StreamToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260820075629_AddApiSettingsAndApiKeys")]
+    partial class AddApiSettingsAndApiKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
 
             modelBuilder.Entity("DSB.StreamBackend.Models.ApiKeyEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AccessLevel")

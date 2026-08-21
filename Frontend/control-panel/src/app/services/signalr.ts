@@ -3,6 +3,9 @@ import * as signalR from '@microsoft/signalr';
 import { BroadcastState } from '../models/broadcast-state';
 import { Socials } from '../models/socials';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
+import { ApiSettings } from '../models/api-settings';
+import { ApiKey } from '../models/api-key';
+import { ApiLogEntry } from '../models/api-log-entry';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
 
@@ -47,12 +50,69 @@ export class Signalr {
     });
   };
 
+  /**
+   * Maximum number of API log entries kept in the live buffer. Matches the backend's limit.
+   */
+  private static readonly MAX_API_LOG_ENTRIES = 200;
+
+  /**
+   * Connects the SignalR client to all API management streams
+   * (settings, keys, and the live request log).
+   */
+  private connectToApi = () => {
+    this.connection?.on('apiSettingsUpdated', (settings: ApiSettings) => {
+      this.log.debug('SignalR apiSettingsUpdated received', settings);
+
+      this.liveApiSettings.set(settings);
+    });
+
+    this.connection?.on('apiKeysUpdated', (keys: ApiKey[]) => {
+      this.log.debug('SignalR apiKeysUpdated received', { count: keys.length });
+
+      this.liveApiKeys.set(keys);
+    });
+
+    this.connection?.on('apiLogEntryAdded', (entry: ApiLogEntry) => {
+      this.log.debug('SignalR apiLogEntryAdded received', entry);
+
+      const next = [...this.liveApiLog(), entry];
+
+      if (next.length > Signalr.MAX_API_LOG_ENTRIES) {
+        next.splice(0, next.length - Signalr.MAX_API_LOG_ENTRIES);
+      }
+
+      this.liveApiLog.set(next);
+    });
+
+    this.connection?.on('apiLogCleared', () => {
+      this.log.debug('SignalR apiLogCleared received');
+
+      this.liveApiLog.set([]);
+    });
+  };
+
   liveState: WritableSignal<BroadcastState | null> = signal<BroadcastState | null>(null);
 
   liveSocials: WritableSignal<Socials | null> = signal<Socials | null>(null);
 
   liveCommentatorBoxTimeData: WritableSignal<CommentatorBoxTimeData | null> =
     signal<CommentatorBoxTimeData | null>(null);
+
+  /**
+   * Latest known API settings pushed from the backend.
+   */
+  liveApiSettings: WritableSignal<ApiSettings | null> = signal<ApiSettings | null>(null);
+
+  /**
+   * Latest known list of issued API keys pushed from the backend.
+   */
+  liveApiKeys: WritableSignal<ApiKey[] | null> = signal<ApiKey[] | null>(null);
+
+  /**
+   * The live API request log of the current session. Seeded from REST on load,
+   * then appended to as `apiLogEntryAdded` events arrive.
+   */
+  liveApiLog: WritableSignal<ApiLogEntry[]> = signal<ApiLogEntry[]>([]);
 
   isConnected: WritableSignal<boolean> = signal<boolean>(false);
 
@@ -62,6 +122,7 @@ export class Signalr {
     [SignalrServiceConnection.BroadcastState, this.connectToState],
     [SignalrServiceConnection.Socials, this.connectToSocials],
     [SignalrServiceConnection.CommentatorBoxTimeData, this.connectToCommentatorBoxTimeData],
+    [SignalrServiceConnection.Api, this.connectToApi],
   ]);
 
   /**
