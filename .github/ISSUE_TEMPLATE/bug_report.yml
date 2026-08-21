@@ -10,23 +10,25 @@ body:
       value: "Thank you for filling out this Bug Issue form!"
   - type: dropdown
   - attributes:
-      label: Which areas are affected?
+      label: Affected Areas
+      description: Please select which areas of the program are affected. Multiple selections possible.
       options: 
         - Control Panel
         - Overlays
         - Backend
         - Deployment / Setup
-      description: Please select which areas of the program are affected. Multiple selections possible.
       multiple: true
   - type: textarea
   - attributes:
-      label: Please describe the bug
+      label: Bug Description
+      description: Please describe the bug.
       placeholder: The Control Panel does not correctly display maps
     validations:
       required: true
   - type: textarea
   - attributes:
-      label: Please describe your environment
+      label: Environment
+      description: Please describe the environment that the program is running in.
       value: |
         **Frontend**:
         - Browser: Chrome 120
