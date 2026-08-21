@@ -18,6 +18,8 @@ body:
         - Backend
         - Deployment / Setup
       multiple: true
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Bug Description
