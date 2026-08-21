@@ -17,11 +17,10 @@
   transition: opacity 180ms ease;
 }
 
-.tourney-name {
+.tourney-info {
   font-size: 1.375rem;
   font-weight: 900;
   letter-spacing: 0.1em;
-  color: #c4c4c4;
 }
 
 .versus {
@@ -32,10 +31,6 @@
   gap: 2rem;
   font-size: 2.25rem;
   font-weight: 900;
-}
-
-.versus strong {
-  color: #c4c4c4;
 }
 
 .score {
