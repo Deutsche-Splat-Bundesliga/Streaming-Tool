@@ -1,5 +1,6 @@
 import {
-  AfterContentInit,
+  afterNextRender,
+  AfterRenderRef,
   Component,
   inject,
   OnDestroy,
@@ -18,7 +19,7 @@ import { LogScope } from '../../models/log-scope';
   templateUrl: './start-screen.html',
   styleUrl: './start-screen.scss',
 })
-export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
+export class StartScreen implements OnInit, OnDestroy {
   /**
    * Injected logger for lifecycle and countdown diagnostics.
    */
@@ -66,17 +67,12 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
   }
 
   /**
-   * Sets up the countdown timer after content initialization.
+   * Render countdown timer content after every render when the DOM element is ready
    */
-  ngAfterContentInit(): void {
-    const scope = this._log.beginScope('StartScreen.ngAfterContentInit');
+  private _afterNextRenderEffect: AfterRenderRef = afterNextRender(() => {
+    const scope = this._log.beginScope('StartScreen._afterNextRenderEffect');
 
     try {
-      if (typeof document === 'undefined') {
-        this._log.warn('Document is undefined - skipping countdown setup');
-        return;
-      }
-
       this._log.info('Initializing countdown timer');
 
       clearInterval(this._countdownInterval);
@@ -125,7 +121,7 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
     } finally {
       scope.dispose();
     }
-  }
+  });
 
   /**
    * Angular lifecycle hook called when the component is destroyed.
@@ -135,5 +131,6 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
 
     this._log.trace('Start Screen destroyed');
     this._scope.dispose();
+    this._afterNextRenderEffect.destroy();
   }
 }
