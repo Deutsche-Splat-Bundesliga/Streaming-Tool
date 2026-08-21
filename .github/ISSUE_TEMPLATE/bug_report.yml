@@ -6,10 +6,10 @@ labels: bug
 projects: Deutsche-Splat-Bundesliga/projects/3
 body:
   - type: markdown
-  - attributes:
-    value: "Thank you for filling out this Bug Issue form!"
+    attributes:
+      value: "Thank you for filling out this Bug Issue form!"
   - type: dropdown
-  - attributes:
+    attributes:
       label: Affected Areas
       description: Please select which areas of the program are affected. Multiple selections possible.
       options: 
@@ -19,14 +19,14 @@ body:
         - Deployment / Setup
       multiple: true
   - type: textarea
-  - attributes:
+    attributes:
       label: Bug Description
       description: Please describe the bug.
       placeholder: The Control Panel does not correctly display maps
     validations:
       required: true
   - type: textarea
-  - attributes:
+    attributes:
       label: Environment
       description: Please describe the environment that the program is running in.
       value: |
@@ -45,7 +45,7 @@ body:
     validations:
       required: true
   - type: textarea
-  - attributes:
+    attributes:
       label: Reproduction Steps
       description: How do you trigger this bug? Please give us a step-by-step walkthrough.
       value: |
@@ -57,25 +57,25 @@ body:
     validations:
       required: true
   - type: input
-  - attributes:
+    attributes:
       label: Expected Behaviour
       description: What did you expect the program to do?
       placeholder: Expected the program to properly show maps
     validations:
       required: true
   - type: input
-  - attributes:
+    attributes:
       label: Actual Behaviour
       description: How did the program behave in reality?
       placeholder: Program malformed map images
     validations: 
       required: true
   - type: textarea
-  - attributes:
+    attributes:
       label: Screenshots / Logs
       description: Please post Screenshots or Logs here for us to properly assess the bug.
   - type: dropdown
-  - attributes:
+    attributes:
       label: Affected Features
       description: Which features are affected by this bug?
       options:
