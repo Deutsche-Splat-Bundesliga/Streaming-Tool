@@ -7,7 +7,7 @@ projects: Deutsche-Splat-Bundesliga/projects/3
 body:
   - type: markdown
   - attributes:
-      value: "Thank you for filling out this Bug Issue form!"
+    value: "Thank you for filling out this Bug Issue form!"
   - type: dropdown
   - attributes:
       label: Affected Areas
