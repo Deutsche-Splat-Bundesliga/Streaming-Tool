@@ -25,6 +25,9 @@ DSB.StreamBackend/
 │   └── SocialsController.cs
 ├── Middleware/
 │   └── ApiAuthenticationMiddleware.cs      # Guards /api, records the session log
+├── Extensions/                             # DI / Startup-Configuration, called from Program.cs
+│   ├── ServiceCollectionExtensions.cs      # Registers services, DbContext, CORS, Swagger
+│   └── WebApplicationExtensions.cs         # Applies migrations, maps SignalR hubs
 ├── Hubs/
 │   ├── EventHub.cs                         # SignalR-Hub for Events
 │   ├── IEventClient.cs                     # SignalR-Interface for Events
@@ -34,8 +37,10 @@ DSB.StreamBackend/
 │   ├── ApiKeyService.cs                    # Key generation, hashing, validation
 │   ├── ApiRequestLog.cs                    # In-memory session log (singleton)
 │   ├── ApiSettingsService.cs
+│   ├── SingletonEntityService.cs           # Shared base class for the singleton-row services below
 │   ├── BroadcastStateService.cs
 │   ├── CommentatorBoxTimeDataService.cs
+│   ├── SocialsService.cs
 │   └── LogService.cs
 ├── Models/                                 # EF-Entities
 │   ├── ApiKeyEntity.cs                     # Issued API keys (hash only)
@@ -240,21 +245,37 @@ See [`api.md`](./api.md) for the full API documentation.
 `CommentatorBoxTimeDataService` is registered as **Scoped** (befitting of the `DbContext` lifetime).
 `LoggingService` is registered as **Singleton**.
 
-Core Methods:
+### `SingletonEntityService<TEntity, TDto>`
 
-Service may be replaced with the desired service, excluding Logging.
+`BroadcastStateService`, `SocialsService`, and `CommentatorBoxTimeDataService` all manage a single,
+well-known database row (`Id = 1`) and previously duplicated the same get-or-create/update/logging
+logic. That shared logic now lives once in the abstract base class `SingletonEntityService<TEntity, TDto>`.
+A concrete service only has to describe how to reach its `DbSet`, how to map between entity and DTO,
+and (optionally) which related data to eager-load or include in log entries:
 
-- `GetOrCreate[Service]Async()` — private Upsert Helper, adds the Singleton Row, if it doesn't exist
-- `Get[Service]Async()` — reads and returns the State as a DTO
-- `Update[Service]Async(dto)` — writes State + Maps, returns updated State
-- `UpdateMaps(entity, dtoMaps)` — Upset Logic for the Map List
-- `ToDto(entity)` — static Mapping Method Entity → DTO
+- `EntityName` — lower-case name used in log messages (e.g. `"socials"`)
+- `DbSet` — the `DbSet<TEntity>` backing the service
+- `IncludeRelated(query)` — optional eager-loading of navigation properties (e.g. `BroadcastStateService` includes `Maps`)
+- `Apply(entity, dto)` — copies DTO values onto the entity
+- `ToDto(entity)` — maps entity → DTO
+- `GetLogData(entity)` — optional structured data attached to log entries
+
+The base class exposes `protected Task<TDto> GetAsync()` and `protected Task<TDto> UpdateAsync(dto)`,
+which each concrete service wraps in its own public, DTO-typed method (e.g. `GetSocialsAsync()`,
+`UpdateSocialsAsync(dto)`) to keep a stable, self-documenting API for controllers and tests.
+
+Errors are caught and logged once, in the base class — controllers no longer duplicate that logging
+and simply let exceptions propagate (ASP.NET Core's default behavior for an unhandled action-method
+exception, unchanged from before).
+
+`BroadcastStateService` additionally implements `UpdateMaps(entity, dtoMaps)` for the Map-specific
+Upsert logic described above.
 
 ---
 
 ## CORS
 
-Allows Origins (configured in `Program.cs`):
+Allows Origins (configured in `Extensions/ServiceCollectionExtensions.cs`, policy name `AllowFrontend`):
 
 - `http://localhost:4200` (Angular Dev)
 - `http://localhost:4201`
@@ -265,13 +286,13 @@ Allows Origins (configured in `Program.cs`):
 
 ## Startup Behaviour
 
-EF Migrations are automatically applied on start:
+`Program.cs` itself only wires together the pieces below; the actual configuration lives in the
+`DSB.StreamBackend.Extensions` classes:
 
-```csharp
-using var scope = app.Services.CreateScope();
-var db = scope.ServiceProvider.GetRequiredService<StreamToolDbContext>();
-db.Database.Migrate();
-```
+- `AddStreamBackend(configuration)` — registers controllers, SignalR, the `DbContext`, application
+  services, CORS, and Swagger
+- `MigrateDatabase()` — applies any pending EF Core migrations on start
+- `MapStreamBackendHubs()` — maps `/overlayHub` and `/eventHub`
 
 The SQLite file (`dsb-stream-tool.db`) gets created in the working directory of the process.
 

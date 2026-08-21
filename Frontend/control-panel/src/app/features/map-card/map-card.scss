@@ -5,9 +5,10 @@
   background: #252730;
   width: 24.375rem;
   height: 13.75rem;
-  transition:
-    transform 150ms,
-    border 150ms;
+  // No `transform` here on purpose (see #103): a transform transition makes Playwright's
+  // actionability check see the card as "not stable" while it (or a sibling) is animating,
+  // which is especially flaky under WebKit's slower rendering during E2E runs.
+  transition: border 150ms;
 }
 
 .map-image {

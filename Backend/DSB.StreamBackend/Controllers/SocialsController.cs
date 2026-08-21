@@ -31,19 +31,11 @@ public class SocialsController(
 
         _ = log.DebugAsync("GET /api/socials/socials requested");
 
-        try
-        {
-            SocialsDto socials = await socialsService.GetSocialsAsync();
+        SocialsDto socials = await socialsService.GetSocialsAsync();
 
-            _ = log.InfoAsync("Socials retrieved successfully");
+        _ = log.InfoAsync("Socials retrieved successfully");
 
-            return Ok(socials);
-        }
-        catch (Exception ex)
-        {
-            _ = log.ErrorAsync("Failed to retrieve socials", ex);
-            throw;
-        }
+        return Ok(socials);
     }
 
     /// <summary>
@@ -63,22 +55,14 @@ public class SocialsController(
             HasDiscordInvite = !string.IsNullOrWhiteSpace(socials.DiscordInvite)
         });
 
-        try
-        {
-            SocialsDto updatedSocials = await socialsService.UpdateSocialsAsync(socials);
+        SocialsDto updatedSocials = await socialsService.UpdateSocialsAsync(socials);
 
-            _ = log.DebugAsync("Broadcasting socials update via SignalR");
+        _ = log.DebugAsync("Broadcasting socials update via SignalR");
 
-            await hub.Clients.All.SocialsUpdated(updatedSocials);
+        await hub.Clients.All.SocialsUpdated(updatedSocials);
 
-            _ = log.InfoAsync("Socials broadcast completed");
+        _ = log.InfoAsync("Socials broadcast completed");
 
-            return Ok(updatedSocials);
-        }
-        catch (Exception ex)
-        {
-            _ = log.ErrorAsync("Failed to update socials", ex, socials);
-            throw;
-        }
+        return Ok(updatedSocials);
     }
 }

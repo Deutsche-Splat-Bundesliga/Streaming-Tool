@@ -30,19 +30,11 @@ public class CommentatorBoxTimeDataController(
 
         _ = log.DebugAsync("GET commentator-box-time-data requested");
 
-        try
-        {
-            CommentatorBoxTimeDataDto timeData = await timeDataService.GetCommentatorBoxTimeDataAsync();
+        CommentatorBoxTimeDataDto timeData = await timeDataService.GetCommentatorBoxTimeDataAsync();
 
-            _ = log.InfoAsync("Commentator box time data retrieved");
+        _ = log.InfoAsync("Commentator box time data retrieved");
 
-            return Ok(timeData);
-        }
-        catch (Exception ex)
-        {
-            _ = log.ErrorAsync("Failed to retrieve commentator box time data", ex);
-            throw;
-        }
+        return Ok(timeData);
     }
 
     /// <summary>
@@ -54,6 +46,8 @@ public class CommentatorBoxTimeDataController(
     public async Task<ActionResult<CommentatorBoxTimeDataDto>> UpdateCommentatorBoxTimeData(
         CommentatorBoxTimeDataDto timeData)
     {
+        using IDisposable scope = log.BeginScope(nameof(UpdateCommentatorBoxTimeData));
+
         _ = log.InfoAsync("Updating CommentatorBoxTimeData: {@TimeData}", timeData);
 
         CommentatorBoxTimeDataDto updatedTimeData = await timeDataService.UpdateCommentatorBoxTimeDataAsync(timeData);

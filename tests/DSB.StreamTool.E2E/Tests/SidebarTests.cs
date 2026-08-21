@@ -3,7 +3,11 @@ using Microsoft.Playwright.NUnit;
 
 namespace DSB.StreamTool.E2E.Tests;
 
-[Parallelizable(ParallelScope.Self)]
+// Intentionally not [Parallelizable]: this fixture shares the backend's single global
+// broadcast-state row with the other E2E fixtures (Dashboard/Dialog/Overlay). Running fixtures
+// concurrently means one fixture's state writes get SignalR-broadcast to every open page and can
+// mutate or detach DOM elements another fixture is mid-interaction with - especially under
+// WebKit's slower rendering. See #103.
 [TestFixture]
 public class SidebarTests : PageTest
 {

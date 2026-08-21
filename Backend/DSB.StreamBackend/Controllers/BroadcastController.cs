@@ -31,17 +31,11 @@ public class BroadcastController(
 
         _ = log.DebugAsync("GET /api/broadcast/state called");
 
-        try
-        {
-            BroadcastStateDto state = await stateService.GetStateAsync();
-            _ = log.InfoAsync("Broadcast state returned");
-            return Ok(state);
-        }
-        catch (Exception ex)
-        {
-            _ = log.ErrorAsync("Failed to retrieve broadcast state", ex);
-            throw;
-        }
+        BroadcastStateDto state = await stateService.GetStateAsync();
+
+        _ = log.InfoAsync("Broadcast state returned");
+
+        return Ok(state);
     }
 
     /// <summary>
@@ -63,18 +57,12 @@ public class BroadcastController(
             state.ScoreBravo
         });
 
-        try
-        {
-            BroadcastStateDto updatedState = await stateService.UpdateStateAsync(state);
-            await hub.Clients.All.BroadcastStateUpdated(updatedState);
-            _ = log.InfoAsync("Broadcast state pushed to SignalR clients");
-            return Ok(updatedState);
-        }
-        catch (Exception ex)
-        {
-            _ = log.ErrorAsync("Failed to update broadcast state", ex, state);
-            throw;
-        }
+        BroadcastStateDto updatedState = await stateService.UpdateStateAsync(state);
+        await hub.Clients.All.BroadcastStateUpdated(updatedState);
+
+        _ = log.InfoAsync("Broadcast state pushed to SignalR clients");
+
+        return Ok(updatedState);
     }
 
     /// <summary>
