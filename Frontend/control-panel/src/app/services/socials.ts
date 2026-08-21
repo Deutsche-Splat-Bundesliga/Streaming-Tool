@@ -9,9 +9,9 @@ import { LogService } from './log';
   providedIn: 'root',
 })
 export class SocialsService {
-  private readonly api: SocialsApi = inject(SocialsApi);
-  private readonly signalr: Signalr = inject(Signalr);
-  private readonly log = inject(LogService);
+  private readonly _api: SocialsApi = inject(SocialsApi);
+  private readonly _signalr: Signalr = inject(Signalr);
+  private readonly _log = inject(LogService);
 
   /**
    * The main socials signal that holds the current socials.

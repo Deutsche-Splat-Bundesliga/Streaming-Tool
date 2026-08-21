@@ -17,12 +17,12 @@ export class ScoreBox implements OnInit {
   /**
    * Logger used to trace score box lifecycle events.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scope for the ScopeBox overlay.
    */
-  private readonly scope: LogScope = this.log.beginScope('ScoreBox');
+  private readonly _scope: LogScope = this._log.beginScope('ScoreBox');
 
   /**
    * Service that exposes the current broadcast state.
@@ -43,18 +43,18 @@ export class ScoreBox implements OnInit {
    * Initializes the score box component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
-    const scope = this.log.beginScope('ScoreBox.ngOnInit');
+    const scope = this._log.beginScope('ScoreBox.ngOnInit');
 
-    this.log.info('ScoreBox initialized');
+    this._log.info('ScoreBox initialized');
 
     try {
-      this.log.trace('Requesting broadcast state load');
+      this._log.trace('Requesting broadcast state load');
 
       this.stateService.loadInitialState();
 
-      this.log.debug('Broadcast state load requested');
+      this._log.debug('Broadcast state load requested');
     } catch (err) {
-      this.log.error('Failed during ScoreBox initialization', err);
+      this._log.error('Failed during ScoreBox initialization', err);
     } finally {
       scope.dispose();
     }
@@ -64,7 +64,7 @@ export class ScoreBox implements OnInit {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('Score Box destroyed');
-    this.scope.dispose();
+    this._log.trace('Score Box destroyed');
+    this._scope.dispose();
   }
 }

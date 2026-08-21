@@ -6,7 +6,7 @@ import { LogService } from './log';
   providedIn: 'root',
 })
 export class SignalrEvents {
-  private readonly log = inject(LogService);
+  private readonly _log = inject(LogService);
 
   connection?: signalR.HubConnection;
 
@@ -16,16 +16,16 @@ export class SignalrEvents {
    * Calls start function so the service can be used globally
    */
   constructor() {
-    this.start();
+    this._start();
   }
 
   /**
    * Starts SignalR connection
    */
-  private async start() {
-    const scope = this.log.beginScope('SignalrEvents.start');
+  private async _start() {
+    const scope = this._log.beginScope('SignalrEvents.start');
 
-    this.log.info('Initializing SignalR eventHub connection');
+    this._log.info('Initializing SignalR eventHub connection');
 
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:7000/eventHub')
@@ -34,20 +34,20 @@ export class SignalrEvents {
 
     this.connection.onreconnecting(() => {
       this.isConnected.set(false);
-      this.log.warn('SignalR Events reconnecting...');
+      this._log.warn('SignalR Events reconnecting...');
     });
 
     this.connection.onreconnected(() => {
       this.isConnected.set(true);
-      this.log.info('SignalR Events reconnected');
+      this._log.info('SignalR Events reconnected');
     });
 
     this.connection.onclose(() => {
       this.isConnected.set(false);
-      this.log.error('SignalR Events connection closed');
+      this._log.error('SignalR Events connection closed');
     });
 
-    await this.tryConnect();
+    await this._tryConnect();
 
     scope.dispose();
   }
@@ -55,21 +55,21 @@ export class SignalrEvents {
   /**
    * Connection retry logic
    */
-  private async tryConnect(): Promise<void> {
+  private async _tryConnect(): Promise<void> {
     try {
-      this.log.info('Starting SignalR Events connection attempt');
+      this._log.info('Starting SignalR Events connection attempt');
 
       await this.connection?.start();
 
       this.isConnected.set(true);
 
-      this.log.info('SignalR Events connected successfully');
+      this._log.info('SignalR Events connected successfully');
     } catch (err) {
       this.isConnected.set(false);
 
-      this.log.error('SignalR Events connection failed, retrying...', err);
+      this._log.error('SignalR Events connection failed, retrying...', err);
 
-      setTimeout(() => this.tryConnect(), 5000);
+      setTimeout(() => this._tryConnect(), 5000);
     }
   }
 }

@@ -22,12 +22,12 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
   /**
    * Injected logger for lifecycle and countdown diagnostics.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scope for StartScreen overlay.
    */
-  private readonly scope: LogScope = this.log.beginScope('StartScreen');
+  private readonly _scope: LogScope = this._log.beginScope('StartScreen');
 
   /**
    * Broadcast state service used to load and expose overlay state.
@@ -42,24 +42,24 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
   /**
    * Active countdown timer handle, if one is currently running.
    */
-  private countdownInterval: ReturnType<typeof setInterval> | undefined = undefined;
+  private _countdownInterval: ReturnType<typeof setInterval> | undefined = undefined;
 
   /**
    * Initializes the component and requests the initial broadcast state.
    */
   ngOnInit(): void {
-    const scope = this.log.beginScope('StartScreen.ngOnInit');
+    const scope = this._log.beginScope('StartScreen.ngOnInit');
 
-    this.log.trace('StartScreen initialized');
+    this._log.trace('StartScreen initialized');
 
     try {
-      this.log.trace('Loading initial broadcast state');
+      this._log.trace('Loading initial broadcast state');
 
       this.stateService.loadInitialState();
 
-      this.log.debug('Broadcast state load requested');
+      this._log.debug('Broadcast state load requested');
     } catch (err) {
-      this.log.error('Failed during StartScreen init', err);
+      this._log.error('Failed during StartScreen init', err);
     } finally {
       scope.dispose();
     }
@@ -69,23 +69,23 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
    * Sets up the countdown timer after content initialization.
    */
   ngAfterContentInit(): void {
-    const scope = this.log.beginScope('StartScreen.ngAfterContentInit');
+    const scope = this._log.beginScope('StartScreen.ngAfterContentInit');
 
     try {
       if (typeof document === 'undefined') {
-        this.log.warn('Document is undefined - skipping countdown setup');
+        this._log.warn('Document is undefined - skipping countdown setup');
         return;
       }
 
-      this.log.info('Initializing countdown timer');
+      this._log.info('Initializing countdown timer');
 
-      clearInterval(this.countdownInterval);
+      clearInterval(this._countdownInterval);
 
       const setCountdownTimer = () => {
         const timerElem = document.body.querySelector('.countdown-timer');
 
         if (!timerElem) {
-          this.log.trace('Countdown element not found yet');
+          this._log.trace('Countdown element not found yet');
           return;
         }
 
@@ -110,18 +110,18 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
 
         timerElem.textContent = formatted;
 
-        this.log.trace('Countdown updated', {
+        this._log.trace('Countdown updated', {
           formatted,
         });
       };
 
       setCountdownTimer();
 
-      this.countdownInterval = setInterval(setCountdownTimer, 1000);
+      this._countdownInterval = setInterval(setCountdownTimer, 1000);
 
-      this.log.info('Countdown timer started');
+      this._log.info('Countdown timer started');
     } catch (err) {
-      this.log.error('Failed setting up countdown timer', err);
+      this._log.error('Failed setting up countdown timer', err);
     } finally {
       scope.dispose();
     }
@@ -131,9 +131,9 @@ export class StartScreen implements OnInit, OnDestroy, AfterContentInit {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    clearInterval(this.countdownInterval);
+    clearInterval(this._countdownInterval);
 
-    this.log.trace('Start Screen destroyed');
-    this.scope.dispose();
+    this._log.trace('Start Screen destroyed');
+    this._scope.dispose();
   }
 }

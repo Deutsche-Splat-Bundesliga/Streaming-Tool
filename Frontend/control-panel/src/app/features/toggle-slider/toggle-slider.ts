@@ -12,12 +12,12 @@ export class ToggleSlider implements OnDestroy {
   /**
    * Logger instance for sidebar lifecycle and actions.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scoped logger instance used for sidebar-specific logs.
    */
-  private readonly scope: LogScope = this.log.beginScope('Toggle Slider');
+  private readonly _scope: LogScope = this._log.beginScope('Toggle Slider');
 
   /**
    * Event emitter output for click on toggle slider
@@ -29,7 +29,7 @@ export class ToggleSlider implements OnDestroy {
    * @param event {Event} Click event from div
    */
   handleToggleSliderClick(event?: Event): void {
-    this.log.trace(
+    this._log.trace(
       'On toggle slider clicked! Transmitting event to onToggleSliderClick output...',
       event,
     );
@@ -40,7 +40,7 @@ export class ToggleSlider implements OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('Toggle Slider component destroyed');
-    this.scope.dispose();
+    this._log.trace('Toggle Slider component destroyed');
+    this._scope.dispose();
   }
 }

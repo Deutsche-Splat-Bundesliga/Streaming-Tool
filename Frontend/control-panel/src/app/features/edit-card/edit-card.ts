@@ -12,12 +12,12 @@ export class EditCard implements OnInit, OnDestroy {
   /**
    * Local logger instance for edit card operations.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Logging scope for this component lifecycle and actions.
    */
-  private readonly scope: LogScope = this.log.beginScope('EditCard');
+  private readonly _scope: LogScope = this._log.beginScope('EditCard');
 
   /**
    * Event emitter triggered when the close button of the edit card is clicked.
@@ -38,18 +38,18 @@ export class EditCard implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is initialized.
    */
   ngOnInit(): void {
-    this.log.info('EditCard initialized');
+    this._log.info('EditCard initialized');
   }
 
   /**
    * Close the edit menu and emit the close event.
    */
   closeEditMenu(): void {
-    this.log.debug('Close edit menu clicked');
+    this._log.debug('Close edit menu clicked');
 
     this.onCloseClick.emit();
 
-    this.log.trace('Close event emitted');
+    this._log.trace('Close event emitted');
   }
 
   /**
@@ -57,30 +57,30 @@ export class EditCard implements OnInit, OnDestroy {
    * @param mode {string} The new mode to select.
    */
   changeMode(mode: string): void {
-    this.log.info('Mode change triggered', { mode });
+    this._log.info('Mode change triggered', { mode });
 
     this.onModeChange.emit(mode);
     this.onCloseClick.emit();
 
-    this.log.debug('Mode change + close emitted', { mode });
+    this._log.debug('Mode change + close emitted', { mode });
   }
 
   /**
    * Emit the delete map action when the user confirms deletion.
    */
   deleteMap(): void {
-    this.log.warn('Delete map triggered');
+    this._log.warn('Delete map triggered');
 
     this.onDeleteMap.emit();
 
-    this.log.trace('Delete event emitted');
+    this._log.trace('Delete event emitted');
   }
 
   /**
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('EditCard destroyed');
-    this.scope.dispose();
+    this._log.trace('EditCard destroyed');
+    this._scope.dispose();
   }
 }

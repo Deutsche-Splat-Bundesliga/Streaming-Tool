@@ -15,20 +15,20 @@ export class Topbar implements OnInit, OnDestroy {
   /**
    * Logger instance for topbar events.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Logging scope created for the topbar component.
    */
-  private readonly scope: LogScope = this.log.beginScope('Topbar');
+  private readonly _scope: LogScope = this._log.beginScope('Topbar');
 
   /**
    * Effect that logs SignalR connection state changes.
    */
-  private connectionEffect = effect(() => {
+  private _connectionEffect = effect(() => {
     const connected = this.isConnected();
 
-    this.log.debug('SignalR connection state changed', {
+    this._log.debug('SignalR connection state changed', {
       connected,
     });
   });
@@ -48,9 +48,9 @@ export class Topbar implements OnInit, OnDestroy {
    * @returns {void}
    */
   ngOnInit(): void {
-    this.log.info('Topbar initialized');
+    this._log.info('Topbar initialized');
 
-    this.log.debug('Initial state snapshot', {
+    this._log.debug('Initial state snapshot', {
       teamAlpha: this.state().teamAlphaName,
       teamBravo: this.state().teamBravoName,
       connected: this.isConnected(),
@@ -62,9 +62,9 @@ export class Topbar implements OnInit, OnDestroy {
    * @returns {void}
    */
   ngOnDestroy(): void {
-    this.log.trace('Topbar destroyed');
+    this._log.trace('Topbar destroyed');
 
-    this.connectionEffect.destroy();
-    this.scope.dispose();
+    this._connectionEffect.destroy();
+    this._scope.dispose();
   }
 }

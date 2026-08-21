@@ -8,31 +8,33 @@ import { LogService } from './log';
   providedIn: 'root',
 })
 export class CommentatorBoxTimeDataApi {
-  private readonly http: HttpClient = inject(HttpClient);
-  private readonly log: LogService = inject(LogService);
+  private readonly _http: HttpClient = inject(HttpClient);
+  private readonly _log: LogService = inject(LogService);
 
-  private readonly baseUrl: string = 'http://localhost:7000/api/commentator-box-time-data';
+  private readonly _baseUrl: string = 'http://localhost:7000/api/commentator-box-time-data';
 
   /**
    * GET commentator box time data
    */
   getCommentatorBoxTimeData(): Observable<CommentatorBoxTimeData> {
-    this.log.debug('GET commentator box time data request started');
+    this._log.debug('GET commentator box time data request started');
 
-    return this.http.get<CommentatorBoxTimeData>(`${this.baseUrl}/commentator-box-time-data`).pipe(
-      tap((result) => {
-        this.log.info('GET commentator box time data successful', {
-          hideDisplayIntervalInSeconds: result.hideDisplayIntervalInSeconds,
-          showDisplayIntervalInSeconds: result.showDisplayIntervalInSeconds,
-          displayMode: result.displayMode,
-        });
-      }),
-      catchError((err) => {
-        this.log.error('GET commentator box time data failed', err);
+    return this._http
+      .get<CommentatorBoxTimeData>(`${this._baseUrl}/commentator-box-time-data`)
+      .pipe(
+        tap((result) => {
+          this._log.info('GET commentator box time data successful', {
+            hideDisplayIntervalInSeconds: result.hideDisplayIntervalInSeconds,
+            showDisplayIntervalInSeconds: result.showDisplayIntervalInSeconds,
+            displayMode: result.displayMode,
+          });
+        }),
+        catchError((err) => {
+          this._log.error('GET commentator box time data failed', err);
 
-        return throwError(() => err);
-      }),
-    );
+          return throwError(() => err);
+        }),
+      );
   }
 
   /**
@@ -41,24 +43,24 @@ export class CommentatorBoxTimeDataApi {
   updateCommentatorBoxTimeData(
     timeData: CommentatorBoxTimeData,
   ): Observable<CommentatorBoxTimeData> {
-    this.log.debug('POST commentator box time data request started', {
+    this._log.debug('POST commentator box time data request started', {
       hideDisplayIntervalInSeconds: timeData.hideDisplayIntervalInSeconds,
       showDisplayIntervalInSeconds: timeData.showDisplayIntervalInSeconds,
       displayMode: timeData.displayMode,
     });
 
-    return this.http
-      .post<CommentatorBoxTimeData>(`${this.baseUrl}/commentator-box-time-data`, timeData)
+    return this._http
+      .post<CommentatorBoxTimeData>(`${this._baseUrl}/commentator-box-time-data`, timeData)
       .pipe(
         tap((result) => {
-          this.log.info('POST commentator box time data successful', {
+          this._log.info('POST commentator box time data successful', {
             hideDisplayIntervalInSeconds: result.hideDisplayIntervalInSeconds,
             showDisplayIntervalInSeconds: result.showDisplayIntervalInSeconds,
             displayMode: timeData.displayMode,
           });
         }),
         catchError((err) => {
-          this.log.error('POST commentator box time data failed', err, timeData);
+          this._log.error('POST commentator box time data failed', err, timeData);
 
           return throwError(() => err);
         }),
