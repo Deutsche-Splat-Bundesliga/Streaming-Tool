@@ -25,27 +25,27 @@ export class SocialsService {
    * Initializes the SocialsService and connects SignalR updates.
    */
   constructor() {
-    const scope = this.log.beginScope('SocialsService');
+    const scope = this._log.beginScope('SocialsService');
 
-    this.log.info('Initializing SocialsService');
+    this._log.info('Initializing SocialsService');
 
     effect(() => {
-      const incoming = this.signalr.liveSocials();
+      const incoming = this._signalr.liveSocials();
 
       if (!incoming) return;
 
-      this.log.debug('Received SignalR socials update', incoming);
+      this._log.debug('Received SignalR socials update', incoming);
 
       this.socials.set(incoming);
 
-      this.log.info('Socials updated from SignalR');
+      this._log.info('Socials updated from SignalR');
     });
 
-    this.signalr.connectionType = SignalrServiceConnection.Socials;
+    this._signalr.connectionType = SignalrServiceConnection.Socials;
 
-    this.signalr.start();
+    this._signalr.start();
 
-    this.log.info('SignalR connection started');
+    this._log.info('SignalR connection started');
 
     scope.dispose();
   }
@@ -54,7 +54,7 @@ export class SocialsService {
    * Updates socials and sends them to the backend.
    */
   update(partial: Partial<Socials>): void {
-    const scope = this.log.beginScope('SocialsService.update');
+    const scope = this._log.beginScope('SocialsService.update');
 
     try {
       const newSocials = {
@@ -62,7 +62,7 @@ export class SocialsService {
         ...partial,
       };
 
-      this.log.debug('Updating socials', {
+      this._log.debug('Updating socials', {
         before: this.socials(),
         patch: partial,
         after: newSocials,
@@ -70,12 +70,12 @@ export class SocialsService {
 
       this.socials.set(newSocials);
 
-      this.api.updateSocials(newSocials).subscribe({
+      this._api.updateSocials(newSocials).subscribe({
         next: () => {
-          this.log.info('Socials successfully updated via API');
+          this._log.info('Socials successfully updated via API');
         },
         error: (err) => {
-          this.log.error('Failed to update socials', err, newSocials);
+          this._log.error('Failed to update socials', err, newSocials);
         },
       });
     } finally {
@@ -87,20 +87,20 @@ export class SocialsService {
    * Loads initial socials state from backend.
    */
   loadInitialState(): void {
-    const scope = this.log.beginScope('SocialsService.loadInitialState');
+    const scope = this._log.beginScope('SocialsService.loadInitialState');
 
-    this.log.info('Loading initial socials state');
+    this._log.info('Loading initial socials state');
 
-    this.api.getSocials().subscribe({
+    this._api.getSocials().subscribe({
       next: (socials) => {
-        this.log.debug('Initial socials received', socials);
+        this._log.debug('Initial socials received', socials);
 
         this.socials.set(socials);
 
-        this.log.info('Initial socials state applied');
+        this._log.info('Initial socials state applied');
       },
       error: (err) => {
-        this.log.error('Failed to load initial socials state', err);
+        this._log.error('Failed to load initial socials state', err);
       },
     });
 
