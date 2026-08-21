@@ -147,7 +147,7 @@ public class BroadcastController(
                 normalizedWinner = "bravo";
                 return true;
             case null:
-            case "":
+            case string.Empty:
             case "none":
             case "null":
                 normalizedWinner = null;
