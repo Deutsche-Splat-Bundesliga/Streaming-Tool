@@ -56,14 +56,14 @@ body:
       render: bash
     validations:
       required: true
-  - type: input
+  - type: textarea
     attributes:
       label: Expected Behaviour
       description: What did you expect the program to do?
       placeholder: Expected the program to properly show maps
     validations:
       required: true
-  - type: input
+  - type: textarea
     attributes:
       label: Actual Behaviour
       description: How did the program behave in reality?
