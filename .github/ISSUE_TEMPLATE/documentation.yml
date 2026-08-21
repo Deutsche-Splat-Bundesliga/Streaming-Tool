@@ -43,6 +43,3 @@ body:
       description: Please describe how you would imrove the documentation.
     validations:
       required: true
-
-- Links to related issues or PRs?
-- Examples or references?
