@@ -1,0 +1,54 @@
+name: Feature Request
+description: Suggest an idea or enhancement for the DSB Streaming Tool
+title: "[Feature] "
+type: Feature
+labels: enhancement
+body:
+  - type: textarea
+    attributes:
+      label: Summary
+      description: Please provide a clear and concide description for your feature.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Problem Statement
+      description: Please describe the current limitation or use case.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed Solution
+      description: Please describe your optimal solution. How would it work? What would it enable?
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Target Component
+      description: Please select the target component and add the corresponding labels. Multiple selections possible.
+      options:
+      - Control Panel
+      - Overlays
+      - Backend
+      - Deployment / Infrastructure
+      - Documentation
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Affected Features
+      description: Please select all overlays or features this would complement.
+      options:
+      - Control Panel
+      - Score-Box Overlay
+      - Map-Screen Overlay
+      - Commentator-Box Overlay
+      - Info-Box Overlay
+      - SignalR Updates
+      - Settings / Configuration
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Acceptance Criteria
+      description: Usually, this will be filled out by @Hazeolation. Please only fill this out if you have a clear criteria in mind.
