@@ -196,14 +196,14 @@ export class BroadcastStateService {
     },
   ];
   availableDivisions: Division[] = [
-    { id: 1, name: 'Division 1' },
-    { id: 2, name: 'Division 2' },
-    { id: 3, name: 'Division 3' },
-    { id: 4, name: 'Division 4' },
-    { id: 5, name: 'Division 5' },
-    { id: 6, name: 'Division 6' },
-    { id: 7, name: 'Division 7' },
-    { id: 8, name: 'Division 8' },
+    { id: 1, name: 'Division 1', color: '#FF0000' },
+    { id: 2, name: 'Division 2', color: '#FF8800' },
+    { id: 3, name: 'Division 3', color: '#FFFF00' },
+    { id: 4, name: 'Division 4', color: '#00FF00' },
+    { id: 5, name: 'Division 5', color: '#34AB53' },
+    { id: 6, name: 'Division 6', color: '#0088FF' },
+    { id: 7, name: 'Division 7', color: '#0400FF' },
+    { id: 8, name: 'Division 8', color: '#730471' },
   ];
 
   /**
