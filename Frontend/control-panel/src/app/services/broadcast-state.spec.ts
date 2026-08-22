@@ -277,6 +277,7 @@ describe('BroadcastStateService', () => {
     expect(service.availableDivisions[0]).toEqual({
       id: 1,
       name: 'Division 1',
+      color: '#FF0000',
     });
   });
 });
