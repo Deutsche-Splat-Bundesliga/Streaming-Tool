@@ -36,9 +36,9 @@ describe('Sidebar', () => {
   };
 
   const availableDivisions: Division[] = [
-    { id: 1, name: 'Division 1' },
-    { id: 2, name: 'Division 2' },
-    { id: 3, name: 'Division 3' },
+    { id: 1, name: 'Division 1', color: '#FF0000' },
+    { id: 2, name: 'Division 2', color: '#FF8800' },
+    { id: 3, name: 'Division 3', color: '#FFFF00' },
   ];
 
   const mockState = signal<BroadcastState>(defaultState);

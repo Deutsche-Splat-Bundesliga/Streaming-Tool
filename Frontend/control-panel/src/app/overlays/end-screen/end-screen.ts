@@ -15,12 +15,12 @@ export class EndScreen implements OnInit, OnDestroy {
   /**
    * Logger service for debug and error logging.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scope for the EndScreen overlay.
    */
-  private readonly scope: LogScope = this.log.beginScope('EndScreen');
+  private readonly _scope: LogScope = this._log.beginScope('EndScreen');
 
   /**
    * Service managing broadcast state.
@@ -45,19 +45,19 @@ export class EndScreen implements OnInit, OnDestroy {
    * Initializes the end screen component and loads initial state.
    */
   ngOnInit(): void {
-    const scope = this.log.beginScope('EndScreen.ngOnInit');
+    const scope = this._log.beginScope('EndScreen.ngOnInit');
 
-    this.log.trace('EndScreen initialized');
+    this._log.trace('EndScreen initialized');
 
     try {
-      this.log.trace('Loading initial overlay state');
+      this._log.trace('Loading initial overlay state');
 
       this.stateService.loadInitialState();
       this.socialsService.loadInitialState();
 
-      this.log.debug('Initial overlay state requested');
+      this._log.debug('Initial overlay state requested');
     } catch (err) {
-      this.log.error('Failed during EndScreen initialization', err);
+      this._log.error('Failed during EndScreen initialization', err);
     } finally {
       scope.dispose();
     }
@@ -67,7 +67,7 @@ export class EndScreen implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('End Screen destroyed');
-    this.scope.dispose();
+    this._log.trace('End Screen destroyed');
+    this._scope.dispose();
   }
 }

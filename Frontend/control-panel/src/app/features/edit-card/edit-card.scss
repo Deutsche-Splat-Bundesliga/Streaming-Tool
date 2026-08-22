@@ -1,27 +1,27 @@
 .edit-menu {
   position: absolute;
-  background: #3D3D3D;
-  border: 4px solid black;
-  border-radius: 30px;
-  padding: 12px;
+  background: #3d3d3d;
+  border: 0.25rem solid black;
+  border-radius: 1.875rem;
+  padding: 0.75rem;
   display: grid;
   grid-template-columns: repeat(3, auto);
   grid-template-rows: repeat(2, auto);
-  gap: 10px 24px;
-  width: 350px;
-  height: 190px;
+  gap: 0.625rem 1.5rem;
+  width: 21.875rem;
+  height: 11.875rem;
   justify-content: center;
   align-content: center;
 }
 
 .mode-image {
-  width: 70px;
+  width: 4.375rem;
   cursor: pointer;
 }
 
 .close {
-    position: absolute;
-    right: 20px;
-    bottom: 0px;
-    cursor: pointer;
+  position: absolute;
+  right: 1.25rem;
+  bottom: 0;
+  cursor: pointer;
 }

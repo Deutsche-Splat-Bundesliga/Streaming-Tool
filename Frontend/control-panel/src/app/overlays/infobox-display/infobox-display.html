@@ -1,5 +1,5 @@
-<div class="infobox dsb-panel" [class.overlay-hidden]="!state().showInfobox">
-  <span class="tourney-name"
+<div class="infobox dsb-panel dsb-gradient" [class.overlay-hidden]="!state().showInfobox">
+  <span class="tourney-info"
     >Season {{ state().season }} - Woche {{ state().week }} - Division {{ state().division }}</span
   >
 
@@ -9,7 +9,7 @@
       [aspectRatio]="'xMaxYMid meet'"
     />
 
-    <strong>VS</strong>
+    <strong class="versus-text">VS</strong>
 
     <app-resizable-text [resizableTextContent]="state().teamBravoName" />
   </div>

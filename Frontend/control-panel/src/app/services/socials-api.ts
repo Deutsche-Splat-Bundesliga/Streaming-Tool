@@ -8,26 +8,26 @@ import { LogService } from './log';
   providedIn: 'root',
 })
 export class SocialsApi {
-  private readonly http: HttpClient = inject(HttpClient);
-  private readonly log: LogService = inject(LogService);
+  private readonly _http: HttpClient = inject(HttpClient);
+  private readonly _log: LogService = inject(LogService);
 
-  private readonly baseUrl: string = 'http://localhost:7000/api/socials';
+  private readonly _baseUrl: string = 'http://localhost:7000/api/socials';
 
   /**
    * Gets the current socials from the backend API.
    */
   getSocials(): Observable<Socials> {
-    this.log.debug('GET socials request started');
+    this._log.debug('GET socials request started');
 
-    return this.http.get<Socials>(`${this.baseUrl}/socials`).pipe(
+    return this._http.get<Socials>(`${this._baseUrl}/socials`).pipe(
       tap((result) => {
-        this.log.info('GET socials successful', {
+        this._log.info('GET socials successful', {
           hasXHandle: !!result.xHandle,
           hasDiscordInvite: !!result.discordInvite,
         });
       }),
       catchError((err) => {
-        this.log.error('GET socials failed', err);
+        this._log.error('GET socials failed', err);
         return throwError(() => err);
       }),
     );
@@ -37,20 +37,20 @@ export class SocialsApi {
    * Updates the socials via backend API.
    */
   updateSocials(socials: Socials): Observable<Socials> {
-    this.log.debug('POST socials request started', {
+    this._log.debug('POST socials request started', {
       hasXHandle: !!socials.xHandle,
       hasDiscordInvite: !!socials.discordInvite,
     });
 
-    return this.http.post<Socials>(`${this.baseUrl}/socials`, socials).pipe(
+    return this._http.post<Socials>(`${this._baseUrl}/socials`, socials).pipe(
       tap((result) => {
-        this.log.info('POST socials successful', {
+        this._log.info('POST socials successful', {
           hasXHandle: !!result.xHandle,
           hasDiscordInvite: !!result.discordInvite,
         });
       }),
       catchError((err) => {
-        this.log.error('POST socials failed', err, socials);
+        this._log.error('POST socials failed', err, socials);
         return throwError(() => err);
       }),
     );

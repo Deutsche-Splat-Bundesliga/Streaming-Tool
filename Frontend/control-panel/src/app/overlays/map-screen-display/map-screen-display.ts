@@ -18,12 +18,12 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
   /**
    * Logger used for component diagnostics.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scope for the MapScreen overlay.
    */
-  private readonly scope: LogScope = this.log.beginScope('MapScreen');
+  private readonly _scope: LogScope = this._log.beginScope('MapScreen');
 
   /**
    * Broadcast state service instance.
@@ -49,18 +49,18 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
    * Initializes the map screen display component by calling the `loadInitialState` method on the `BroadcastStateService`. This ensures that the component has the initial broadcast state loaded and ready to display when it is first rendered. The `ngOnInit` lifecycle hook is used to perform this initialization logic, which is a common practice in Angular components to set up necessary data or state before the component is displayed to the user.
    */
   ngOnInit(): void {
-    const scope = this.log.beginScope('MapScreenDisplay.ngOnInit');
+    const scope = this._log.beginScope('MapScreenDisplay.ngOnInit');
 
-    this.log.trace('MapScreenDisplay initialized');
+    this._log.trace('MapScreenDisplay initialized');
 
     try {
-      this.log.debug('Loading broadcast state for map screen');
+      this._log.debug('Loading broadcast state for map screen');
 
       this.stateService.loadInitialState();
 
-      this.log.debug('Broadcast state load requested');
+      this._log.debug('Broadcast state load requested');
     } catch (err) {
-      this.log.error('Failed during MapScreenDisplay initialization', err);
+      this._log.error('Failed during MapScreenDisplay initialization', err);
     } finally {
       scope.dispose();
     }
@@ -79,7 +79,7 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
         ? 'team-alpha-color'
         : 'team-bravo-color';
 
-    this.log.trace('Computed winner logo color', {
+    this._log.trace('Computed winner logo color', {
       winner,
       isAlphaLeft,
       result,
@@ -92,7 +92,7 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('Map Screen destroyed');
-    this.scope.dispose();
+    this._log.trace('Map Screen destroyed');
+    this._scope.dispose();
   }
 }

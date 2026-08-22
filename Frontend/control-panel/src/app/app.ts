@@ -68,14 +68,13 @@ export class App implements OnDestroy {
    * `--current-division-color` to match the corresponding division color variable.
    * This ensures the header background gradient always reflects the current division's color scheme.
    */
-  private divisionColorEffect = afterRenderEffect(() => {
-    const division = this.state().division;
-    if (!division) return;
-
-    document.documentElement.style.setProperty(
-      '--current-division-color',
-      `var(--division-${division}-color)`,
+  private _divisionColorEffect = afterRenderEffect(() => {
+    const currentDivision = this.stateService.availableDivisions.find(
+      (div) => div.id === this.state().division,
     );
+    if (!currentDivision) return;
+
+    document.documentElement.style.setProperty('--current-division-color', currentDivision.color);
   });
 
   /**
@@ -84,7 +83,7 @@ export class App implements OnDestroy {
    * `--team-bravo-color` is the color variable for the currently active team bravo color
    * This ensures the current team ink colors always reflect the current match colors
    */
-  private matchColorsEffect = afterRenderEffect(() => {
+  private _matchColorsEffect = afterRenderEffect(() => {
     const currentColorsId = this.state().currentColorsId;
     const currentColors = this.state().colorLockActive
       ? this.stateService.colorLockColors
@@ -106,7 +105,7 @@ export class App implements OnDestroy {
    * Destroys all effects on component destroy
    */
   ngOnDestroy(): void {
-    this.divisionColorEffect.destroy();
-    this.matchColorsEffect.destroy();
+    this._divisionColorEffect.destroy();
+    this._matchColorsEffect.destroy();
   }
 }

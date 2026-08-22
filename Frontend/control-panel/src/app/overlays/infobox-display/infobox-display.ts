@@ -16,12 +16,12 @@ export class InfoboxDisplay implements OnInit, OnDestroy {
   /**
    * Logging service.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scope for the Infobox overlay.
    */
-  private readonly scope: LogScope = this.log.beginScope('Infobox');
+  private readonly _scope: LogScope = this._log.beginScope('Infobox');
 
   /**
    * Broadcast state service.
@@ -37,18 +37,18 @@ export class InfoboxDisplay implements OnInit, OnDestroy {
    * Initializes the infobox display component and loads broadcast state.
    */
   ngOnInit(): void {
-    const scope = this.log.beginScope('InfoboxDisplay.ngOnInit');
+    const scope = this._log.beginScope('InfoboxDisplay.ngOnInit');
 
-    this.log.trace('InfoboxDisplay initialized');
+    this._log.trace('InfoboxDisplay initialized');
 
     try {
-      this.log.trace('Loading broadcast state for infobox');
+      this._log.trace('Loading broadcast state for infobox');
 
       this.stateService.loadInitialState();
 
-      this.log.debug('Broadcast state load requested');
+      this._log.debug('Broadcast state load requested');
     } catch (err) {
-      this.log.error('Failed during InfoboxDisplay initialization', err);
+      this._log.error('Failed during InfoboxDisplay initialization', err);
     } finally {
       scope.dispose();
     }
@@ -58,7 +58,7 @@ export class InfoboxDisplay implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('Infobox Display destroyed');
-    this.scope.dispose();
+    this._log.trace('Infobox Display destroyed');
+    this._scope.dispose();
   }
 }

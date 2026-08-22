@@ -75,57 +75,57 @@ export class CommentatorBox implements OnInit, OnDestroy {
   /**
    * Service for logging
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Logging scope created for the CommentatorBox overlay.
    */
-  private readonly scope: LogScope = this.log.beginScope('CommentatorBox');
+  private readonly _scope: LogScope = this._log.beginScope('CommentatorBox');
 
   /**
    * Timeout for hiding the display in manual mode.
    */
-  private manualHideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
+  private _manualHideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
   /**
    * Timeouts for hiding the display in auto mode.
    */
-  private autoHideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
-  private autoShowDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
+  private _autoHideDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
+  private _autoShowDisplayTimeout: ReturnType<typeof setTimeout> | undefined;
 
   /**
    * Instance for transmitting SignalrEvents
    */
-  private signalrEvents: SignalrEvents = inject(SignalrEvents);
+  private _signalrEvents: SignalrEvents = inject(SignalrEvents);
 
   /**
    * Event for handling event listeners and clearing timeouts when the display mode switches
    */
-  private displayModeEffect: EffectRef = effect(() => {
+  private _displayModeEffect: EffectRef = effect(() => {
     if (!this.onScoreBox) {
-      this.displayModeEffect.destroy();
+      this._displayModeEffect.destroy();
       return;
     }
 
     this.commBoxHidden.set(true);
     switch (this.commentatorBoxTimeData().displayMode) {
       case CommBoxDisplayMode.Manual:
-        clearTimeout(this.autoHideDisplayTimeout);
-        clearTimeout(this.autoShowDisplayTimeout);
+        clearTimeout(this._autoHideDisplayTimeout);
+        clearTimeout(this._autoShowDisplayTimeout);
 
-        this.log.trace('Switched to comm box manual display mode, connecting event listeners');
+        this._log.trace('Switched to comm box manual display mode, connecting event listeners');
         this.connectEventListeners();
         break;
 
       case CommBoxDisplayMode.Auto:
-        clearTimeout(this.manualHideDisplayTimeout);
+        clearTimeout(this._manualHideDisplayTimeout);
 
-        this.log.trace('Switched to comm box auto display mode, disconnecting event listeners');
+        this._log.trace('Switched to comm box auto display mode, disconnecting event listeners');
         this.disconnectEventListeners();
         break;
 
       default:
-        this.log.warn('Invalid comm box display mode set!');
+        this._log.warn('Invalid comm box display mode set!');
         break;
     }
   });
@@ -133,12 +133,12 @@ export class CommentatorBox implements OnInit, OnDestroy {
   /**
    * Updates and resets the commentator box effects
    */
-  private updateDisplayTimeouts: EffectRef = effect(() => {
-    clearTimeout(this.autoHideDisplayTimeout);
-    clearTimeout(this.autoShowDisplayTimeout);
+  private _updateDisplayTimeouts: EffectRef = effect(() => {
+    clearTimeout(this._autoHideDisplayTimeout);
+    clearTimeout(this._autoShowDisplayTimeout);
 
     if (!this.onScoreBox) {
-      this.updateDisplayTimeouts.destroy();
+      this._updateDisplayTimeouts.destroy();
       return;
     }
 
@@ -160,7 +160,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    */
   private handleAutoHideInterval(): void {
     this.commBoxHidden.set(false);
-    this.autoHideDisplayTimeout = setTimeout(() => {
+    this._autoHideDisplayTimeout = setTimeout(() => {
       this.handleAutoShowInterval();
     }, this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000);
   }
@@ -170,7 +170,7 @@ export class CommentatorBox implements OnInit, OnDestroy {
    */
   private handleAutoShowInterval(): void {
     this.commBoxHidden.set(true);
-    this.autoShowDisplayTimeout = setTimeout(() => {
+    this._autoShowDisplayTimeout = setTimeout(() => {
       this.handleAutoHideInterval();
     }, this.commentatorBoxTimeData().showDisplayIntervalInSeconds * 1000);
   }
@@ -179,9 +179,9 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Handles the hide commentator box event that gets received from signalr event hub
    */
   handleHideEvent = () => {
-    clearTimeout(this.manualHideDisplayTimeout);
+    clearTimeout(this._manualHideDisplayTimeout);
 
-    this.log.trace('Commentator box hide click event received, hiding comm box');
+    this._log.trace('Commentator box hide click event received, hiding comm box');
     this.commBoxHidden.set(true);
   };
 
@@ -189,9 +189,9 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Handles the show commentator box event that gets received from signalr event hub
    */
   handleShowEvent = () => {
-    clearTimeout(this.manualHideDisplayTimeout);
+    clearTimeout(this._manualHideDisplayTimeout);
 
-    this.log.trace('Commentator box hide click event received, hiding comm box');
+    this._log.trace('Commentator box hide click event received, hiding comm box');
     this.commBoxHidden.set(false);
   };
 
@@ -199,16 +199,16 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Handles the show commentator box temporarily event that gets received from signalr event hub
    */
   handleShowTempEvent = () => {
-    clearTimeout(this.manualHideDisplayTimeout);
+    clearTimeout(this._manualHideDisplayTimeout);
 
     const hideIntervalInSeconds = this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000;
-    this.log.trace('Commentator box show temporarily click event received, show comm box', {
+    this._log.trace('Commentator box show temporarily click event received, show comm box', {
       hideIntervalInSeconds: hideIntervalInSeconds,
     });
 
     this.commBoxHidden.set(false);
-    this.manualHideDisplayTimeout = setTimeout(() => {
-      this.log.trace('Interval finished, hiding comm box');
+    this._manualHideDisplayTimeout = setTimeout(() => {
+      this._log.trace('Interval finished, hiding comm box');
       this.commBoxHidden.set(true);
     }, hideIntervalInSeconds);
   };
@@ -217,15 +217,15 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Connect all signalr event listeners on component init
    */
   connectEventListeners(): void {
-    this.signalrEvents.connection?.on(
+    this._signalrEvents.connection?.on(
       CommBoxDisplayEvents.CommBoxHideButtonClicked,
       this.handleHideEvent,
     );
-    this.signalrEvents.connection?.on(
+    this._signalrEvents.connection?.on(
       CommBoxDisplayEvents.CommBoxShowButtonClicked,
       this.handleShowEvent,
     );
-    this.signalrEvents.connection?.on(
+    this._signalrEvents.connection?.on(
       CommBoxDisplayEvents.CommBoxShowTempButtonClicked,
       this.handleShowTempEvent,
     );
@@ -235,21 +235,21 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Disconnect all signalr event listeners on component destroy
    */
   disconnectEventListeners(): void {
-    this.signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxHideButtonClicked);
-    this.signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxShowButtonClicked);
-    this.signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
+    this._signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxHideButtonClicked);
+    this._signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxShowButtonClicked);
+    this._signalrEvents.connection?.off(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
   }
 
   /**
    * Initialize services and load initial state when the component is created.
    */
   ngOnInit(): void {
-    this.log.trace('CommentatorBox initialized', {
+    this._log.trace('CommentatorBox initialized', {
       onScoreBox: this.onScoreBox,
     });
 
     if (this.onScoreBox) {
-      this.log.trace(
+      this._log.trace(
         'CommentatorBox is on score box page, add Signalr EventHub listener for button click events',
       );
       this.connectEventListeners();
@@ -266,14 +266,14 @@ export class CommentatorBox implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    clearTimeout(this.manualHideDisplayTimeout);
-    clearTimeout(this.autoHideDisplayTimeout);
-    clearTimeout(this.autoShowDisplayTimeout);
+    clearTimeout(this._manualHideDisplayTimeout);
+    clearTimeout(this._autoHideDisplayTimeout);
+    clearTimeout(this._autoShowDisplayTimeout);
 
-    this.log.trace('CommentatorBox destroyed');
-    this.scope.dispose();
+    this._log.trace('CommentatorBox destroyed');
+    this._scope.dispose();
     this.disconnectEventListeners();
 
-    this.displayModeEffect.destroy();
+    this._displayModeEffect.destroy();
   }
 }

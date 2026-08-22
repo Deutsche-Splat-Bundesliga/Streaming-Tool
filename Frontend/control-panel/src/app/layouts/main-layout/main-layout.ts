@@ -18,27 +18,27 @@ export class MainLayout implements OnInit, OnDestroy {
   /**
    * Logger instance for lifecycle and initialization events.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * The scope manager for this component.
    */
-  private readonly scope: LogScope = this.log.beginScope('MainLayout');
+  private readonly _scope: LogScope = this._log.beginScope('MainLayout');
 
   /**
    * Broadcast state service used to initialize overlay state.
    */
-  private readonly stateService: BroadcastStateService = inject(BroadcastStateService);
+  private readonly _stateService: BroadcastStateService = inject(BroadcastStateService);
 
   /**
    * Socials service used to initialize social overlay state.
    */
-  private readonly socialsService: SocialsService = inject(SocialsService);
+  private readonly _socialsService: SocialsService = inject(SocialsService);
 
   /**
    * Commentator box time data service used to initialize time overlay state.
    */
-  private readonly commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
+  private readonly _commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
     CommentatorBoxTimeDataService,
   );
 
@@ -47,25 +47,25 @@ export class MainLayout implements OnInit, OnDestroy {
    * @returns void
    */
   ngOnInit(): void {
-    const scope: LogScope = this.log.beginScope('MainLayout.ngOnInit');
+    const scope: LogScope = this._log.beginScope('MainLayout.ngOnInit');
 
-    this.log.info('MainLayout initialized');
+    this._log.info('MainLayout initialized');
 
     try {
-      this.log.debug('Starting overlay bootstrap sequence');
+      this._log.debug('Starting overlay bootstrap sequence');
 
-      this.log.trace('Loading BroadcastStateService');
-      this.stateService.loadInitialState();
+      this._log.trace('Loading BroadcastStateService');
+      this._stateService.loadInitialState();
 
-      this.log.trace('Loading SocialsService');
-      this.socialsService.loadInitialState();
+      this._log.trace('Loading SocialsService');
+      this._socialsService.loadInitialState();
 
-      this.log.trace('Loading CommentatorBoxTimeDataService');
-      this.commentatorBoxTimeDataService.loadInitialState();
+      this._log.trace('Loading CommentatorBoxTimeDataService');
+      this._commentatorBoxTimeDataService.loadInitialState();
 
-      this.log.info('All initial overlay states requested');
+      this._log.info('All initial overlay states requested');
     } catch (err) {
-      this.log.error('Failed during main layout initialization', err);
+      this._log.error('Failed during main layout initialization', err);
     } finally {
       scope.dispose();
     }
@@ -75,7 +75,7 @@ export class MainLayout implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('Main Layout destroyed.');
-    this.scope.dispose();
+    this._log.trace('Main Layout destroyed.');
+    this._scope.dispose();
   }
 }
