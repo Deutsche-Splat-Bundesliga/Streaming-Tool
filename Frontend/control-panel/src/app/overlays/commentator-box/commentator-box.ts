@@ -152,26 +152,26 @@ export class CommentatorBox implements OnInit, OnDestroy {
       return;
     }
 
-    this._handleAutoShowInterval();
+    this.handleAutoShowInterval();
   });
 
   /**
    * Handles the interval when the display is currently shown and triggers timeout when it will get hidden again
    */
-  private _handleAutoHideInterval(): void {
+  private handleAutoHideInterval(): void {
     this.commBoxHidden.set(false);
     this._autoHideDisplayTimeout = setTimeout(() => {
-      this._handleAutoShowInterval();
+      this.handleAutoShowInterval();
     }, this.commentatorBoxTimeData().hideDisplayIntervalInSeconds * 1000);
   }
 
   /**
    * Handles the interval when the display is currently hidden and triggers timeout when it will get shown again
    */
-  private _handleAutoShowInterval(): void {
+  private handleAutoShowInterval(): void {
     this.commBoxHidden.set(true);
     this._autoShowDisplayTimeout = setTimeout(() => {
-      this._handleAutoHideInterval();
+      this.handleAutoHideInterval();
     }, this.commentatorBoxTimeData().showDisplayIntervalInSeconds * 1000);
   }
 

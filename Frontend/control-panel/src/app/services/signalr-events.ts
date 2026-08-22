@@ -16,13 +16,13 @@ export class SignalrEvents {
    * Calls start function so the service can be used globally
    */
   constructor() {
-    this._start();
+    this.start();
   }
 
   /**
    * Starts SignalR connection
    */
-  private async _start() {
+  private async start() {
     const scope = this._log.beginScope('SignalrEvents.start');
 
     this._log.info('Initializing SignalR eventHub connection');
@@ -47,7 +47,7 @@ export class SignalrEvents {
       this._log.error('SignalR Events connection closed');
     });
 
-    await this._tryConnect();
+    await this.tryConnect();
 
     scope.dispose();
   }
@@ -55,7 +55,7 @@ export class SignalrEvents {
   /**
    * Connection retry logic
    */
-  private async _tryConnect(): Promise<void> {
+  private async tryConnect(): Promise<void> {
     try {
       this._log.info('Starting SignalR Events connection attempt');
 
@@ -69,7 +69,7 @@ export class SignalrEvents {
 
       this._log.error('SignalR Events connection failed, retrying...', err);
 
-      setTimeout(() => this._tryConnect(), 5000);
+      setTimeout(() => this.tryConnect(), 5000);
     }
   }
 }

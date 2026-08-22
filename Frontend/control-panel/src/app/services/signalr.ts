@@ -17,7 +17,7 @@ export class Signalr {
   /**
    * Connects the SignalR client to the broadcastStateUpdated stream
    */
-  private _connectToState = () => {
+  private connectToState = () => {
     this._connection?.on('broadcastStateUpdated', (state: BroadcastState) => {
       this._log.debug('SignalR broadcastStateUpdated received', state);
 
@@ -28,7 +28,7 @@ export class Signalr {
   /**
    * Connects the SignalR client to the socialsUpdated stream
    */
-  private _connectToSocials = () => {
+  private connectToSocials = () => {
     this._connection?.on('socialsUpdated', (socials: Socials) => {
       this._log.debug('SignalR socialsUpdated received', socials);
 
@@ -39,7 +39,7 @@ export class Signalr {
   /**
    * Connects the SignalR client to the commentatorBoxTimeDataUpdated stream
    */
-  private _connectToCommentatorBoxTimeData = () => {
+  private connectToCommentatorBoxTimeData = () => {
     this._connection?.on('commentatorBoxTimeDataUpdated', (timeData: CommentatorBoxTimeData) => {
       this._log.debug('SignalR commentatorBoxTimeDataUpdated received', timeData);
 
@@ -58,10 +58,10 @@ export class Signalr {
 
   connectionType: SignalrServiceConnection = SignalrServiceConnection.None;
 
-  private serviceConnections: Map<SignalrServiceConnection, () => void> = new Map([
-    [SignalrServiceConnection.BroadcastState, this._connectToState],
-    [SignalrServiceConnection.Socials, this._connectToSocials],
-    [SignalrServiceConnection.CommentatorBoxTimeData, this._connectToCommentatorBoxTimeData],
+  private _serviceConnections: Map<SignalrServiceConnection, () => void> = new Map([
+    [SignalrServiceConnection.BroadcastState, this.connectToState],
+    [SignalrServiceConnection.Socials, this.connectToSocials],
+    [SignalrServiceConnection.CommentatorBoxTimeData, this.connectToCommentatorBoxTimeData],
   ]);
 
   /**
@@ -79,7 +79,7 @@ export class Signalr {
       .withAutomaticReconnect()
       .build();
 
-    const connectionFunction = this.serviceConnections.get(this.connectionType);
+    const connectionFunction = this._serviceConnections.get(this.connectionType);
 
     if (!connectionFunction) {
       this._log.warn('No SignalR connection handler registered', {
