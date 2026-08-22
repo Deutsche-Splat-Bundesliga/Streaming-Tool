@@ -77,7 +77,7 @@ public partial class OverlayTests : PageTest
     public async Task Infobox_ShowsLeagueText()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/info-box");
-        await Expect(Page.Locator(".infobox .tourney-name")).ToContainTextAsync(SeasonWeekDivisionRegex());
+        await Expect(Page.Locator(".infobox .tourney-info")).ToContainTextAsync(SeasonWeekDivisionRegex());
     }
 
     [Test]
@@ -136,7 +136,7 @@ public partial class OverlayTests : PageTest
     public async Task MapScreen_Header_ShowsSeasonDivisionText()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/map-screen");
-        await Expect(Page.Locator(".map-screen .season-division-display")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".map-screen .tourney-info")).ToBeAttachedAsync();
     }
 
     [Test]
