@@ -1,0 +1,93 @@
+name: Bug Report
+description: Report a bug to help us improve
+title: "[Bug] "
+type: Bug
+labels: bug
+projects: Deutsche-Splat-Bundesliga/projects/3
+body:
+  - type: markdown
+    attributes:
+      value: "Thank you for filling out this Bug Issue form!"
+  - type: dropdown
+    attributes:
+      label: Affected Areas
+      description: Please select which areas of the program are affected. Multiple selections possible.
+      options: 
+        - Control Panel
+        - Overlays
+        - Backend
+        - Deployment / Setup
+      multiple: true
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Bug Description
+      description: Please describe the bug.
+      placeholder: The Control Panel does not correctly display maps
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: Please describe the environment that the program is running in.
+      value: |
+        **Frontend**:
+        - Browser: Chrome 120
+        - OS: Windows 11 Education
+
+        **Backend**:
+        - .NET Version: 9.0
+        - OS: Windows 11 Education
+
+        **Other**:
+        - OBS Version (if relevant): 30.1
+        - Streaming Tool Version / Branch: v1.1
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: How do you trigger this bug? Please give us a step-by-step walkthrough.
+      value: |
+        1.
+        2.
+        3.
+        ...
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behaviour
+      description: What did you expect the program to do?
+      placeholder: Expected the program to properly show maps
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual Behaviour
+      description: How did the program behave in reality?
+      placeholder: Program malformed map images
+    validations: 
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots / Logs
+      description: Please post Screenshots or Logs here for us to properly assess the bug.
+  - type: dropdown
+    attributes:
+      label: Affected Features
+      description: Which features are affected by this bug?
+      options:
+      - Control Panel
+      - Score-Box Overlay
+      - Map-Screen Overlay
+      - Commentator-Box Overlay
+      - Info-Box Overlay
+      - SignalR Updates
+      - Database / Persistence
+      multiple: true
+    validations:
+      required: true
