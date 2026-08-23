@@ -13,32 +13,32 @@ import { MatchColor } from '../models/match-color';
   providedIn: 'root',
 })
 export class BroadcastStateService {
-  private readonly api = inject(BroadcastApi);
-  private readonly signalr = inject(Signalr);
-  private readonly log = inject(LogService);
+  private readonly _api = inject(BroadcastApi);
+  private readonly _signalr = inject(Signalr);
+  private readonly _log = inject(LogService);
 
   constructor() {
-    const scope = this.log.beginScope('BroadcastStateService');
+    const scope = this._log.beginScope('BroadcastStateService');
 
-    this.log.info('Initializing BroadcastStateService');
+    this._log.info('Initializing BroadcastStateService');
 
     effect(() => {
-      const incoming = this.signalr.liveState();
+      const incoming = this._signalr.liveState();
 
       if (!incoming) return;
 
-      this.log.debug('SignalR broadcast state received', incoming);
+      this._log.debug('SignalR broadcast state received', incoming);
 
       this.state.set(incoming);
 
-      this.log.info('Broadcast state updated from SignalR');
+      this._log.info('Broadcast state updated from SignalR');
     });
 
-    this.signalr.connectionType = SignalrServiceConnection.BroadcastState;
+    this._signalr.connectionType = SignalrServiceConnection.BroadcastState;
 
-    this.signalr.start();
+    this._signalr.start();
 
-    this.log.info('SignalR connection started (BroadcastState)');
+    this._log.info('SignalR connection started (BroadcastState)');
 
     scope.dispose();
   }
@@ -196,14 +196,14 @@ export class BroadcastStateService {
     },
   ];
   availableDivisions: Division[] = [
-    { id: 1, name: 'Division 1' },
-    { id: 2, name: 'Division 2' },
-    { id: 3, name: 'Division 3' },
-    { id: 4, name: 'Division 4' },
-    { id: 5, name: 'Division 5' },
-    { id: 6, name: 'Division 6' },
-    { id: 7, name: 'Division 7' },
-    { id: 8, name: 'Division 8' },
+    { id: 1, name: 'Division 1', color: '#FF0000' },
+    { id: 2, name: 'Division 2', color: '#FF8800' },
+    { id: 3, name: 'Division 3', color: '#FFFF00' },
+    { id: 4, name: 'Division 4', color: '#00FF00' },
+    { id: 5, name: 'Division 5', color: '#34AB53' },
+    { id: 6, name: 'Division 6', color: '#0088FF' },
+    { id: 7, name: 'Division 7', color: '#0400FF' },
+    { id: 8, name: 'Division 8', color: '#730471' },
   ];
 
   /**
@@ -252,20 +252,20 @@ export class BroadcastStateService {
   });
 
   loadInitialState(): void {
-    const scope = this.log.beginScope('BroadcastStateService.loadInitialState');
+    const scope = this._log.beginScope('BroadcastStateService.loadInitialState');
 
-    this.log.info('Loading initial broadcast state');
+    this._log.info('Loading initial broadcast state');
 
-    this.api.getState().subscribe({
+    this._api.getState().subscribe({
       next: (state) => {
-        this.log.debug('Initial state received from API', state);
+        this._log.debug('Initial state received from API', state);
 
         this.state.set(state);
 
-        this.log.info('Initial broadcast state applied');
+        this._log.info('Initial broadcast state applied');
       },
       error: (err) => {
-        this.log.error('Failed to load initial state', err);
+        this._log.error('Failed to load initial state', err);
       },
     });
 
@@ -273,7 +273,7 @@ export class BroadcastStateService {
   }
 
   update(partial: Partial<BroadcastState>): void {
-    const scope = this.log.beginScope('BroadcastStateService.update');
+    const scope = this._log.beginScope('BroadcastStateService.update');
 
     try {
       const before = this.state();
@@ -283,7 +283,7 @@ export class BroadcastStateService {
         ...partial,
       };
 
-      this.log.debug('Updating broadcast state', {
+      this._log.debug('Updating broadcast state', {
         before,
         patch: partial,
         after: newState,
@@ -291,12 +291,12 @@ export class BroadcastStateService {
 
       this.state.set(newState);
 
-      this.api.updateState(newState).subscribe({
+      this._api.updateState(newState).subscribe({
         next: (result) => {
-          this.log.info('Broadcast state updated via API', result);
+          this._log.info('Broadcast state updated via API', result);
         },
         error: (err) => {
-          this.log.error('Failed to update broadcast state', err, newState);
+          this._log.error('Failed to update broadcast state', err, newState);
         },
       });
     } finally {
@@ -305,7 +305,7 @@ export class BroadcastStateService {
   }
 
   addMap(): void {
-    const scope = this.log.beginScope('BroadcastStateService.addMap');
+    const scope = this._log.beginScope('BroadcastStateService.addMap');
 
     const state = this.state();
     const defaultMap = this.availableMaps[0];
@@ -322,7 +322,7 @@ export class BroadcastStateService {
       isVisible: true,
     };
 
-    this.log.debug('Adding new map', newMap);
+    this._log.debug('Adding new map', newMap);
 
     this.update({
       maps: [...state.maps, newMap],
@@ -332,11 +332,11 @@ export class BroadcastStateService {
   }
 
   removeMap(id: string): void {
-    const scope = this.log.beginScope('BroadcastStateService.removeMap');
+    const scope = this._log.beginScope('BroadcastStateService.removeMap');
 
     const state = this.state();
 
-    this.log.debug('Removing map', { id });
+    this._log.debug('Removing map', { id });
 
     const maps = state.maps.filter((x) => x.id !== id);
 
@@ -349,7 +349,7 @@ export class BroadcastStateService {
 
     const scoreBravo = reordered.filter((x) => x.winner === 'bravo').length;
 
-    this.log.debug('Maps reordered and scores recalculated', {
+    this._log.debug('Maps reordered and scores recalculated', {
       scoreAlpha,
       scoreBravo,
       mapCount: reordered.length,

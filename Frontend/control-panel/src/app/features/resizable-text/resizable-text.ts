@@ -20,7 +20,7 @@ export class ResizableText implements OnDestroy {
   /**
    * Text svg element to calculate dynamic text size correctly when text overflows
    */
-  @ViewChild('svgText') private svgText?: ElementRef;
+  @ViewChild('svgText') private _svgText?: ElementRef;
 
   /**
    * Input signal for text to display
@@ -40,13 +40,13 @@ export class ResizableText implements OnDestroy {
   /**
    * Effect that calculates the bounding box of our text element and sets it on the svg container
    */
-  private resizeTextEffect = afterRenderEffect(() => {
+  private _resizeTextEffect = afterRenderEffect(() => {
     // Call resizable text content signal here to trigger effect
     this.resizableTextContent();
 
-    if (!this.svgText) return;
+    if (!this._svgText) return;
 
-    const bbox = this.svgText.nativeElement.getBBox();
+    const bbox = this._svgText.nativeElement.getBBox();
     this.viewBoxSize.set([bbox.x, bbox.y, bbox.width, bbox.height]);
   });
 
@@ -54,7 +54,7 @@ export class ResizableText implements OnDestroy {
    * Destroy all effects on component
    */
   ngOnDestroy(): void {
-    this.resizeTextEffect.destroy();
+    this._resizeTextEffect.destroy();
   }
 
   /**

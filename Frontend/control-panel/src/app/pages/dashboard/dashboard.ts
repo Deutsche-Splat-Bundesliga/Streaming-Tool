@@ -15,12 +15,12 @@ export class Dashboard {
   /**
    * The log service
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * The scope for the Dashboard page
    */
-  private readonly scope: LogScope = this.log.beginScope('Dashboard');
+  private readonly _scope: LogScope = this._log.beginScope('Dashboard');
 
   /**
    * The BroadcastStateService
@@ -33,7 +33,7 @@ export class Dashboard {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   constructor() {
-    this.log.info('Dashboard component initialized', {
+    this._log.info('Dashboard component initialized', {
       initialMapCount: this.state().maps?.length ?? 0,
     });
   }
@@ -42,16 +42,16 @@ export class Dashboard {
    * Adds a new map to the broadcast state
    */
   addMap(): void {
-    this.log.debug('Dashboard: addMap triggered', {
+    this._log.debug('Dashboard: addMap triggered', {
       currentMapCount: this.state().maps?.length ?? 0,
     });
 
     try {
       this.stateService.addMap();
 
-      this.log.info('Map added successfully via Dashboard');
+      this._log.info('Map added successfully via Dashboard');
     } catch (err) {
-      this.log.error('Failed to add map from Dashboard', err);
+      this._log.error('Failed to add map from Dashboard', err);
     }
   }
 
@@ -59,7 +59,7 @@ export class Dashboard {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('Dashboard destroyed');
-    this.scope.dispose();
+    this._log.trace('Dashboard destroyed');
+    this._scope.dispose();
   }
 }

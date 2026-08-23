@@ -20,12 +20,12 @@ export class MapCard implements OnInit, OnDestroy {
   /**
    * The logging service.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scoped logger lifecycle manager.
    */
-  private readonly scope: LogScope = this.log.beginScope('MapCard');
+  private readonly _scope: LogScope = this._log.beginScope('MapCard');
 
   /**
    * The map state bound to this component.
@@ -65,7 +65,7 @@ export class MapCard implements OnInit, OnDestroy {
    * Initialize the component and log startup details.
    */
   ngOnInit(): void {
-    this.log.debug('MapCard initialized', {
+    this._log.debug('MapCard initialized', {
       mapId: this.map?.id,
       mapName: this.map?.mapName,
     });
@@ -94,7 +94,7 @@ export class MapCard implements OnInit, OnDestroy {
     const current = this.state().maps.find((m) => m.id === this.map.id)?.winner ?? null;
 
     if (current === winner) {
-      this.log.info('Winner cleared', {
+      this._log.info('Winner cleared', {
         mapId: this.map.id,
         previousWinner: winner,
       });
@@ -102,7 +102,7 @@ export class MapCard implements OnInit, OnDestroy {
       return this.setWinner(null);
     }
 
-    this.log.info('Winner selected', {
+    this._log.info('Winner selected', {
       mapId: this.map.id,
       winner,
     });
@@ -116,7 +116,7 @@ export class MapCard implements OnInit, OnDestroy {
   handleCounterPickClick(): void {
     const newVisibleState = !this.map.isVisible;
 
-    this.log.info('Updating isVisible', {
+    this._log.info('Updating isVisible', {
       mapId: this.map.id,
       previous: this.map.isVisible,
       new: newVisibleState,
@@ -141,7 +141,7 @@ export class MapCard implements OnInit, OnDestroy {
    * @param winner {'alpha' | 'bravo' | null} Winner identifier or null to clear the selection
    */
   setWinner(winner: 'alpha' | 'bravo' | null): void {
-    this.log.debug('Updating winner', {
+    this._log.debug('Updating winner', {
       mapId: this.map.id,
       winner,
     });
@@ -169,7 +169,7 @@ export class MapCard implements OnInit, OnDestroy {
    * Remove this map from the broadcast state.
    */
   removeMap(): void {
-    this.log.warn('Map removed', {
+    this._log.warn('Map removed', {
       mapId: this.map.id,
     });
 
@@ -181,7 +181,7 @@ export class MapCard implements OnInit, OnDestroy {
    * @param mapId {string} Identifier of the selected map
    */
   updateMap(mapId: string): void {
-    this.log.info('Map update requested', {
+    this._log.info('Map update requested', {
       mapId,
       currentMapId: this.map.id,
     });
@@ -189,7 +189,7 @@ export class MapCard implements OnInit, OnDestroy {
     const selected = this.availableMaps.find((m) => m.id === mapId);
 
     if (!selected) {
-      this.log.error('Selected map not found', {
+      this._log.error('Selected map not found', {
         mapId,
       });
       return;
@@ -215,7 +215,7 @@ export class MapCard implements OnInit, OnDestroy {
    * @param modeId {string} Identifier of the selected mode
    */
   updateMode(modeId: string): void {
-    this.log.info('Mode update requested', {
+    this._log.info('Mode update requested', {
       modeId,
       mapId: this.map.id,
     });
@@ -223,7 +223,7 @@ export class MapCard implements OnInit, OnDestroy {
     const selected = this.availableModes.find((m) => m.id === modeId);
 
     if (!selected) {
-      this.log.error('Selected mode not found', {
+      this._log.error('Selected mode not found', {
         modeId,
       });
       return;
@@ -247,7 +247,7 @@ export class MapCard implements OnInit, OnDestroy {
    * Open the edit menu for this map card.
    */
   openEditMenu(): void {
-    this.log.debug('Edit menu opened', {
+    this._log.debug('Edit menu opened', {
       mapId: this.map.id,
     });
 
@@ -258,7 +258,7 @@ export class MapCard implements OnInit, OnDestroy {
    * Close the edit menu for this map card.
    */
   closeEditMenu(): void {
-    this.log.debug('Edit menu closed', {
+    this._log.debug('Edit menu closed', {
       mapId: this.map.id,
     });
 
@@ -269,7 +269,7 @@ export class MapCard implements OnInit, OnDestroy {
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
-    this.log.trace('MapCard destroyed');
-    this.scope.dispose();
+    this._log.trace('MapCard destroyed');
+    this._scope.dispose();
   }
 }

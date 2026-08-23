@@ -97,6 +97,7 @@ Key properties:
 
 - `id`
 - `name`
+- `color`
 
 ### LogEntry
 

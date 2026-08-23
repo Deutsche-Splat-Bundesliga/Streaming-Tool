@@ -10,9 +10,9 @@ import { CommBoxDisplayMode } from '../enums/comm-box-display-modes';
   providedIn: 'root',
 })
 export class CommentatorBoxTimeDataService {
-  private readonly api = inject(CommentatorBoxTimeDataApi);
-  private readonly signalr = inject(Signalr);
-  private readonly log = inject(LogService);
+  private readonly _api = inject(CommentatorBoxTimeDataApi);
+  private readonly _signalr = inject(Signalr);
+  private readonly _log = inject(LogService);
 
   /**
    * Main state signal
@@ -27,27 +27,27 @@ export class CommentatorBoxTimeDataService {
    * Initializes service + SignalR subscription
    */
   constructor() {
-    const scope = this.log.beginScope('CommentatorBoxTimeDataService');
+    const scope = this._log.beginScope('CommentatorBoxTimeDataService');
 
-    this.log.info('Initializing CommentatorBoxTimeDataService');
+    this._log.info('Initializing CommentatorBoxTimeDataService');
 
     effect(() => {
-      const incoming = this.signalr.liveCommentatorBoxTimeData();
+      const incoming = this._signalr.liveCommentatorBoxTimeData();
 
       if (!incoming) return;
 
-      this.log.debug('Received SignalR time data update', incoming);
+      this._log.debug('Received SignalR time data update', incoming);
 
       this.commentatorBoxTimeData.set(incoming);
 
-      this.log.info('CommentatorBoxTimeData updated from SignalR');
+      this._log.info('CommentatorBoxTimeData updated from SignalR');
     });
 
-    this.signalr.connectionType = SignalrServiceConnection.CommentatorBoxTimeData;
+    this._signalr.connectionType = SignalrServiceConnection.CommentatorBoxTimeData;
 
-    this.signalr.start();
+    this._signalr.start();
 
-    this.log.info('SignalR connection started for CommentatorBoxTimeData');
+    this._log.info('SignalR connection started for CommentatorBoxTimeData');
 
     scope.dispose();
   }
@@ -56,7 +56,7 @@ export class CommentatorBoxTimeDataService {
    * Updates time data (optimistic update + API sync)
    */
   update(partial: Partial<CommentatorBoxTimeData>): void {
-    const scope = this.log.beginScope('CommentatorBoxTimeDataService.update');
+    const scope = this._log.beginScope('CommentatorBoxTimeDataService.update');
 
     try {
       const before = this.commentatorBoxTimeData();
@@ -66,7 +66,7 @@ export class CommentatorBoxTimeDataService {
         ...partial,
       };
 
-      this.log.debug('Updating commentator box time data', {
+      this._log.debug('Updating commentator box time data', {
         before,
         patch: partial,
         after: newTimeData,
@@ -74,12 +74,12 @@ export class CommentatorBoxTimeDataService {
 
       this.commentatorBoxTimeData.set(newTimeData);
 
-      this.api.updateCommentatorBoxTimeData(newTimeData).subscribe({
+      this._api.updateCommentatorBoxTimeData(newTimeData).subscribe({
         next: (result) => {
-          this.log.info('Time data successfully updated via API', result);
+          this._log.info('Time data successfully updated via API', result);
         },
         error: (err) => {
-          this.log.error('Failed to update time data', err, newTimeData);
+          this._log.error('Failed to update time data', err, newTimeData);
         },
       });
     } finally {
@@ -91,20 +91,20 @@ export class CommentatorBoxTimeDataService {
    * Loads initial state from backend
    */
   loadInitialState(): void {
-    const scope = this.log.beginScope('CommentatorBoxTimeDataService.loadInitialState');
+    const scope = this._log.beginScope('CommentatorBoxTimeDataService.loadInitialState');
 
-    this.log.info('Loading initial time data');
+    this._log.info('Loading initial time data');
 
-    this.api.getCommentatorBoxTimeData().subscribe({
+    this._api.getCommentatorBoxTimeData().subscribe({
       next: (timeData) => {
-        this.log.debug('Initial time data received', timeData);
+        this._log.debug('Initial time data received', timeData);
 
         this.commentatorBoxTimeData.set(timeData);
 
-        this.log.info('Initial time data applied');
+        this._log.info('Initial time data applied');
       },
       error: (err) => {
-        this.log.error('Failed to load initial time data', err);
+        this._log.error('Failed to load initial time data', err);
       },
     });
 

@@ -9,8 +9,11 @@ import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
 import { SocialsService } from './services/socials';
 import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
 import { CommBoxDisplayMode } from './enums/comm-box-display-modes';
+import { Division } from './models/division';
 
 describe('App', () => {
+  let component: App;
+
   const mockState = signal<BroadcastState>({
     teamAlphaName: '',
     teamBravoName: '',
@@ -33,6 +36,17 @@ describe('App', () => {
     colorLockActive: false,
   });
 
+  const availableDivisions: Division[] = [
+    { id: 1, name: 'Division 1', color: '#FF0000' },
+    { id: 2, name: 'Division 2', color: '#FF8800' },
+    { id: 3, name: 'Division 3', color: '#FFFF00' },
+  ];
+
+  const mockStateService = {
+    state: mockState,
+    availableDivisions,
+  };
+
   const mockSocials = signal<Socials>({
     xHandle: '@Test',
     discordInvite: 'DSB',
@@ -50,9 +64,7 @@ describe('App', () => {
       providers: [
         {
           provide: BroadcastStateService,
-          useValue: {
-            state: mockState,
-          },
+          useValue: mockStateService,
         },
         {
           provide: SocialsService,
@@ -93,10 +105,11 @@ describe('App', () => {
     const fixture: ComponentFixture<App> = TestBed.createComponent(App);
 
     fixture.detectChanges();
+    component = fixture.componentInstance;
     await fixture.whenStable();
 
     expect(document.documentElement.style.getPropertyValue('--current-division-color')).toBe(
-      'var(--division-3-color)',
+      component.stateService.availableDivisions[2].color,
     );
   });
 });

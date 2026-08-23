@@ -7,14 +7,14 @@ import { LogEntry } from '../models/log-entry';
   providedIn: 'root',
 })
 export class LogService {
-  private scopeStack: string[] = [];
+  private _scopeStack: string[] = [];
 
   beginScope(name: string): LogScope {
-    this.scopeStack.push(name);
+    this._scopeStack.push(name);
 
     return {
       dispose: () => {
-        this.scopeStack.pop();
+        this._scopeStack.pop();
       },
     };
   }
@@ -23,7 +23,7 @@ export class LogService {
    * Computed property that gets the log scope.
    */
   private get scope(): string | undefined {
-    return this.scopeStack.at(-1);
+    return this._scopeStack.at(-1);
   }
 
   /**

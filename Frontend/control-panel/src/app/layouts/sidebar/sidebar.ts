@@ -27,22 +27,22 @@ export class Sidebar implements OnInit, OnDestroy {
   /**
    * Instance for transmitting SignalrEvents
    */
-  private signalrEvents: SignalrEvents = inject(SignalrEvents);
+  private _signalrEvents: SignalrEvents = inject(SignalrEvents);
 
   /**
    * Logger instance for sidebar lifecycle and actions.
    */
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Scoped logger instance used for sidebar-specific logs.
    */
-  private readonly scope: LogScope = this.log.beginScope('Sidebar');
+  private readonly _scope: LogScope = this._log.beginScope('Sidebar');
 
   /**
    * Dialog material instance that handles opening and closing of dialogs
    */
-  private readonly dialog: MatDialog = inject(MatDialog);
+  private readonly _dialog: MatDialog = inject(MatDialog);
 
   /**
    * Service that manages broadcast state and division data.
@@ -76,7 +76,7 @@ export class Sidebar implements OnInit, OnDestroy {
       currentColorsId = 0;
     }
 
-    this.log.trace('Updating match colors to next color in list', {
+    this._log.trace('Updating match colors to next color in list', {
       previousColorsId: this.state().currentColorsId,
       currentColorsId,
     });
@@ -87,75 +87,75 @@ export class Sidebar implements OnInit, OnDestroy {
    * Handle click event for color settings button that opens the dialog
    */
   handleColorSettingsButtonClick(): void {
-    this.dialog.closeAll();
-    this.log.trace('Opening dialog for colors settings');
-    this.dialog.open(ChangeColorsDialog, { panelClass: 'color-settings-dialog' });
+    this._dialog.closeAll();
+    this._log.trace('Opening dialog for colors settings');
+    this._dialog.open(ChangeColorsDialog, { panelClass: 'color-settings-dialog' });
   }
 
   /**
    * Handle click event for socials settings button that opens the dialog
    */
   handleSocialsSettingsButtonClick(): void {
-    this.dialog.closeAll();
-    this.log.trace('Opening dialog for socials settings');
-    this.dialog.open(SocialsDialog, { panelClass: 'socials-dialog' });
+    this._dialog.closeAll();
+    this._log.trace('Opening dialog for socials settings');
+    this._dialog.open(SocialsDialog, { panelClass: 'socials-dialog' });
   }
 
   /**
    * Handle click event for tourney settings button that opens the dialog
    */
   handleTourneySettingsButtonClick(): void {
-    this.dialog.closeAll();
-    this.log.trace('Opening dialog for tourney settings');
-    this.dialog.open(TourneySettingsDialog, { panelClass: 'tourney-settings-dialog' });
+    this._dialog.closeAll();
+    this._log.trace('Opening dialog for tourney settings');
+    this._dialog.open(TourneySettingsDialog, { panelClass: 'tourney-settings-dialog' });
   }
 
   /**
    * Handle click event for streamer and commentators button that opens the dialog
    */
   handleStreamerCommsButtonClick(): void {
-    this.dialog.closeAll();
-    this.log.trace('Opening dialog for setting streamer and commentators');
-    this.dialog.open(StreamerCommsDialog, { panelClass: 'streamer-comms-dialog' });
+    this._dialog.closeAll();
+    this._log.trace('Opening dialog for setting streamer and commentators');
+    this._dialog.open(StreamerCommsDialog, { panelClass: 'streamer-comms-dialog' });
   }
 
   /**
    * Handle click event for commentator box display settings button that opens the dialog
    */
   handleCommBoxSettingsButtonClick(): void {
-    this.dialog.closeAll();
-    this.log.trace('Opening dialog for commentator box display settings');
-    this.dialog.open(CommBoxSettingsDialog, { panelClass: 'comm-box-settings-dialog' });
+    this._dialog.closeAll();
+    this._log.trace('Opening dialog for commentator box display settings');
+    this._dialog.open(CommBoxSettingsDialog, { panelClass: 'comm-box-settings-dialog' });
   }
 
   /**
    * Click event handling for the hide commentator box button
    */
   handleHideButtonClick(): void {
-    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
+    this._log.trace('Firing click event for commentator box display button to Signalr EventHub', {
       type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
     });
-    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxHideButtonClicked);
+    this._signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxHideButtonClicked);
   }
 
   /**
    * Click event handling for the show commentator box button
    */
   handleShowButtonClick(): void {
-    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
+    this._log.trace('Firing click event for commentator box display button to Signalr EventHub', {
       type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
     });
-    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowButtonClicked);
+    this._signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowButtonClicked);
   }
 
   /**
    * Click event handling for the show commentator box temporarily button
    */
   handleShowTempButtonClick(): void {
-    this.log.trace('Firing click event for commentator box display button to Signalr EventHub', {
+    this._log.trace('Firing click event for commentator box display button to Signalr EventHub', {
       type: CommBoxDisplayEvents.CommBoxHideButtonClicked,
     });
-    this.signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
+    this._signalrEvents.connection?.invoke(CommBoxDisplayEvents.CommBoxShowTempButtonClicked);
   }
 
   /**
@@ -163,18 +163,18 @@ export class Sidebar implements OnInit, OnDestroy {
    * @returns void
    */
   ngOnInit(): void {
-    this.log.info('Sidebar initializing');
+    this._log.info('Sidebar initializing');
 
     try {
       this.stateService.loadInitialState();
       this.commentatorBoxTimeDataService.loadInitialState();
 
-      this.log.debug('Initial state load triggered', {
+      this._log.debug('Initial state load triggered', {
         hasStateService: !!this.stateService,
         hasTimeDataService: !!this.commentatorBoxTimeDataService,
       });
     } catch (err) {
-      this.log.error('Sidebar initialization failed', err);
+      this._log.error('Sidebar initialization failed', err);
     }
   }
 
@@ -183,8 +183,8 @@ export class Sidebar implements OnInit, OnDestroy {
    * @returns void
    */
   ngOnDestroy(): void {
-    this.log.trace('Sidebar destroyed');
-    this.scope.dispose();
+    this._log.trace('Sidebar destroyed');
+    this._scope.dispose();
   }
 
   /**
