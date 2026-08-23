@@ -27,25 +27,7 @@ h2 {
 }
 
 section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-input {
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.625rem;
-  background: #343744;
-  color: white;
-}
-
-select {
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.625rem;
-  background: #343744;
-  color: white;
+  row-gap: 0.75rem;
 }
 
 button {
@@ -54,14 +36,4 @@ button {
 
 .swap-sides h2 {
   margin-bottom: 0.75rem;
-}
-
-label {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: white;
-  cursor: pointer;
 }
