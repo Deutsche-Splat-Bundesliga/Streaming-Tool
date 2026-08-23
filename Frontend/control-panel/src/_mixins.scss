@@ -1,0 +1,42 @@
+@mixin sidebar-button {
+  $button-bg-color: #343744;
+  $button-selected-color: #6d28d9;
+
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.625rem;
+  background-color: $button-bg-color;
+  color: white;
+  transition: none;
+
+  &.click-button {
+    padding: 0.625rem;
+    border: 0.125rem solid $button-bg-color;
+    transition: border-color 50ms ease;
+
+    &:active:not(:disabled) {
+      border-color: $button-selected-color;
+    }
+  }
+
+  &.toggle-button {
+    transition: background-color 150ms ease;
+
+    &.toggled {
+      background-color: $button-selected-color;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+}
