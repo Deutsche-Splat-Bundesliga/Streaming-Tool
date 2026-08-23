@@ -1,38 +1,7 @@
+@use '../../mixins' as mixins;
+
 button {
-  border-radius: 0.625rem;
-  background: #343744;
-  color: white;
-  cursor: pointer;
-  padding: 0.75rem;
-  border: none;
-  transition: border-color 50ms ease;
-}
-
-button:active {
-  border-color: #6d28d9;
-}
-
-button.toggle-button {
-  transition: background-color 150ms ease;
-}
-
-button.toggle-button.toggled {
-  background-color: #6d28d9;
-}
-
-button.click-button {
-  border: 0.125rem solid #343744;
-  padding: 0.625rem;
-  transition: border-color 50ms ease;
-}
-
-button.click-button:active {
-  border-color: #6d28d9;
-}
-
-button.click-button[mat-dialog-close] {
-  padding: 0.25rem 0.75rem;
-  font-size: 1.125rem;
+  @include mixins.sidebar-button;
 }
 
 h2 {

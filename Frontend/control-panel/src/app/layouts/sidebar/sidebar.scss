@@ -1,3 +1,5 @@
+@use '../../../_mixins.scss' as mixins;
+
 .sidebar {
   height: 100vh;
   display: flex;
@@ -47,46 +49,7 @@ select {
 }
 
 button {
-  box-sizing: border-box;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.625rem;
-  background-color: #343744;
-  color: white;
-}
-
-button:hover {
-  cursor: pointer;
-}
-
-.toggle-button {
-  transition: background-color 150ms ease;
-}
-
-.toggle-button.toggled {
-  background-color: #6d28d9;
-}
-
-.click-button {
-  border: 0.125rem solid #343744;
-  padding: 0.625rem;
-  transition: border-color 50ms ease;
-}
-
-.click-button:active {
-  border-color: #6d28d9;
-}
-
-button:disabled {
-  opacity: 0.5;
-}
-
-button:disabled:hover {
-  cursor: not-allowed;
-}
-
-button.click-button:disabled:active {
-  border-color: #343744;
+  @include mixins.sidebar-button;
 }
 
 .swap-sides h2 {
