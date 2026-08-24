@@ -1,5 +1,15 @@
 @use '../overlay-theme.scss';
 
+@mixin end-screen-text {
+  --text-border-color: black;
+  text-align: center;
+  font-size: 4rem;
+  filter: drop-shadow(0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 0.046875em 0.03125em var(--text-border-color))
+    drop-shadow(-0.046875em 0 0.03125em var(--text-border-color))
+    drop-shadow(0 -0.046875em 0.03125em var(--text-border-color));
+}
+
 .end-screen {
   width: 100vw;
   height: 100vh;
@@ -18,19 +28,13 @@
   width: auto;
 }
 
-.ending-text,
-.socials-text {
-  --text-border-color: black;
-  text-align: center;
-  font-size: 4rem;
-  filter: drop-shadow(0.046875em 0 0.03125em var(--text-border-color))
-    drop-shadow(0 0.046875em 0.03125em var(--text-border-color))
-    drop-shadow(-0.046875em 0 0.03125em var(--text-border-color))
-    drop-shadow(0 -0.046875em 0.03125em var(--text-border-color));
+.ending-text {
+  @include end-screen-text;
+  padding-top: 2rem;
 }
 
-.ending-text {
-  padding-top: 2rem;
+.socials-text {
+  @include end-screen-text;
 }
 
 .socials__container {

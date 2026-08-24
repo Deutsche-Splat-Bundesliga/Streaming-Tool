@@ -10,6 +10,15 @@
   padding: 2rem;
 }
 
+@mixin team-container {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
 .score-box {
   align-self: start;
   display: flex;
@@ -21,22 +30,14 @@
   transition: opacity 180ms ease;
 }
 
-.team-left__container,
-.team-right__container {
-  width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.5rem;
-}
-
 .team-left__container {
+  @include team-container;
   margin-bottom: 0.75rem;
   background: linear-gradient(90deg, var(--team-alpha-color), black);
 }
 
 .team-right__container {
+  @include team-container;
   margin-bottom: 1.25rem;
   background: linear-gradient(90deg, var(--team-bravo-color), black);
 }

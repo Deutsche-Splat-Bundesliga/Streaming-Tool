@@ -18,10 +18,10 @@
   align-items: center;
   column-gap: 2.5rem;
   transition: opacity 420ms ease;
-}
 
-.on-score-box.commentator-box {
-  padding: 0.75rem 2rem;
+  &.on-score-box {
+    padding: 0.75rem 1.5rem;
+  }
 }
 
 :host(.scorebox-hidden) .commentator-box,
