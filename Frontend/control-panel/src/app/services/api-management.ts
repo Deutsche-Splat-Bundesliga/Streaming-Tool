@@ -17,9 +17,9 @@ import { LogService } from './log';
   providedIn: 'root',
 })
 export class ApiManagementService {
-  private readonly api = inject(ApiManagementApi);
-  private readonly signalr = inject(Signalr);
-  private readonly log = inject(LogService);
+  private readonly _api = inject(ApiManagementApi);
+  private readonly _signalr = inject(Signalr);
+  private readonly _log = inject(LogService);
 
   /**
    * The current API settings.
@@ -36,41 +36,41 @@ export class ApiManagementService {
   /**
    * The live API request log of the current session (owned by the Signalr service).
    */
-  log$: WritableSignal<ApiLogEntry[]> = this.signalr.liveApiLog;
+  log$: WritableSignal<ApiLogEntry[]> = this._signalr.liveApiLog;
 
   /**
    * Initializes the service and wires up the SignalR live updates.
    */
   constructor() {
-    const scope = this.log.beginScope('ApiManagementService');
+    const scope = this._log.beginScope('ApiManagementService');
 
-    this.log.info('Initializing ApiManagementService');
+    this._log.info('Initializing ApiManagementService');
 
     effect(() => {
-      const incoming = this.signalr.liveApiSettings();
+      const incoming = this._signalr.liveApiSettings();
 
       if (!incoming) return;
 
-      this.log.debug('Received SignalR API settings update', incoming);
+      this._log.debug('Received SignalR API settings update', incoming);
 
       this.settings.set(incoming);
     });
 
     effect(() => {
-      const incoming = this.signalr.liveApiKeys();
+      const incoming = this._signalr.liveApiKeys();
 
       if (!incoming) return;
 
-      this.log.debug('Received SignalR API keys update', { count: incoming.length });
+      this._log.debug('Received SignalR API keys update', { count: incoming.length });
 
       this.keys.set(incoming);
     });
 
-    this.signalr.connectionType = SignalrServiceConnection.Api;
+    this._signalr.connectionType = SignalrServiceConnection.Api;
 
-    this.signalr.start();
+    this._signalr.start();
 
-    this.log.info('SignalR connection started (Api)');
+    this._log.info('SignalR connection started (Api)');
 
     scope.dispose();
   }
@@ -79,23 +79,23 @@ export class ApiManagementService {
    * Loads the initial API settings, keys and log from the backend.
    */
   loadInitialState(): void {
-    const scope = this.log.beginScope('ApiManagementService.loadInitialState');
+    const scope = this._log.beginScope('ApiManagementService.loadInitialState');
 
-    this.log.info('Loading initial API management state');
+    this._log.info('Loading initial API management state');
 
     this.api.getSettings().subscribe({
       next: (settings) => this.settings.set(settings),
-      error: (err) => this.log.error('Failed to load API settings', err),
+      error: (err) => this._log.error('Failed to load API settings', err),
     });
 
     this.api.getKeys().subscribe({
       next: (keys) => this.keys.set(keys),
-      error: (err) => this.log.error('Failed to load API keys', err),
+      error: (err) => this._log.error('Failed to load API keys', err),
     });
 
     this.api.getLog().subscribe({
-      next: (entries) => this.signalr.liveApiLog.set(entries),
-      error: (err) => this.log.error('Failed to load API log', err),
+      next: (entries) => this._signalr.liveApiLog.set(entries),
+      error: (err) => this._log.error('Failed to load API log', err),
     });
 
     scope.dispose();
@@ -106,15 +106,15 @@ export class ApiManagementService {
    * @param {boolean} allow Whether unauthenticated requests should be allowed.
    */
   setAllowUnauthenticatedRequests(allow: boolean): void {
-    const scope = this.log.beginScope('ApiManagementService.setAllowUnauthenticatedRequests');
+    const scope = this._log.beginScope('ApiManagementService.setAllowUnauthenticatedRequests');
 
     const newSettings: ApiSettings = { allowUnauthenticatedRequests: allow };
 
     this.settings.set(newSettings);
 
     this.api.updateSettings(newSettings).subscribe({
-      next: () => this.log.info('API settings updated via API'),
-      error: (err) => this.log.error('Failed to update API settings', err, newSettings),
+      next: () => this._log.info('API settings updated via API'),
+      error: (err) => this._log.error('Failed to update API settings', err, newSettings),
     });
 
     scope.dispose();
@@ -127,13 +127,11 @@ export class ApiManagementService {
    * @returns {Observable<ApiKeyCreated>} An observable emitting the created {@link ApiKeyCreated}, including the plaintext key.
    */
   createKey(name: string, accessLevel: number): Observable<ApiKeyCreated> {
-    this.log.info('Creating API key', { name, accessLevel });
+    this._log.info('Creating API key', { name, accessLevel });
 
     // Intentionally log no data derived from the created key object: it carries the
     // plaintext key (shown once in the UI) and must never reach the console/log sink.
-    return this.api.createKey(name, accessLevel).pipe(
-      tap(() => this.log.info('API key created')),
-    );
+    return this.api.createKey(name, accessLevel).pipe(tap(() => this._log.info('API key created')));
   }
 
   /**
@@ -141,11 +139,11 @@ export class ApiManagementService {
    * @param {string} id The id of the key to delete.
    */
   deleteKey(id: string): void {
-    this.log.info('Deleting API key', { id });
+    this._log.info('Deleting API key', { id });
 
     this.api.deleteKey(id).subscribe({
-      next: () => this.log.info('API key deleted'),
-      error: (err) => this.log.error('Failed to delete API key', err, { id }),
+      next: () => this._log.info('API key deleted'),
+      error: (err) => this._log.error('Failed to delete API key', err, { id }),
     });
   }
 
@@ -153,13 +151,13 @@ export class ApiManagementService {
    * Clears the API request log.
    */
   clearLog(): void {
-    this.log.info('Clearing API log');
+    this._log.info('Clearing API log');
 
-    this.signalr.liveApiLog.set([]);
+    this._signalr.liveApiLog.set([]);
 
     this.api.clearLog().subscribe({
-      next: () => this.log.info('API log cleared'),
-      error: (err) => this.log.error('Failed to clear API log', err),
+      next: () => this._log.info('API log cleared'),
+      error: (err) => this._log.error('Failed to clear API log', err),
     });
   }
 }
