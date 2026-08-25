@@ -1,6 +1,18 @@
 @use '../dialog-theme.scss';
 
+.is-league-section,
 .division-section,
 .week-section {
   margin-bottom: 1.5rem;
+}
+
+.tourney-format-buttons__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  column-gap: 1rem;
+}
+
+button.toggle-button {
+  width: 5rem;
 }

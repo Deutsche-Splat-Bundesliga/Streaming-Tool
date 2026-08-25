@@ -1,5 +1,32 @@
 <h1 mat-dialog-title>Turniereinstellungen</h1>
 <mat-dialog-content>
+  <section class="is-league-section">
+    <h2>Turnierformat</h2>
+    <div class="tourney-format-buttons__container">
+      <button
+        class="standard-format-button toggle-button"
+        [class.toggled]="!state().isLeague"
+        (click)="
+          stateService.update({
+            isLeague: false,
+          })
+        "
+      >
+        Standard
+      </button>
+      <button
+        class="league-format-button toggle-button"
+        [class.toggled]="state().isLeague"
+        (click)="
+          stateService.update({
+            isLeague: true,
+          })
+        "
+      >
+        Liga
+      </button>
+    </div>
+  </section>
   <section class="division-section">
     <h2>Division</h2>
     <select
