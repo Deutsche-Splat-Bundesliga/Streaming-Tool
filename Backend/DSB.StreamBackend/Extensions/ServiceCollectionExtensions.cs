@@ -36,6 +36,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<BroadcastStateService>();
         services.AddScoped<SocialsService>();
         services.AddScoped<CommentatorBoxTimeDataService>();
+        services.AddScoped<ApiSettingsService>();
+        services.AddScoped<ApiKeyService>();
+        services.AddSingleton<ApiRequestLog>();
 
         services.AddCors(options =>
         {

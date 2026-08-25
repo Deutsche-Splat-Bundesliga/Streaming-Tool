@@ -28,6 +28,7 @@ public class DialogTests : PageTest
         await Expect(Page.Locator(".sidebar .open-streamer-comms-dialog-button")).ToBeVisibleAsync();
         await Expect(Page.Locator(".sidebar .open-comm-box-settings-dialog-button")).ToBeVisibleAsync();
         await Expect(Page.Locator(".sidebar .open-socials-dialog-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".sidebar .open-api-settings-dialog-button")).ToBeVisibleAsync();
     }
 
     [Test]
@@ -147,5 +148,69 @@ public class DialogTests : PageTest
         var colorContainers = Page.Locator(".color-settings-dialog .color-display__container");
         var count = await colorContainers.CountAsync();
         Assert.That(count, Is.GreaterThanOrEqualTo(2), "Color options containers should have at least two container with colors.");
+    }
+
+    [Test]
+    public async Task Dialog_ApiSettings_OpensAndShowsAuthToggle()
+    {
+        var dialogOpenButton = Page.Locator(".sidebar .open-api-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".api-settings-dialog")).ToBeVisibleAsync();
+        await Expect(
+            Page.Locator(".api-settings-dialog app-toggle-slider.toggle-slider-allow-unauthenticated")
+        ).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dialog_ApiSettings_CreateKeyForm_IsVisible()
+    {
+        var dialogOpenButton = Page.Locator(".sidebar .open-api-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".api-settings-dialog .api-key-name-input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".api-settings-dialog .api-key-access-level-select")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".api-settings-dialog .create-api-key-button")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dialog_ApiSettings_LogSection_IsVisible()
+    {
+        var dialogOpenButton = Page.Locator(".sidebar .open-api-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        await Expect(Page.Locator(".api-settings-dialog .api-log-list")).ToBeAttachedAsync();
+        await Expect(Page.Locator(".api-settings-dialog .clear-api-log-button")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dialog_ApiSettings_CreateKey_RevealsPlaintextKeyOnce()
+    {
+        var dialogOpenButton = Page.Locator(".sidebar .open-api-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        var nameInput = Page.Locator(".api-settings-dialog .api-key-name-input");
+        await nameInput.FillAsync("E2E Test Key");
+
+        await Page.Locator(".api-settings-dialog .create-api-key-button").ClickAsync();
+
+        // The plaintext key is revealed exactly once and starts with the "stt_" prefix.
+        var createdKeyCode = Page.Locator(".api-settings-dialog .created-api-key__code");
+        await Expect(createdKeyCode).ToBeVisibleAsync();
+        await Expect(createdKeyCode).ToContainTextAsync("stt_");
+
+        // The key also shows up in the issued-keys list.
+        await Expect(
+            Page.Locator(".api-settings-dialog .api-key-item__name", new() { HasTextString = "E2E Test Key" })
+        ).ToBeVisibleAsync();
+
+        // Clean up: revoke the key we just created so the test is repeatable.
+        await Page.Locator(".api-settings-dialog .api-key-item", new() { HasTextString = "E2E Test Key" })
+            .Locator(".revoke-api-key-button")
+            .ClickAsync(new() { Force = true });
+
+        await Expect(
+            Page.Locator(".api-settings-dialog .api-key-item__name", new() { HasTextString = "E2E Test Key" })
+        ).ToHaveCountAsync(0);
     }
 }

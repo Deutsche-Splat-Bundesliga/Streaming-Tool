@@ -164,6 +164,8 @@ The app uses six primary frontend services.
   - `broadcastStateUpdated`
   - `socialsUpdated`
   - `commentatorBoxTimeDataUpdated`
+  - `apiSettingsUpdated`, `apiKeysUpdated`, `apiLogEntryAdded`, `apiLogCleared` (API management,
+    consumed by the API settings dialog — see [`../backend/api.md`](../backend/api.md))
 
 ### `SignalrEvents`
 
@@ -213,6 +215,18 @@ The app uses six primary frontend services.
   - `get rightTeamName` gets the team name that should be displayed on the right or bottom side
   - `get rightScore` gets the team score that should be displayed on the right or bottom side
 
+### `ApiManagementService`
+
+- Injects `ApiManagementApi` and `Signalr`.
+- Starts SignalR (`Api` connection) and reacts to live API settings, key and log updates.
+- Holds the `settings`, `keys` and `log$` signals (the log is owned by `Signalr.liveApiLog`).
+- Methods:
+  - `loadInitialState()` fetches settings, keys and the session log from the backend.
+  - `setAllowUnauthenticatedRequests(allow)` toggles API authentication.
+  - `createKey(name, accessLevel)` issues a key (plaintext returned once).
+  - `deleteKey(id)` revokes a key; `clearLog()` clears the session log.
+- Surfaced in the Control Panel via the **API-Einstellungen** dialog (opened from the sidebar).
+
 ### `LogService`
 
 - Adds logging capabilities with various levels.
@@ -243,6 +257,15 @@ The `SocialsApi` service uses `HttpClient` to load and update socials.
 - `POST http://localhost:7000/api/commentator-box-time-data/commentator-box-time-data`
 
 The `CommentatorBoxTimeDataApi` service uses `HttpClient` to load and time data socials.
+
+### API Management API
+
+- `GET`/`POST http://localhost:7000/api/api-settings`
+- `GET`/`POST http://localhost:7000/api/api-keys`, `DELETE .../api/api-keys/{id}`
+- `GET`/`DELETE http://localhost:7000/api/api-log`
+
+The `ApiManagementApi` service uses `HttpClient` to manage API authentication settings, API keys and
+the session request log. See [`../backend/api.md`](../backend/api.md) for the full API reference.
 
 ---
 
