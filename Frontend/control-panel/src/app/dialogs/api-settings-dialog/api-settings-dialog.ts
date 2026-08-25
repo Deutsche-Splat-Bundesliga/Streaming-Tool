@@ -20,7 +20,7 @@ import { LogService } from '../../services/log';
   styleUrl: './api-settings-dialog.scss',
 })
 export class ApiSettingsDialog implements OnInit {
-  private readonly log: LogService = inject(LogService);
+  private readonly _log: LogService = inject(LogService);
 
   /**
    * Service managing API settings, keys and the live request log.
@@ -75,7 +75,7 @@ export class ApiSettingsDialog implements OnInit {
     const name = this.newKeyName().trim();
 
     if (!name) {
-      this.log.warn('Cannot create API key without a name');
+      this._log.warn('Cannot create API key without a name');
       return;
     }
 
@@ -85,7 +85,7 @@ export class ApiSettingsDialog implements OnInit {
         this.copied.set(false);
         this.newKeyName.set('');
       },
-      error: (err) => this.log.error('Failed to create API key', err),
+      error: (err) => this._log.error('Failed to create API key', err),
     });
   }
 
@@ -101,7 +101,7 @@ export class ApiSettingsDialog implements OnInit {
       await navigator.clipboard.writeText(created.key);
       this.copied.set(true);
     } catch (err) {
-      this.log.error('Failed to copy API key to clipboard', err);
+      this._log.error('Failed to copy API key to clipboard', err);
     }
   }
 

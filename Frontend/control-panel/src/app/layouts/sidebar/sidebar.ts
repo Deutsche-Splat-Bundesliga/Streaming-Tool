@@ -133,9 +133,9 @@ export class Sidebar implements OnInit, OnDestroy {
    * Handle click event for API settings button that opens the dialog
    */
   handleApiSettingsButtonClick(): void {
-    this.dialog.closeAll();
-    this.log.trace('Opening dialog for API settings');
-    this.dialog.open(ApiSettingsDialog, { panelClass: 'api-settings-dialog' });
+    this._dialog.closeAll();
+    this._log.trace('Opening dialog for API settings');
+    this._dialog.open(ApiSettingsDialog, { panelClass: 'api-settings-dialog' });
   }
 
   /**

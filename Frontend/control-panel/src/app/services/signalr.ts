@@ -60,20 +60,20 @@ export class Signalr {
    * (settings, keys, and the live request log).
    */
   private connectToApi = () => {
-    this.connection?.on('apiSettingsUpdated', (settings: ApiSettings) => {
-      this.log.debug('SignalR apiSettingsUpdated received', settings);
+    this._connection?.on('apiSettingsUpdated', (settings: ApiSettings) => {
+      this._log.debug('SignalR apiSettingsUpdated received', settings);
 
       this.liveApiSettings.set(settings);
     });
 
-    this.connection?.on('apiKeysUpdated', (keys: ApiKey[]) => {
-      this.log.debug('SignalR apiKeysUpdated received', { count: keys.length });
+    this._connection?.on('apiKeysUpdated', (keys: ApiKey[]) => {
+      this._log.debug('SignalR apiKeysUpdated received', { count: keys.length });
 
       this.liveApiKeys.set(keys);
     });
 
-    this.connection?.on('apiLogEntryAdded', (entry: ApiLogEntry) => {
-      this.log.debug('SignalR apiLogEntryAdded received', entry);
+    this._connection?.on('apiLogEntryAdded', (entry: ApiLogEntry) => {
+      this._log.debug('SignalR apiLogEntryAdded received', entry);
 
       const next = [...this.liveApiLog(), entry];
 
@@ -84,8 +84,8 @@ export class Signalr {
       this.liveApiLog.set(next);
     });
 
-    this.connection?.on('apiLogCleared', () => {
-      this.log.debug('SignalR apiLogCleared received');
+    this._connection?.on('apiLogCleared', () => {
+      this._log.debug('SignalR apiLogCleared received');
 
       this.liveApiLog.set([]);
     });

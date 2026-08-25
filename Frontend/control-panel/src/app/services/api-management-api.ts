@@ -14,22 +14,22 @@ import { LogService } from './log';
   providedIn: 'root',
 })
 export class ApiManagementApi {
-  private readonly http: HttpClient = inject(HttpClient);
-  private readonly log: LogService = inject(LogService);
+  private readonly _http: HttpClient = inject(HttpClient);
+  private readonly _log: LogService = inject(LogService);
 
-  private readonly baseUrl: string = 'http://localhost:7000/api';
+  private readonly _baseUrl: string = 'http://localhost:7000/api';
 
   /**
    * Gets the current API settings from the backend.
    * @returns {Observable<ApiSettings>} An observable emitting the current {@link ApiSettings}.
    */
   getSettings(): Observable<ApiSettings> {
-    this.log.debug('GET api-settings request started');
+    this._log.debug('GET api-settings request started');
 
-    return this.http.get<ApiSettings>(`${this.baseUrl}/api-settings`).pipe(
-      tap((result) => this.log.info('GET api-settings successful', result)),
+    return this._http.get<ApiSettings>(`${this._baseUrl}/api-settings`).pipe(
+      tap((result) => this._log.info('GET api-settings successful', result)),
       catchError((err) => {
-        this.log.error('GET api-settings failed', err);
+        this._log.error('GET api-settings failed', err);
         return throwError(() => err);
       }),
     );
@@ -41,12 +41,12 @@ export class ApiManagementApi {
    * @returns {Observable<ApiSettings>} An observable emitting the updated {@link ApiSettings}.
    */
   updateSettings(settings: ApiSettings): Observable<ApiSettings> {
-    this.log.debug('POST api-settings request started', settings);
+    this._log.debug('POST api-settings request started', settings);
 
-    return this.http.post<ApiSettings>(`${this.baseUrl}/api-settings`, settings).pipe(
-      tap((result) => this.log.info('POST api-settings successful', result)),
+    return this._http.post<ApiSettings>(`${this._baseUrl}/api-settings`, settings).pipe(
+      tap((result) => this._log.info('POST api-settings successful', result)),
       catchError((err) => {
-        this.log.error('POST api-settings failed', err, settings);
+        this._log.error('POST api-settings failed', err, settings);
         return throwError(() => err);
       }),
     );
@@ -57,12 +57,12 @@ export class ApiManagementApi {
    * @returns {Observable<ApiKey[]>} An observable emitting the list of issued {@link ApiKey}s.
    */
   getKeys(): Observable<ApiKey[]> {
-    this.log.debug('GET api-keys request started');
+    this._log.debug('GET api-keys request started');
 
-    return this.http.get<ApiKey[]>(`${this.baseUrl}/api-keys`).pipe(
-      tap((result) => this.log.info('GET api-keys successful', { count: result.length })),
+    return this._http.get<ApiKey[]>(`${this._baseUrl}/api-keys`).pipe(
+      tap((result) => this._log.info('GET api-keys successful', { count: result.length })),
       catchError((err) => {
-        this.log.error('GET api-keys failed', err);
+        this._log.error('GET api-keys failed', err);
         return throwError(() => err);
       }),
     );
@@ -75,14 +75,14 @@ export class ApiManagementApi {
    * @returns {Observable<ApiKeyCreated>} An observable emitting the created {@link ApiKeyCreated}, including the plaintext key.
    */
   createKey(name: string, accessLevel: number): Observable<ApiKeyCreated> {
-    this.log.debug('POST api-keys request started', { name, accessLevel });
+    this._log.debug('POST api-keys request started', { name, accessLevel });
 
     // The response carries the plaintext key (shown once in the UI). Do not log any field
     // derived from it, so the secret can never reach the console/log sink.
-    return this.http.post<ApiKeyCreated>(`${this.baseUrl}/api-keys`, { name, accessLevel }).pipe(
-      tap(() => this.log.info('POST api-keys successful')),
+    return this._http.post<ApiKeyCreated>(`${this._baseUrl}/api-keys`, { name, accessLevel }).pipe(
+      tap(() => this._log.info('POST api-keys successful')),
       catchError((err) => {
-        this.log.error('POST api-keys failed', err, { name, accessLevel });
+        this._log.error('POST api-keys failed', err, { name, accessLevel });
         return throwError(() => err);
       }),
     );
@@ -94,12 +94,12 @@ export class ApiManagementApi {
    * @returns {Observable<void>} An observable that completes once the key has been deleted.
    */
   deleteKey(id: string): Observable<void> {
-    this.log.debug('DELETE api-keys request started', { id });
+    this._log.debug('DELETE api-keys request started', { id });
 
-    return this.http.delete<void>(`${this.baseUrl}/api-keys/${id}`).pipe(
-      tap(() => this.log.info('DELETE api-keys successful', { id })),
+    return this._http.delete<void>(`${this._baseUrl}/api-keys/${id}`).pipe(
+      tap(() => this._log.info('DELETE api-keys successful', { id })),
       catchError((err) => {
-        this.log.error('DELETE api-keys failed', err, { id });
+        this._log.error('DELETE api-keys failed', err, { id });
         return throwError(() => err);
       }),
     );
@@ -110,12 +110,12 @@ export class ApiManagementApi {
    * @returns {Observable<ApiLogEntry[]>} An observable emitting the list of {@link ApiLogEntry}s, oldest first.
    */
   getLog(): Observable<ApiLogEntry[]> {
-    this.log.debug('GET api-log request started');
+    this._log.debug('GET api-log request started');
 
-    return this.http.get<ApiLogEntry[]>(`${this.baseUrl}/api-log`).pipe(
-      tap((result) => this.log.info('GET api-log successful', { count: result.length })),
+    return this._http.get<ApiLogEntry[]>(`${this._baseUrl}/api-log`).pipe(
+      tap((result) => this._log.info('GET api-log successful', { count: result.length })),
       catchError((err) => {
-        this.log.error('GET api-log failed', err);
+        this._log.error('GET api-log failed', err);
         return throwError(() => err);
       }),
     );
@@ -126,12 +126,12 @@ export class ApiManagementApi {
    * @returns {Observable<void>} An observable that completes once the log has been cleared.
    */
   clearLog(): Observable<void> {
-    this.log.debug('DELETE api-log request started');
+    this._log.debug('DELETE api-log request started');
 
-    return this.http.delete<void>(`${this.baseUrl}/api-log`).pipe(
-      tap(() => this.log.info('DELETE api-log successful')),
+    return this._http.delete<void>(`${this._baseUrl}/api-log`).pipe(
+      tap(() => this._log.info('DELETE api-log successful')),
       catchError((err) => {
-        this.log.error('DELETE api-log failed', err);
+        this._log.error('DELETE api-log failed', err);
         return throwError(() => err);
       }),
     );
