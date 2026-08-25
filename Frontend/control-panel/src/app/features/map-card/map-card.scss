@@ -66,17 +66,18 @@
 
 select {
   padding: 0.625rem;
-  border: none;
-  border-radius: 0.625rem;
-  background: #343744;
-  color: white;
   height: 2.25rem;
   width: 10.25rem;
-  font-weight: bolder;
-  cursor: pointer;
+  font-weight: 700;
 }
 
-.team-button {
+button {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+button.team-button {
   background: #3d3d3d;
   color: white;
   border: none;
@@ -85,51 +86,51 @@ select {
   width: 8.75rem;
   font-weight: 900;
   letter-spacing: 0.05em;
-  cursor: pointer;
+
+  &.button-alpha-color {
+    border: 0.125rem solid var(--team-alpha-color);
+
+    &.toggled {
+      background-color: var(--team-alpha-color);
+    }
+  }
+
+  &.button-bravo-color {
+    border: 0.125rem solid var(--team-bravo-color);
+
+    &.toggled {
+      background-color: var(--team-bravo-color);
+    }
+  }
+
+  &:disabled {
+    filter: brightness(50%);
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
 }
 
-.team-button[disabled] {
-  filter: brightness(50%);
-  cursor: default;
-}
-
-.team-button.button-alpha-color {
-  border: 0.125rem solid var(--team-alpha-color);
-}
-
-.team-button.button-bravo-color {
-  border: 0.125rem solid var(--team-bravo-color);
-}
-
-.toggled.button-alpha-color {
-  background: var(--team-alpha-color);
-}
-
-.toggled.button-bravo-color {
-  background: var(--team-bravo-color);
-}
-
-.edit-button {
+button.edit-button {
   background: #d9d9d9;
   border: none;
   border-radius: 0.625rem;
   height: 2.25rem;
   width: 5.625rem;
-  font-weight: bolder;
-  cursor: pointer;
+  font-weight: 700;
 }
 
-.counterpick-button {
+button.counterpick-button {
   background-color: #343744;
   border: 0.125rem solid #d9d9d9;
   border-radius: 0.625rem;
   height: 2.25rem;
   color: white;
-  font-weight: bolder;
-  cursor: pointer;
+  font-weight: 700;
 }
 
-.counterpick .counterpick-button {
+.counterpick button.counterpick-button {
   background-color: #d9d9d9;
   color: black;
 }

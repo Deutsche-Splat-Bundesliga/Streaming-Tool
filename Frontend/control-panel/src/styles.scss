@@ -36,3 +36,42 @@ body {
 * {
   box-sizing: border-box;
 }
+
+input {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.625rem;
+  background: #343744;
+  color: white;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+select {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.625rem;
+  background: #343744;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
