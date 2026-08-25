@@ -79,25 +79,28 @@ The entire Broadcast State is held in the database as **a single row** (`Broadca
 
 ### `BroadcastStates` (1 Column)
 
-| Column               | Type       | Description                              |
-| -------------------- | ---------- | ---------------------------------------- |
-| `Id`                 | `int`      | Always `1` (Singleton)                   |
-| `TeamAlphaName`      | `string`   | Name Team Alpha                          |
-| `TeamBravoName`      | `string`   | Name Team Bravo                          |
-| `AlphaIsLeft`        | `bool`     | Side Display Alpha                       |
-| `ScoreAlpha`         | `int`      | Point Score Alpha                        |
-| `ScoreBravo`         | `int`      | Point Score Bravo                        |
-| `Streamer`           | `string`   | Streamer Name                            |
-| `Commentator1/2`     | `string`   | Commentator Names                        |
-| `ShowMapScreen`      | `bool`     | Overlay Visibility                       |
-| `ShowScoreBox`       | `bool`     |                                          |
-| `ShowCommentatorBox` | `bool`     |                                          |
-| `ShowInfobox`        | `bool`     |                                          |
-| `Season`             | `int`      | Current Season                           |
-| `Division`           | `int`      | Current Division                         |
-| `StartTime`          | `DateTime` | Start time of the next match             |
-| `CurrentColorsId`    | `int`      | Current id of the displayed match colors |
-| `ColorLockActive`    | `boolean`  |                                          |
+| Column               | Type       | Description                                                                    |
+| -------------------- | ---------- | ------------------------------------------------------------------------------ |
+| `Id`                 | `int`      | Always `1` (Singleton)                                                         |
+| `TeamAlphaName`      | `string`   | Name Team Alpha                                                                |
+| `TeamBravoName`      | `string`   | Name Team Bravo                                                                |
+| `AlphaIsLeft`        | `bool`     | Side Display Alpha                                                             |
+| `ScoreAlpha`         | `int`      | Point Score Alpha                                                              |
+| `ScoreBravo`         | `int`      | Point Score Bravo                                                              |
+| `Streamer`           | `string`   | Streamer Name                                                                  |
+| `Commentator1/2`     | `string`   | Commentator Names                                                              |
+| `ShowMapScreen`      | `bool`     | Overlay Visibility                                                             |
+| `ShowScoreBox`       | `bool`     |                                                                                |
+| `ShowCommentatorBox` | `bool`     |                                                                                |
+| `ShowInfobox`        | `bool`     |                                                                                |
+| `Season`             | `int`      | Current Season                                                                 |
+| `Division`           | `int`      | Current Division                                                               |
+| `StartTime`          | `DateTime` | Start time of the next match                                                   |
+| `CurrentColorsId`    | `int`      | Current id of the displayed match colors                                       |
+| `ColorLockActive`    | `boolean`  |                                                                                |
+| `IsLeague`           | `boolean`  | Boolean that defines if the current bracket format is a league or a tournament |
+| `TournamentName`     | `string`   |                                                                                |
+| `BracketName`        | `string`   |                                                                                |
 
 ### `MapStates` (0..N Columns)
 
@@ -141,15 +144,15 @@ Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASC
 
 Only a hash of each key is stored; the plaintext is shown once at creation. See [`api.md`](./api.md).
 
-| Column        | Type                  | Description                                                    |
-| ------------- | --------------------- | ---------------------------------------------------------------|
-| `Id`          | `Guid`                | Primary Key                                                     |
-| `Name`        | `string`               | Human-readable name (e.g. "Stream Deck")                       |
-| `KeyPrefix`   | `string`               | First 12 chars of the key for display (`stt_…`)                |
-| `KeyHash`     | `string`               | SHA-256 hash (hex) of the plaintext key                        |
-| `AccessLevel` | `ApiKeyAccessLevel`    | `ReadOnly` (0) or `ReadWrite` (1), serialized as `int` over JSON |
-| `CreatedAt`   | `DateTime`             | Creation time (UTC)                                             |
-| `LastUsedAt`  | `DateTime?`            | Last time the key authenticated a request, or null              |
+| Column        | Type                | Description                                                      |
+| ------------- | ------------------- | ---------------------------------------------------------------- |
+| `Id`          | `Guid`              | Primary Key                                                      |
+| `Name`        | `string`            | Human-readable name (e.g. "Stream Deck")                         |
+| `KeyPrefix`   | `string`            | First 12 chars of the key for display (`stt_…`)                  |
+| `KeyHash`     | `string`            | SHA-256 hash (hex) of the plaintext key                          |
+| `AccessLevel` | `ApiKeyAccessLevel` | `ReadOnly` (0) or `ReadWrite` (1), serialized as `int` over JSON |
+| `CreatedAt`   | `DateTime`          | Creation time (UTC)                                              |
+| `LastUsedAt`  | `DateTime?`         | Last time the key authenticated a request, or null               |
 
 ---
 
@@ -222,15 +225,15 @@ public interface IOverlayClient
 }
 ```
 
-| Event                           | Triggered By                          | Payload                     |
-| ------------------------------- | ------------------------------------- | --------------------------- |
-| `BroadcastStateUpdated`         | `POST /api/broadcast/state`           | `BroadcastStateDto`         |
-| `socialsUpdated`                | `POST /api/socials/socials`           | `SocialsDto`                |
-| `commentatorBoxTimeDataUpdated` | `POST /api/broadcast/state`           | `CommentatorBoxTimeDataDto` |
-| `apiSettingsUpdated`            | `POST /api/api-settings`              | `ApiSettingsDto`            |
-| `apiKeysUpdated`                | `POST`/`DELETE /api/api-keys`         | `ApiKeyDto[]`               |
-| `apiLogEntryAdded`              | Any handled `/api` request            | `ApiLogEntryDto`            |
-| `apiLogCleared`                 | `DELETE /api/api-log`                 | *(none)*                    |
+| Event                           | Triggered By                  | Payload                     |
+| ------------------------------- | ----------------------------- | --------------------------- |
+| `BroadcastStateUpdated`         | `POST /api/broadcast/state`   | `BroadcastStateDto`         |
+| `socialsUpdated`                | `POST /api/socials/socials`   | `SocialsDto`                |
+| `commentatorBoxTimeDataUpdated` | `POST /api/broadcast/state`   | `CommentatorBoxTimeDataDto` |
+| `apiSettingsUpdated`            | `POST /api/api-settings`      | `ApiSettingsDto`            |
+| `apiKeysUpdated`                | `POST`/`DELETE /api/api-keys` | `ApiKeyDto[]`               |
+| `apiLogEntryAdded`              | Any handled `/api` request    | `ApiLogEntryDto`            |
+| `apiLogCleared`                 | `DELETE /api/api-log`         | _(none)_                    |
 
 The `api*` events keep the Control Panel's **API-Einstellungen** dialog in sync live — settings,
 issued keys and the request log update immediately regardless of which client triggered the change.
