@@ -31,6 +31,9 @@ describe('Sidebar', () => {
     division: 1,
     startTime: new Date(),
     week: 1,
+    isLeague: false,
+    tournamentName: '',
+    bracketName: '',
     currentColorsId: 0,
     colorLockActive: false,
   };
@@ -107,6 +110,9 @@ describe('Sidebar', () => {
       season: 11,
       division: 2,
       week: 5,
+      isLeague: true,
+      tournamentName: 'Test Tournament',
+      bracketName: 'Test Bracket',
     };
 
     mockState.set(updatedState);
