@@ -83,17 +83,17 @@ export class ApiManagementService {
 
     this._log.info('Loading initial API management state');
 
-    this.api.getSettings().subscribe({
+    this._api.getSettings().subscribe({
       next: (settings) => this.settings.set(settings),
       error: (err) => this._log.error('Failed to load API settings', err),
     });
 
-    this.api.getKeys().subscribe({
+    this._api.getKeys().subscribe({
       next: (keys) => this.keys.set(keys),
       error: (err) => this._log.error('Failed to load API keys', err),
     });
 
-    this.api.getLog().subscribe({
+    this._api.getLog().subscribe({
       next: (entries) => this._signalr.liveApiLog.set(entries),
       error: (err) => this._log.error('Failed to load API log', err),
     });
@@ -112,7 +112,7 @@ export class ApiManagementService {
 
     this.settings.set(newSettings);
 
-    this.api.updateSettings(newSettings).subscribe({
+    this._api.updateSettings(newSettings).subscribe({
       next: () => this._log.info('API settings updated via API'),
       error: (err) => this._log.error('Failed to update API settings', err, newSettings),
     });
@@ -131,7 +131,9 @@ export class ApiManagementService {
 
     // Intentionally log no data derived from the created key object: it carries the
     // plaintext key (shown once in the UI) and must never reach the console/log sink.
-    return this.api.createKey(name, accessLevel).pipe(tap(() => this._log.info('API key created')));
+    return this._api
+      .createKey(name, accessLevel)
+      .pipe(tap(() => this._log.info('API key created')));
   }
 
   /**
@@ -141,7 +143,7 @@ export class ApiManagementService {
   deleteKey(id: string): void {
     this._log.info('Deleting API key', { id });
 
-    this.api.deleteKey(id).subscribe({
+    this._api.deleteKey(id).subscribe({
       next: () => this._log.info('API key deleted'),
       error: (err) => this._log.error('Failed to delete API key', err, { id }),
     });
@@ -155,7 +157,7 @@ export class ApiManagementService {
 
     this._signalr.liveApiLog.set([]);
 
-    this.api.clearLog().subscribe({
+    this._api.clearLog().subscribe({
       next: () => this._log.info('API log cleared'),
       error: (err) => this._log.error('Failed to clear API log', err),
     });
