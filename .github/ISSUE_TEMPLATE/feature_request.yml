@@ -32,6 +32,7 @@ body:
       - Backend
       - Deployment / Infrastructure
       - Documentation
+      multiple: true
     validations:
       required: true
   - type: dropdown
@@ -46,6 +47,7 @@ body:
       - Info-Box Overlay
       - SignalR Updates
       - Settings / Configuration
+      multiple: true
     validations:
       required: true
   - type: textarea
