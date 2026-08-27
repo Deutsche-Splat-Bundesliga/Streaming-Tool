@@ -28,54 +28,6 @@
     </div>
   </section>
 
-  <section class="tournament-name-section">
-    <h2>Turniername</h2>
-    <input
-      placeholder="Turniername"
-      type="text"
-      [ngModel]="state().tournamentName"
-      (ngModelChange)="
-        stateService.update({
-          tournamentName: $event,
-        })
-      "
-      maxlength="30"
-    />
-  </section>
-
-  @if (state().isLeague) {
-    <section class="division-section">
-      <h2>Division</h2>
-      <select
-        [ngModel]="state().division"
-        (ngModelChange)="
-          stateService.update({
-            division: $event,
-          })
-        "
-      >
-        @for (division of availableDivisions; track division) {
-          <option [ngValue]="division.id">
-            {{ division.name }}
-          </option>
-        }
-      </select>
-    </section>
-
-    <section class="week-section">
-      <h2>Woche</h2>
-      <input
-        type="number"
-        [ngModel]="state().week"
-        (ngModelChange)="
-          stateService.update({
-            week: $event,
-          })
-        "
-      />
-    </section>
-  }
-
   <section class="start-time-section">
     <h2>Startzeit</h2>
     <input

@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
-import { Division } from '../../models/division';
 
 @Component({
   selector: 'app-tourney-settings-dialog',
@@ -21,9 +20,4 @@ export class TourneySettingsDialog {
    * Writable signal representing the current broadcast state.
    */
   state: WritableSignal<BroadcastState> = this.stateService.state;
-
-  /**
-   * Available divisions for the broadcast state.
-   */
-  availableDivisions: Division[] = this.stateService.availableDivisions;
 }
