@@ -1,26 +1,4 @@
 <div class="sidebar">
-  <section>
-    <h2>Teams</h2>
-    <input
-      [ngModel]="state().teamAlphaName"
-      (ngModelChange)="
-        stateService.update({
-          teamAlphaName: $event,
-        })
-      "
-      maxLength="30"
-    />
-    <input
-      [ngModel]="state().teamBravoName"
-      (ngModelChange)="
-        stateService.update({
-          teamBravoName: $event,
-        })
-      "
-      maxLength="30"
-    />
-  </section>
-
   @if (!state().isLeague) {
     <section>
       <h2>Bracket</h2>
