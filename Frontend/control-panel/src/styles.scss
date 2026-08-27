@@ -43,6 +43,14 @@ input {
   border-radius: 0.625rem;
   background: #343744;
   color: white;
+
+  &[type='number'] {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      display: none;
+      margin: 0;
+    }
+  }
 }
 
 label {
