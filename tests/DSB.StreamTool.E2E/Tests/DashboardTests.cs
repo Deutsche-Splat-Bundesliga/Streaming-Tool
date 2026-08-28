@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 
 namespace DSB.StreamTool.E2E.Tests;
@@ -17,7 +19,35 @@ public class DashboardTests : PageTest
     {
         await Page.GotoAsync(BaseUrl);
         await Expect(Page.Locator(".topbar")).ToBeVisibleAsync();
-        await Expect(Page.Locator(".topbar .title")).ToContainTextAsync("Deutsche Splatoon Bundesliga");
+        await Expect(Page.Locator(".topbar .tournament-name-input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".topbar .tournament-info-section")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".topbar .team-alpha-name-input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".topbar .team-bravo-name-input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".topbar .score")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dashboard_Loads_TopbarLeagueFormat()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await TourneySettingsDialog_ClickTourneyFormatButton(Page, "league-format-button");
+
+        await Expect(Page.Locator(".topbar .season-input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".topbar .week-input")).ToBeVisibleAsync();
+
+        await Expect(Page.Locator(".topbar .division-select")).ToBeVisibleAsync();
+        var options = Page.Locator(".topbar .division-select option");
+        var count = await options.CountAsync();
+        Assert.That(count, Is.GreaterThan(0), "Division select should have at least one option.");
+    }
+
+    [Test]
+    public async Task Dashboard_Loads_TopbarStandardFormat()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await TourneySettingsDialog_ClickTourneyFormatButton(Page, "standard-format-button");
+
+        await Expect(Page.Locator(".topbar .bracket-name-input")).ToBeVisibleAsync();
     }
 
     [Test]
@@ -144,10 +174,28 @@ public class DashboardTests : PageTest
         await Expect(Page.Locator(".map-card .settings__container select").First).ToBeVisibleAsync();
     }
 
-    [Test]
-    public async Task Dashboard_Topbar_ShowsScoreDisplay()
+    /// <summary>
+    /// Clicks the tournament format button to test topbar settings
+    /// </summary>
+    /// <param name="currentPage">Current page that the tester is running on</param>
+    /// <param name="ButtonClass">Class of button to be clicked</param>
+    public async Task TourneySettingsDialog_ClickTourneyFormatButton(IPage currentPage, string ButtonClass)
     {
-        await Page.GotoAsync(BaseUrl);
-        await Expect(Page.Locator(".topbar .score")).ToBeVisibleAsync();
+        var dialogOpenButton = currentPage.Locator(".sidebar .open-tourney-settings-dialog-button");
+        await dialogOpenButton.ClickAsync();
+
+        var formatButton = currentPage.Locator($".tourney-settings-dialog .{ButtonClass}");
+        await Expect(formatButton).ToBeVisibleAsync();
+
+        var formatButtonIsActive = await formatButton.EvaluateAsync<bool>("el => el.classList.contains('toggled')");
+        if (!formatButtonIsActive)
+        {
+            await formatButton.ClickAsync();
+            await Expect(formatButton).ToHaveClassAsync(new Regex(@"\btoggled\b"));
+        }
+
+        var closeButton = currentPage.Locator(".tourney-settings-dialog mat-dialog-actions .click-button");
+        await Expect(closeButton).ToBeVisibleAsync();
+        await closeButton.ClickAsync();
     }
 }
