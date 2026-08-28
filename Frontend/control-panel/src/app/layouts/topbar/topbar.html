@@ -21,6 +21,7 @@
     @if (state().isLeague) {
       <span class="info-text">Season</span>
       <input
+        class="season-input"
         type="number"
         [ngModel]="state().season"
         (ngModelChange)="
@@ -34,6 +35,7 @@
       <span class="info-text">Woche</span>
 
       <input
+        class="week-input"
         type="number"
         [ngModel]="state().week"
         (ngModelChange)="
