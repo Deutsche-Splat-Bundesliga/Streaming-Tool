@@ -1,20 +1,4 @@
 <div class="sidebar">
-  @if (!state().isLeague) {
-    <section>
-      <h2>Bracket</h2>
-      <input
-        placeholder="Winners Finals"
-        [ngModel]="state().bracketName"
-        (ngModelChange)="
-          stateService.update({
-            bracketName: $event,
-          })
-        "
-        maxlength="30"
-      />
-    </section>
-  }
-
   <section>
     <h2>Farben</h2>
     @if (!state().colorLockActive) {
