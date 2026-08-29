@@ -6,7 +6,7 @@ import {
   NgZone,
   WritableSignal,
   OnDestroy,
-  afterEveryRender,
+  afterNextRender,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BroadcastState } from './models/broadcast-state';
@@ -111,7 +111,7 @@ export class App implements OnDestroy {
   /**
    * Effect that fires after every page render to get the last selected active language from local storage and to set it in transloco
    */
-  private _currentLanguageEffect = afterEveryRender(() => {
+  private _currentLanguageEffect = afterNextRender(() => {
     const currentLanguage = localStorage.getItem('currentLanguage');
     if (currentLanguage) {
       this._translocoService.setActiveLang(currentLanguage);
