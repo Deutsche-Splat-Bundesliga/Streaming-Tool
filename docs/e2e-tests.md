@@ -75,22 +75,24 @@ dotnet test DSB.StreamTool.sln
 
 Covers the main control panel page at `/`.
 
-| Test                                         | What it verifies                                                      |
-| -------------------------------------------- | --------------------------------------------------------------------- |
-| `Dashboard_Loads_ShowsTopbar`                | Topbar is visible and contains "Deutsche Splatoon Bundesliga"         |
-| `Dashboard_Loads_TopbarLeagueFormat`         | Click league format button and verify if correct inputs are visible   |
-| `Dashboard_Loads_TopbarStandardFormat`       | Click standard format button and verify if correct inputs are visible |
-| `Dashboard_Loads_ShowsSidebar`               | Sidebar is visible                                                    |
-| `Dashboard_Loads_ShowsDashboardContainer`    | Dashboard container is rendered                                       |
-| `Dashboard_Loads_ShowsAddMapButton`          | "Add Map" button is present and labelled correctly                    |
-| `Dashboard_AddMap_IncreasesMapCardCount`     | Clicking "Add Map" adds exactly one new map card                      |
-| `Dashboard_MapCard_ShowsTeamButtons`         | Each map card shows the alpha/bravo team buttons                      |
-| `Dashboard_MapCard_ShowsEditButton`          | Each map card shows the "Bearbeiten" button                           |
-| `Dashboard_MapCard_EditButton_OpensEditMenu` | Clicking "Bearbeiten" renders the edit menu                           |
-| `Dashboard_MapCard_EditMenu_CanBeClosed`     | Clicking ✖ removes the edit menu from the DOM                         |
-| `Dashboard_MapCard_MapSelect_IsVisible`      | The map dropdown inside each card is visible                          |
-| `Dashboard_Topbar_ShowsScoreDisplay`         | Score display area in the topbar is rendered                          |
-| `Dashboard_MapCard_ShowsCounterpickButton`   | Counterpick button in map card is rendered                            |
+| Test                                            | What it verifies                                                      |
+| ----------------------------------------------- | --------------------------------------------------------------------- |
+| `Dashboard_Loads_ShowsTopbar`                   | Topbar is visible and contains "Deutsche Splatoon Bundesliga"         |
+| `Dashboard_Loads_TopbarLeagueFormat`            | Click league format button and verify if correct inputs are visible   |
+| `Dashboard_Loads_TopbarStandardFormat`          | Click standard format button and verify if correct inputs are visible |
+| `Dashboard_Loads_ShowsSidebar`                  | Sidebar is visible                                                    |
+| `Dashboard_Loads_ShowsDashboardContainer`       | Dashboard container is rendered                                       |
+| `Dashboard_Loads_ShowsAddMapButton`             | "Add Map" button is present and labelled correctly                    |
+| `Dashboard_Topbar_Teams_BothInputsAreVisible`   | Verifes that both team name inputs in topbar are visible              |
+| `Dashboard_Topbar_Teams_InputsRespectMaxLength` | Verifes that both team name inputs respect the max length of inputs   |
+| `Dashboard_AddMap_IncreasesMapCardCount`        | Clicking "Add Map" adds exactly one new map card                      |
+| `Dashboard_MapCard_ShowsTeamButtons`            | Each map card shows the alpha/bravo team buttons                      |
+| `Dashboard_MapCard_ShowsEditButton`             | Each map card shows the "Bearbeiten" button                           |
+| `Dashboard_MapCard_EditButton_OpensEditMenu`    | Clicking "Bearbeiten" renders the edit menu                           |
+| `Dashboard_MapCard_EditMenu_CanBeClosed`        | Clicking ✖ removes the edit menu from the DOM                         |
+| `Dashboard_MapCard_MapSelect_IsVisible`         | The map dropdown inside each card is visible                          |
+| `Dashboard_Topbar_ShowsScoreDisplay`            | Score display area in the topbar is rendered                          |
+| `Dashboard_MapCard_ShowsCounterpickButton`      | Counterpick button in map card is rendered                            |
 
 > [!NOTE]
 > **Edit menu selector:** The `app-edit-card` Angular host element uses `display: inline` with no layout size. The inner `<div class="edit-menu">` (which has `position: absolute; width: 350px; height: 190px`) is used for the visibility assertion instead. For the "closed" assertion, `app-edit-card` itself is checked since Angular's `@if` removes the host element from the DOM entirely when the menu is closed.

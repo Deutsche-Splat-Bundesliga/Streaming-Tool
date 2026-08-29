@@ -51,6 +51,34 @@ public class DashboardTests : PageTest
     }
 
     [Test]
+    public async Task Dashboard_Topbar_Teams_BothInputsAreVisible()
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Expect(Page.Locator(".topbar .team-alpha-name-input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".topbar .team-bravo-name-input")).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task Dashboard_Topbar_Teams_InputsRespectMaxLength()
+    {
+        await Page.GotoAsync(BaseUrl);
+
+        var alphaInput = Page.Locator(".topbar .team-alpha-name-input");
+        var bravoInput = Page.Locator(".topbar .team-bravo-name-input");
+        // maxLength is 30 characters
+        await alphaInput.ClearAsync();
+        await alphaInput.FillAsync("1WayTooLongTeamNameHereSeriously");
+
+        await bravoInput.ClearAsync();
+        await bravoInput.FillAsync("2WayTooLongTeamNameHereSeriously");
+
+        var alphaValue = await alphaInput.InputValueAsync();
+        var bravoValue = await bravoInput.InputValueAsync();
+        Assert.That(alphaValue.Length, Is.LessThanOrEqualTo(30), "Team alpha name should be capped at 30 characters.");
+        Assert.That(bravoValue.Length, Is.LessThanOrEqualTo(30), "Team bravo name should be capped at 30 characters.");
+    }
+
+    [Test]
     public async Task Dashboard_Loads_ShowsSidebar()
     {
         await Page.GotoAsync(BaseUrl);
