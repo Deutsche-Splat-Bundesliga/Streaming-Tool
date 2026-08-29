@@ -17,6 +17,7 @@ import { TourneySettingsDialog } from '../../dialogs/tourney-settings-dialog/tou
 import { StreamerCommsDialog } from '../../dialogs/streamer-comms-dialog/streamer-comms-dialog';
 import { CommBoxSettingsDialog } from '../../dialogs/comm-box-settings-dialog/comm-box-settings-dialog';
 import { ApiSettingsDialog } from '../../dialogs/api-settings-dialog/api-settings-dialog';
+import { SettingsDialog } from '../../dialogs/settings-dialog/settings-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -136,6 +137,15 @@ export class Sidebar implements OnInit, OnDestroy {
     this._dialog.closeAll();
     this._log.trace('Opening dialog for API settings');
     this._dialog.open(ApiSettingsDialog, { panelClass: 'api-settings-dialog' });
+  }
+
+  /**
+   * Handle click event for settings button that opens the dialog
+   */
+  handleSettingsButtonClick(): void {
+    this._dialog.closeAll();
+    this._log.trace('Opening dialog for settings');
+    this._dialog.open(SettingsDialog, { panelClass: 'settings-dialog' });
   }
 
   /**
