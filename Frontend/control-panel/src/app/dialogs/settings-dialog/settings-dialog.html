@@ -1,0 +1,14 @@
+<main *transloco="let t">
+  <h1 mat-dialog-title>Einstellungen</h1>
+  <mat-dialog-content>
+    <h2>Sprache</h2>
+    <select [ngModel]="currentLanguage" (ngModelChange)="onLanguageChange($event)">
+      @for (language of availableLanguages; track language) {
+        <option [ngValue]="language">{{ t(language) }}</option>
+      }
+    </select>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="click-button" mat-dialog-close>✖</button>
+  </mat-dialog-actions>
+</main>
