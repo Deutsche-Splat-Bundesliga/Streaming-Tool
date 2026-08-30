@@ -32,6 +32,8 @@
   "button.api-settings": "API {{text.settings}}",
   "button.blend-mode-manual": "Manual",
   "button.blend-mode-auto": "Automatic",
+  "button.edit-map": "Edit",
+  "button.counterpick": "Counterpick",
 
   "map.scorch-gorge": "Scorch Gorge",
   "map.eeltail-alley": "Eeltail Alley",

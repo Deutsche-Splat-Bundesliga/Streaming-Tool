@@ -9,10 +9,11 @@ import { Mode } from '../../models/mode';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-map-card',
-  imports: [FormsModule, EditCard, NgClass],
+  imports: [FormsModule, EditCard, NgClass, TranslocoDirective],
   templateUrl: './map-card.html',
   styleUrl: './map-card.scss',
 })

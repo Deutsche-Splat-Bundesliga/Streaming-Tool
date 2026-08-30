@@ -1,5 +1,14 @@
-<div class="map-card" [class.counterpick]="!map.isVisible" [class.map-won]="map.winner !== null">
-  <img class="map-image" [src]="'assets/maps/' + map.mapId + '.png'" alt="{{ map.mapId }}" />
+<div
+  class="map-card"
+  [class.counterpick]="!map.isVisible"
+  [class.map-won]="map.winner !== null"
+  *transloco="let t"
+>
+  <img
+    class="map-image"
+    [src]="'assets/maps/' + map.mapId + '.png'"
+    alt="{{ t('map.' + map.mapId) }}"
+  />
   <div class="overlay">
     <div class="controls" [class.alpha-is-left]="state().alphaIsLeft">
       <button
@@ -22,7 +31,9 @@
       </button>
     </div>
     <div class="settings__container">
-      <button class="counterpick-button" (click)="handleCounterPickClick()">Counterpick</button>
+      <button class="counterpick-button" (click)="handleCounterPickClick()">
+        {{ t('button.counterpick') }}
+      </button>
       <img class="mode-image" [src]="'assets/modes/' + map.modeId + '.png'" alt="Mode Icon" />
     </div>
     <div class="settings__container">
@@ -33,7 +44,7 @@
           </option>
         }
       </select>
-      <button class="edit-button" (click)="openEditMenu()">Bearbeiten</button>
+      <button class="edit-button" (click)="openEditMenu()">{{ t('button.edit-map') }}</button>
     </div>
     @if (showEditMenu) {
       <app-edit-card

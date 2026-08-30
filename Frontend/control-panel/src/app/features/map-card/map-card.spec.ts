@@ -9,6 +9,7 @@ import { MapState } from '../../models/map-state';
 import { Map } from '../../models/map';
 import { Mode } from '../../models/mode';
 import { LogService } from '../../services/log';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('MapCard', () => {
   let component: MapCard;
@@ -103,7 +104,7 @@ describe('MapCard', () => {
     mockState.set(defaultState);
 
     await TestBed.configureTestingModule({
-      imports: [MapCard],
+      imports: [MapCard, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,

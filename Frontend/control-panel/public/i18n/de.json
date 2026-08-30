@@ -32,6 +32,8 @@
   "button.api-settings": "API-{{text.settings}}",
   "button.blend-mode-manual": "Manuell",
   "button.blend-mode-auto": "Automatisch",
+  "button.edit-map": "Bearbeiten",
+  "button.counterpick": "Counterpick",
 
   "map.scorch-gorge": "Sengkluft",
   "map.eeltail-alley": "Streifenaal-Straße",
