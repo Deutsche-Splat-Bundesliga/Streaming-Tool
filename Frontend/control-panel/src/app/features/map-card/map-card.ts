@@ -43,13 +43,9 @@ export class MapCard implements OnInit, OnDestroy {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
-   * Available maps sorted alphabetically by name.
+   * Available maps signal from broadcast state that gets the translated and alphabetically sorted maps
    */
-  availableMaps: Map[] = this.stateService.availableMaps.sort((a, b) => {
-    if (a.mapName < b.mapName) return -1;
-    if (a.mapName > b.mapName) return 1;
-    return 0;
-  });
+  availableMaps: WritableSignal<Map[]> = this.stateService.availableMaps;
 
   /**
    * Available modes for map selection.
@@ -186,7 +182,7 @@ export class MapCard implements OnInit, OnDestroy {
       currentMapId: this.map.id,
     });
 
-    const selected = this.availableMaps.find((m) => m.id === mapId);
+    const selected = this.availableMaps().find((m) => m.id === mapId);
 
     if (!selected) {
       this._log.error('Selected map not found', {

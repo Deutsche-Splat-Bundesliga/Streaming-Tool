@@ -27,7 +27,7 @@
     </div>
     <div class="settings__container">
       <select [ngModel]="map.mapId" (ngModelChange)="updateMap($event)">
-        @for (entry of availableMaps; track entry) {
+        @for (entry of availableMaps(); track entry.mapName) {
           <option [value]="entry.id">
             {{ entry.mapName }}
           </option>
