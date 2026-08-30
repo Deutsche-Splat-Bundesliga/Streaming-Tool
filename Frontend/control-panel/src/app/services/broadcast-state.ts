@@ -71,7 +71,6 @@ export class BroadcastStateService {
 
         this.availableMaps.set(availableMaps);
         this.availableModes.set(availableModes);
-        console.log(availableModes);
       });
     });
 
