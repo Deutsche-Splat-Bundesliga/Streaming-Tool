@@ -116,16 +116,12 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
             {
                 _ = Log.TraceAsync("Updating map", new
                 {
-                    existing.Id,
-                    mapDto.MapName
+                    existing.Id
                 });
 
                 existing.Order = mapDto.Order;
                 existing.MapId = mapDto.MapId;
-                existing.MapName = mapDto.MapName;
                 existing.ModeId = mapDto.ModeId;
-                existing.ModeName = mapDto.ModeName;
-                existing.ImageUrl = mapDto.ImageUrl;
                 existing.Winner = mapDto.Winner;
                 existing.IsVisible = mapDto.IsVisible;
             }
@@ -138,8 +134,6 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
                 _ = Log.InfoAsync("Adding map", new
                 {
                     id,
-                    mapDto.MapName,
-                    mapDto.ModeName
                 });
 
                 entity.Maps.Add(new MapStateEntity
@@ -147,10 +141,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
                     Id = id,
                     Order = mapDto.Order,
                     MapId = mapDto.MapId,
-                    MapName = mapDto.MapName,
                     ModeId = mapDto.ModeId,
-                    ModeName = mapDto.ModeName,
-                    ImageUrl = mapDto.ImageUrl,
                     Winner = mapDto.Winner,
                     IsVisible = mapDto.IsVisible,
                     BroadcastStateEntityId = 1
@@ -184,10 +175,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
                         Id = x.Id,
                         Order = x.Order,
                         MapId = x.MapId,
-                        MapName = x.MapName,
                         ModeId = x.ModeId,
-                        ModeName = x.ModeName,
-                        ImageUrl = x.ImageUrl,
                         Winner = x.Winner,
                         IsVisible = x.IsVisible
                     })
