@@ -86,7 +86,7 @@ export class BroadcastStateService {
   availableMaps: WritableSignal<Map[]> = signal<Map[]>([
     {
       id: 'scorch-gorge',
-      mapName: this._translocoService.translate('map.scorch-gorge'),
+      mapName: 'Sengkluft',
       imageUrl: 'assets/maps/scorch-gorge.png',
     },
     {
@@ -352,10 +352,7 @@ export class BroadcastStateService {
       id: crypto.randomUUID(),
       order: state.maps.length + 1,
       mapId: defaultMap.id,
-      mapName: defaultMap.mapName,
       modeId: defaultMode.id,
-      modeName: defaultMode.name,
-      imageUrl: defaultMap.imageUrl,
       isVisible: true,
     };
 

@@ -63,7 +63,6 @@ export class MapCard implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._log.debug('MapCard initialized', {
       mapId: this.map?.id,
-      mapName: this.map?.mapName,
     });
   }
 

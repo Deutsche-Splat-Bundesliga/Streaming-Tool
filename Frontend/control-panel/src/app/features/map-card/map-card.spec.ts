@@ -18,10 +18,7 @@ describe('MapCard', () => {
     id: 'map-1',
     order: 1,
     mapId: 'scorch-gorge',
-    mapName: 'Sengkluft',
     modeId: 'sz',
-    modeName: 'Herrschaft',
-    imageUrl: 'assets/maps/scorch-gorge.png',
     isVisible: true,
   };
 
@@ -29,10 +26,7 @@ describe('MapCard', () => {
     id: 'map-2',
     order: 2,
     mapId: 'eeltail-alley',
-    mapName: 'Streifenaal-Straße',
     modeId: 'tc',
-    modeName: 'Turm-Kommando',
-    imageUrl: 'assets/maps/eeltail-alley.png',
     isVisible: true,
     winner: 'bravo',
   };
@@ -275,8 +269,6 @@ describe('MapCard', () => {
         {
           ...map,
           mapId: 'eeltail-alley',
-          mapName: 'Streifenaal-Straße',
-          imageUrl: 'assets/maps/eeltail-alley.png',
         },
         secondMap,
       ],
@@ -304,7 +296,6 @@ describe('MapCard', () => {
         {
           ...map,
           modeId: 'tc',
-          modeName: 'Turm-Kommando',
         },
         secondMap,
       ],

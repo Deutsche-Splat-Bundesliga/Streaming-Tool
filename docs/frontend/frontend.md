@@ -123,10 +123,7 @@ Key properties:
 - `id`
 - `order`
 - `mapId`
-- `mapName`
 - `modeId`
-- `modeName`
-- `imageUrl`
 - `winner`
 - `isVisible`
 

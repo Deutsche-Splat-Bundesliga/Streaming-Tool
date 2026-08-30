@@ -1,5 +1,5 @@
 <div class="map-card" [class.counterpick]="!map.isVisible" [class.map-won]="map.winner !== null">
-  <img class="map-image" [src]="map.imageUrl" alt="{{ map.mapName }}" />
+  <img class="map-image" [src]="'assets/maps/' + map.mapId + '.png'" alt="{{ map.mapId }}" />
   <div class="overlay">
     <div class="controls" [class.alpha-is-left]="state().alphaIsLeft">
       <button

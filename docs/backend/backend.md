@@ -103,15 +103,14 @@ The entire Broadcast State is held in the database as **a single row** (`Broadca
 
 Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASCADE`.
 
-| Column                | Type            | Description        |
-| --------------------- | --------------- | ------------------ |
-| `Id`                  | `string` (GUID) | Primary Key        |
-| `Order`               | `int`           | Order              |
-| `MapId` / `MapName`   | `string`        | Map Reference      |
-| `ModeId` / `ModeName` | `string`        | Mode Reference     |
-| `ImageUrl`            | `string`        | Preview Image      |
-| `Winner`              | `string?`       | `null` = No Result |
-| `IsVisible`           | `bool`          | Overlay Visibility |
+| Column      | Type            | Description        |
+| ----------- | --------------- | ------------------ |
+| `Id`        | `string` (GUID) | Primary Key        |
+| `Order`     | `int`           | Order              |
+| `MapId`     | `string`        | Map Reference      |
+| `ModeId`    | `string`        | Mode Reference     |
+| `Winner`    | `string?`       | `null` = No Result |
+| `IsVisible` | `bool`          | Overlay Visibility |
 
 ### `Socials` (1 Column)
 
@@ -141,15 +140,15 @@ Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASC
 
 Only a hash of each key is stored; the plaintext is shown once at creation. See [`api.md`](./api.md).
 
-| Column        | Type                  | Description                                                    |
-| ------------- | --------------------- | ---------------------------------------------------------------|
-| `Id`          | `Guid`                | Primary Key                                                     |
-| `Name`        | `string`               | Human-readable name (e.g. "Stream Deck")                       |
-| `KeyPrefix`   | `string`               | First 12 chars of the key for display (`stt_…`)                |
-| `KeyHash`     | `string`               | SHA-256 hash (hex) of the plaintext key                        |
-| `AccessLevel` | `ApiKeyAccessLevel`    | `ReadOnly` (0) or `ReadWrite` (1), serialized as `int` over JSON |
-| `CreatedAt`   | `DateTime`             | Creation time (UTC)                                             |
-| `LastUsedAt`  | `DateTime?`            | Last time the key authenticated a request, or null              |
+| Column        | Type                | Description                                                      |
+| ------------- | ------------------- | ---------------------------------------------------------------- |
+| `Id`          | `Guid`              | Primary Key                                                      |
+| `Name`        | `string`            | Human-readable name (e.g. "Stream Deck")                         |
+| `KeyPrefix`   | `string`            | First 12 chars of the key for display (`stt_…`)                  |
+| `KeyHash`     | `string`            | SHA-256 hash (hex) of the plaintext key                          |
+| `AccessLevel` | `ApiKeyAccessLevel` | `ReadOnly` (0) or `ReadWrite` (1), serialized as `int` over JSON |
+| `CreatedAt`   | `DateTime`          | Creation time (UTC)                                              |
+| `LastUsedAt`  | `DateTime?`         | Last time the key authenticated a request, or null               |
 
 ---
 
@@ -222,15 +221,15 @@ public interface IOverlayClient
 }
 ```
 
-| Event                           | Triggered By                          | Payload                     |
-| ------------------------------- | ------------------------------------- | --------------------------- |
-| `BroadcastStateUpdated`         | `POST /api/broadcast/state`           | `BroadcastStateDto`         |
-| `socialsUpdated`                | `POST /api/socials/socials`           | `SocialsDto`                |
-| `commentatorBoxTimeDataUpdated` | `POST /api/broadcast/state`           | `CommentatorBoxTimeDataDto` |
-| `apiSettingsUpdated`            | `POST /api/api-settings`              | `ApiSettingsDto`            |
-| `apiKeysUpdated`                | `POST`/`DELETE /api/api-keys`         | `ApiKeyDto[]`               |
-| `apiLogEntryAdded`              | Any handled `/api` request            | `ApiLogEntryDto`            |
-| `apiLogCleared`                 | `DELETE /api/api-log`                 | *(none)*                    |
+| Event                           | Triggered By                  | Payload                     |
+| ------------------------------- | ----------------------------- | --------------------------- |
+| `BroadcastStateUpdated`         | `POST /api/broadcast/state`   | `BroadcastStateDto`         |
+| `socialsUpdated`                | `POST /api/socials/socials`   | `SocialsDto`                |
+| `commentatorBoxTimeDataUpdated` | `POST /api/broadcast/state`   | `CommentatorBoxTimeDataDto` |
+| `apiSettingsUpdated`            | `POST /api/api-settings`      | `ApiSettingsDto`            |
+| `apiKeysUpdated`                | `POST`/`DELETE /api/api-keys` | `ApiKeyDto[]`               |
+| `apiLogEntryAdded`              | Any handled `/api` request    | `ApiLogEntryDto`            |
+| `apiLogCleared`                 | `DELETE /api/api-log`         | _(none)_                    |
 
 The `api*` events keep the Control Panel's **API-Einstellungen** dialog in sync live — settings,
 issued keys and the request log update immediately regardless of which client triggered the change.
