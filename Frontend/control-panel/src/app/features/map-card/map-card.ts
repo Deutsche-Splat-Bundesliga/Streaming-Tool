@@ -50,7 +50,7 @@ export class MapCard implements OnInit, OnDestroy {
   /**
    * Available modes for map selection.
    */
-  availableModes: Mode[] = this.stateService.availableModes;
+  availableModes: WritableSignal<Mode[]> = this.stateService.availableModes;
 
   /**
    * Whether the edit menu is visible.
@@ -195,7 +195,6 @@ export class MapCard implements OnInit, OnDestroy {
         return {
           ...m,
           mapId,
-          mapName: selected.mapName,
         };
       }
       return m;
@@ -214,7 +213,7 @@ export class MapCard implements OnInit, OnDestroy {
       mapId: this.map.id,
     });
 
-    const selected = this.availableModes.find((m) => m.id === modeId);
+    const selected = this.availableModes().find((m) => m.id === modeId);
 
     if (!selected) {
       this._log.error('Selected mode not found', {
@@ -228,7 +227,6 @@ export class MapCard implements OnInit, OnDestroy {
         return {
           ...m,
           modeId: selected.id,
-          modeName: selected.name,
         };
       }
       return m;

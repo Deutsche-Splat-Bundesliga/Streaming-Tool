@@ -25,6 +25,12 @@
   "map.lemuria-hub": "Lemuria Hub",
   "map.urchin-underpass": "Urchin Underpass",
 
+  "mode.tw": "Turf War",
+  "mode.sz": "Splat Zones",
+  "mode.rm": "Rainmaker",
+  "mode.tc": "Tower Control",
+  "mode.cb": "Clam Blitz",
+
   "en": "English",
   "de": "Deutsch"
 }

@@ -48,7 +48,7 @@ export class BroadcastStateService {
     // Translate our maps whenever the current active language changes
     afterRenderEffect(() => {
       const currentLanguage = this._translocoService.activeLang();
-      this._log.trace('New language selected, translating all map names', {
+      this._log.trace('New language selected, translating all map and mode names', {
         newLanguage: currentLanguage,
       });
 
@@ -56,7 +56,6 @@ export class BroadcastStateService {
         const availableMaps = this.availableMaps()
           .map((map) => {
             const currentMapName = this._translocoService.translate(`map.${map.id}`);
-
             return { ...map, mapName: currentMapName };
           })
           .sort((a, b) => {
@@ -65,7 +64,14 @@ export class BroadcastStateService {
             return 0;
           });
 
+        const availableModes = this.availableModes().map((mode) => {
+          const currentModeName = this._translocoService.translate(`mode.${mode.id}`);
+          return { ...mode, name: currentModeName };
+        });
+
         this.availableMaps.set(availableMaps);
+        this.availableModes.set(availableModes);
+        console.log(availableModes);
       });
     });
 
@@ -183,7 +189,7 @@ export class BroadcastStateService {
       mapName: 'Dekabahnstation',
     },
   ]);
-  availableModes: Mode[] = [
+  availableModes: WritableSignal<Mode[]> = signal<Mode[]>([
     {
       id: 'tw',
       name: 'Revierkampf',
@@ -204,7 +210,7 @@ export class BroadcastStateService {
       id: 'cb',
       name: 'Muschelchaos',
     },
-  ];
+  ]);
   availableDivisions: Division[] = [
     { id: 1, name: 'Division 1', color: '#FF0000' },
     { id: 2, name: 'Division 2', color: '#FF8800' },
@@ -319,7 +325,7 @@ export class BroadcastStateService {
 
     const state = this.state();
     const defaultMap = this.availableMaps()[0];
-    const defaultMode = this.availableModes[1];
+    const defaultMode = this.availableModes()[1];
 
     const newMap = {
       id: crypto.randomUUID(),

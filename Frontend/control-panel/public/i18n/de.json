@@ -25,6 +25,12 @@
   "map.lemuria-hub": "Bahnhof Lemuria",
   "map.urchin-underpass": "Dekabahnstation",
 
+  "mode.tw": "Revierkampf",
+  "mode.sz": "Herrschaft",
+  "mode.rm": "Operation Goldfisch",
+  "mode.tc": "Turm-Kommando",
+  "mode.cb": "Muschelchaos",
+
   "en": "English",
   "de": "Deutsch"
 }
