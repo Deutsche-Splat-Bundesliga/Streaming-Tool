@@ -65,8 +65,6 @@ export class BroadcastStateService {
             return 0;
           });
 
-        console.log(availableMaps);
-
         this.availableMaps.set(availableMaps);
       });
     });
@@ -87,127 +85,102 @@ export class BroadcastStateService {
     {
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
-      imageUrl: 'assets/maps/scorch-gorge.png',
     },
     {
       id: 'eeltail-alley',
       mapName: 'Streifenaal-Straße',
-      imageUrl: 'assets/maps/eeltail-alley.png',
     },
     {
       id: 'hagglefish-market',
       mapName: 'Schnapperchen-Basar',
-      imageUrl: 'assets/maps/hagglefish-market.png',
     },
     {
       id: 'undertow-spillway',
       mapName: 'Schwertmuschel-Reservoir',
-      imageUrl: 'assets/maps/undertow-spillway.png',
     },
     {
       id: 'mincemeat-metalworks',
       mapName: 'Aalstahl-Metallwerk',
-      imageUrl: 'assets/maps/Mincemeat-Metalworks.png',
     },
     {
       id: 'hammerhead-bridge',
       mapName: 'Makrelenbrücke',
-      imageUrl: 'assets/maps/hammerhead-bridge.png',
     },
     {
       id: 'museum-dalfonsino',
       mapName: 'Pinakoithek',
-      imageUrl: 'assets/maps/museum-dalfonsino.png',
     },
     {
       id: 'mahi-mahi-resort',
       mapName: 'Mahi-Mahi-Resort',
-      imageUrl: 'assets/maps/mahi-mahi-resort.png',
     },
     {
       id: 'inkblot-art-academy',
       mapName: 'Perlmutt-Akademie',
-      imageUrl: 'assets/maps/Inkblot-Art-Academy.png',
     },
     {
       id: 'sturgeon-shipyard',
       mapName: 'Störwerft',
-      imageUrl: 'assets/maps/Sturgeon-Shipyard.png',
     },
     {
       id: 'makomart',
       mapName: 'Cetacea-Markt',
-      imageUrl: 'assets/maps/MakoMart.png',
     },
     {
       id: 'wahoo-world',
       mapName: 'Flunder-Funpark',
-      imageUrl: 'assets/maps/Wahoo-World.png',
     },
     {
       id: 'brinewater-springs',
       mapName: 'Kusaya-Quellen',
-      imageUrl: 'assets/maps/Brinewater-Springs.png',
     },
     {
       id: 'flounder-heights',
       mapName: 'Schollensiedlung',
-      imageUrl: 'assets/maps/Flounder-Heights.png',
     },
     {
       id: 'umami-ruins',
       mapName: "Um'ami-Ruinen",
-      imageUrl: 'assets/maps/umami-ruins.png',
     },
     {
       id: 'manta-maria',
       mapName: 'Manta Maria',
-      imageUrl: 'assets/maps/manta-maria.png',
     },
     {
       id: 'barnacle-dime',
       mapName: 'Talerfisch & Pock',
-      imageUrl: 'assets/maps/Barnacle__Dime.png',
     },
     {
       id: 'humpback-pump-track',
       mapName: 'Buckelwal-Piste',
-      imageUrl: 'assets/maps/Humpback_Pump_Track.png',
     },
     {
       id: 'crableg-capital',
       mapName: 'Seespinnen-Skyline',
-      imageUrl: 'assets/maps/Crableg-Capital.png',
     },
     {
       id: 'shipshape-cargo-co',
       mapName: 'Frachtschiff Schwerfisch',
-      imageUrl: 'assets/maps/Shipshape-Cargo-Co.png',
     },
     {
       id: 'robo-romen',
       mapName: 'ROM & RAMen',
-      imageUrl: 'assets/maps/Robo-ROM-en.png',
     },
     {
       id: 'bluefin-depot',
       mapName: 'Blauflossen-Depot',
-      imageUrl: 'assets/maps/bluefin-depot.png',
     },
     {
       id: 'marlin-airport',
       mapName: 'La Ola Airport',
-      imageUrl: 'assets/maps/marlin-airport.png',
     },
     {
       id: 'lemuria-hub',
       mapName: 'Bahnhof Lemuria',
-      imageUrl: 'assets/maps/Lemuria-Hub.png',
     },
     {
       id: 'urchin-underpass',
       mapName: 'Dekabahnstation',
-      imageUrl: 'assets/maps/Urchin_Underpass.png',
     },
   ]);
   availableModes: Mode[] = [

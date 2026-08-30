@@ -148,10 +148,7 @@ describe('BroadcastStateService', () => {
         id: '00000000-0000-0000-0000-000000000000',
         order: 1,
         mapId: 'scorch-gorge',
-        mapName: translocoService.translate('map.scorch-gorge'),
         modeId: 'sz',
-        modeName: 'Herrschaft',
-        imageUrl: 'assets/maps/scorch-gorge.png',
         isVisible: true,
       },
     ]);
@@ -231,8 +228,6 @@ describe('BroadcastStateService', () => {
 
     expect(service.availableMaps()[0]).toEqual({
       id: 'scorch-gorge',
-      mapName: translocoService.translate('map.scorch-gorge'),
-      imageUrl: 'assets/maps/scorch-gorge.png',
     });
   });
 

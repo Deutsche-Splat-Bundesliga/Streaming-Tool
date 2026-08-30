@@ -57,12 +57,10 @@ describe('MapCard', () => {
     {
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
-      imageUrl: 'assets/maps/scorch-gorge.png',
     },
     {
       id: 'eeltail-alley',
       mapName: 'Streifenaal-Straße',
-      imageUrl: 'assets/maps/eeltail-alley.png',
     },
   ]);
 
