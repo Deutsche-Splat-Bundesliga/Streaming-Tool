@@ -24,6 +24,7 @@
   "text.twitter-x": "Twitter/X",
   "text.discord-invite": "Discord-Einladung",
   "text.language": "Sprache",
+  "text.add-map": "Karte hinzufügen",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",

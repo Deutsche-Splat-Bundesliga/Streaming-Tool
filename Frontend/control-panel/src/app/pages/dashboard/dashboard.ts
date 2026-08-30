@@ -4,10 +4,11 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MapCard],
+  imports: [MapCard, TranslocoDirective],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

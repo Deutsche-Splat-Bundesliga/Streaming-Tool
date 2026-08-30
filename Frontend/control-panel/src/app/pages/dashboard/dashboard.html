@@ -1,6 +1,6 @@
-<div class="dashboard">
+<div class="dashboard" *transloco="let t">
   <div class="add-map-card" (click)="addMap()">
-    <span class="add-map-text">Add Map</span>
+    <span class="add-map-text">{{ t('text.add-map') }}</span>
     <span class="add-map-icon">+</span>
   </div>
   @for (map of state().maps; track map.id) {
