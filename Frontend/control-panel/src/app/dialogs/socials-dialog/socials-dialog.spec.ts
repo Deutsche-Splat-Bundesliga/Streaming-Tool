@@ -4,6 +4,7 @@ import { SocialsDialog } from './socials-dialog';
 import { Socials } from '../../models/socials';
 import { signal } from '@angular/core';
 import { SocialsService } from '../../services/socials';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('SocialsDialog', () => {
   let component: SocialsDialog;
@@ -22,7 +23,7 @@ describe('SocialsDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SocialsDialog],
+      imports: [SocialsDialog, getTranslocoModule()],
       providers: [
         {
           provide: SocialsService,
