@@ -18,10 +18,11 @@ import { StreamerCommsDialog } from '../../dialogs/streamer-comms-dialog/streame
 import { CommBoxSettingsDialog } from '../../dialogs/comm-box-settings-dialog/comm-box-settings-dialog';
 import { ApiSettingsDialog } from '../../dialogs/api-settings-dialog/api-settings-dialog';
 import { SettingsDialog } from '../../dialogs/settings-dialog/settings-dialog';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [FormsModule, ToggleSlider],
+  imports: [FormsModule, ToggleSlider, TranslocoDirective],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
