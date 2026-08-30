@@ -7,9 +7,12 @@ import { BroadcastStateService } from './broadcast-state';
 import { BroadcastApi } from './broadcast-api';
 import { Signalr } from './signalr';
 import { BroadcastState } from '../models/broadcast-state';
+import { TranslocoService } from '@jsverse/transloco';
+import { getTranslocoModule } from '../transloco-testing.module';
 
 describe('BroadcastStateService', () => {
   let service: BroadcastStateService;
+  let translocoService: TranslocoService;
 
   const defaultState: BroadcastState = {
     teamAlphaName: 'Team Alpha',
@@ -56,14 +59,18 @@ describe('BroadcastStateService', () => {
     mockSignalr.start.mockResolvedValue(undefined);
 
     TestBed.configureTestingModule({
+      imports: [getTranslocoModule()],
       providers: [
         BroadcastStateService,
+        TranslocoService,
         { provide: BroadcastApi, useValue: mockApi },
         { provide: Signalr, useValue: mockSignalr },
       ],
     });
 
     service = TestBed.inject(BroadcastStateService);
+    translocoService = TestBed.inject(TranslocoService);
+    translocoService.setActiveLang('en');
   });
 
   afterEach(() => {
@@ -141,7 +148,7 @@ describe('BroadcastStateService', () => {
         id: '00000000-0000-0000-0000-000000000000',
         order: 1,
         mapId: 'scorch-gorge',
-        mapName: 'Sengkluft',
+        mapName: translocoService.translate('map.scorch-gorge'),
         modeId: 'sz',
         modeName: 'Herrschaft',
         imageUrl: 'assets/maps/scorch-gorge.png',
@@ -150,6 +157,12 @@ describe('BroadcastStateService', () => {
     ]);
 
     expect(mockApi.updateState).toHaveBeenCalledWith(service.state());
+  });
+
+  it('should translate map name to German', () => {
+    translocoService.setActiveLang('de');
+    const germanName = translocoService.translate('map.scorch-gorge');
+    expect(germanName).toEqual('Sengkluft');
   });
 
   it('should add maps with increasing order numbers', () => {
@@ -223,11 +236,11 @@ describe('BroadcastStateService', () => {
   });
 
   it('should expose available maps', () => {
-    expect(service.availableMaps.length).toBeGreaterThan(0);
+    expect(service.availableMaps().length).toBeGreaterThan(0);
 
-    expect(service.availableMaps[0]).toEqual({
+    expect(service.availableMaps()[0]).toEqual({
       id: 'scorch-gorge',
-      mapName: 'Sengkluft',
+      mapName: translocoService.translate('map.scorch-gorge'),
       imageUrl: 'assets/maps/scorch-gorge.png',
     });
   });

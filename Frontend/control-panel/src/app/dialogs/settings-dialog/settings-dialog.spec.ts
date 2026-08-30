@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SettingsDialog } from './settings-dialog';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('SettingsDialog', () => {
   let component: SettingsDialog;
@@ -7,7 +8,7 @@ describe('SettingsDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SettingsDialog],
+      imports: [SettingsDialog, getTranslocoModule()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SettingsDialog);

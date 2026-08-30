@@ -1,4 +1,4 @@
-import { signal } from '@angular/core';
+import { signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -59,7 +59,7 @@ describe('MapCard', () => {
     colorLockActive: false,
   };
 
-  const availableMaps: Map[] = [
+  const availableMaps: WritableSignal<Map[]> = signal<Map[]>([
     {
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
@@ -70,7 +70,7 @@ describe('MapCard', () => {
       mapName: 'Streifenaal-Straße',
       imageUrl: 'assets/maps/eeltail-alley.png',
     },
-  ];
+  ]);
 
   const availableModes: Mode[] = [
     {
