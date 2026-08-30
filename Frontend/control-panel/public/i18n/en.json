@@ -1,4 +1,30 @@
 {
-    "en": "English",
-    "de": "Deutsch"
+  "map.scorch-gorge": "Scorch Gorge",
+  "map.eeltail-alley": "Eeltail Alley",
+  "map.hagglefish-market": "Hagglefish Market",
+  "map.undertow-spillway": "Undertow Spillway",
+  "map.mincemeat-metalworks": "Mincemeat Metalworks",
+  "map.hammerhead-bridge": "Hammerhead Bridge",
+  "map.museum-dalfonsino": "Museum d'Alfonsino",
+  "map.mahi-mahi-resort": "Mahi-Mahi Resort",
+  "map.inkblot-art-academy": "Inkblot Art Academy",
+  "map.sturgeon-shipyard": "Sturgeon Shipyard",
+  "map.makomart": "Makomart",
+  "map.wahoo-world": "Wahoo World",
+  "map.brinewater-springs": "Brinewater Springs",
+  "map.flounder-heights": "Flounder Heights",
+  "map.umami-ruins": "Um'ami Ruins",
+  "map.manta-maria": "Manta Maria",
+  "map.barnacle-dime": "Barnacle & Dime",
+  "map.humpback-pump-track": "Humpback Pump Track",
+  "map.crableg-capital": "Crableg Capital",
+  "map.shipshape-cargo-co": "Shipshape Cargo Co.",
+  "map.robo-romen": "Robo ROM-en",
+  "map.bluefin-depot": "Bluefin Depot",
+  "map.marlin-airport": "Marlin Airport",
+  "map.lemuria-hub": "Lemuria Hub",
+  "map.urchin-underpass": "Urchin Underpass",
+
+  "en": "English",
+  "de": "Deutsch"
 }

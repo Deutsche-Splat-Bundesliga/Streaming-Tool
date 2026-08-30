@@ -1,4 +1,30 @@
 {
-    "en": "English",
-    "de": "Deutsch"
+  "map.scorch-gorge": "Sengkluft",
+  "map.eeltail-alley": "Streifenaal-Straße",
+  "map.hagglefish-market": "Schnapperchen-Basar",
+  "map.undertow-spillway": "Schwertmuschel-Reservoir",
+  "map.mincemeat-metalworks": "Aalstahl-Metallwerk",
+  "map.hammerhead-bridge": "Makrelenbrücke",
+  "map.museum-dalfonsino": "Pinakoithek",
+  "map.mahi-mahi-resort": "Mahi-Mahi-Resort",
+  "map.inkblot-art-academy": "Perlmutt-Akademie",
+  "map.sturgeon-shipyard": "Störwerft",
+  "map.makomart": "Cetacea-Markt",
+  "map.wahoo-world": "Flunder-Funpark",
+  "map.brinewater-springs": "Kusaya-Quellen",
+  "map.flounder-heights": "Schollensiedlung",
+  "map.umami-ruins": "Um'ami-Ruinen",
+  "map.manta-maria": "Manta Maria",
+  "map.barnacle-dime": "Talerfisch & Pock",
+  "map.humpback-pump-track": "Buckelwal-Piste",
+  "map.crableg-capital": "Seespinnen-Skyline",
+  "map.shipshape-cargo-co": "Frachtschiff Schwerfisch",
+  "map.robo-romen": "ROM & RAMen",
+  "map.bluefin-depot": "Blauflossen-Depot",
+  "map.marlin-airport": "La Ola Airport",
+  "map.lemuria-hub": "Bahnhof Lemuria",
+  "map.urchin-underpass": "Dekabahnstation",
+
+  "en": "English",
+  "de": "Deutsch"
 }
