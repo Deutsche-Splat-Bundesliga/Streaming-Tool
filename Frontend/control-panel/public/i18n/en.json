@@ -23,6 +23,7 @@
   "text.socials": "Socials",
   "text.twitter-x": "Twitter/X",
   "text.discord-invite": "Discord Invite",
+  "text.language": "Language",
 
   "button.next-color": "Next Color",
   "button.show-commbox-temp": "{{text.show-commbox}} Temporarily",
@@ -63,6 +64,6 @@
   "mode.tc": "Tower Control",
   "mode.cb": "Clam Blitz",
 
-  "en": "English",
-  "de": "Deutsch"
+  "language.en": "English",
+  "language.de": "Deutsch"
 }
