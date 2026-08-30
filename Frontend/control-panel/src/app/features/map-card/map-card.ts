@@ -196,7 +196,6 @@ export class MapCard implements OnInit, OnDestroy {
           ...m,
           mapId,
           mapName: selected.mapName,
-          imageUrl: selected.imageUrl,
         };
       }
       return m;
