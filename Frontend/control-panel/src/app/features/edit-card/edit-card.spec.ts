@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { EditCard } from './edit-card';
 import { LogService } from '../../services/log';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('EditCard', () => {
   let component: EditCard;
@@ -23,7 +24,7 @@ describe('EditCard', () => {
   beforeEach(async () => {
     TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
-      imports: [EditCard],
+      imports: [EditCard, getTranslocoModule()],
       providers: [
         {
           provide: LogService,
