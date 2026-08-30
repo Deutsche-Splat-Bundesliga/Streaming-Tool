@@ -1,4 +1,12 @@
-import { effect, inject, Injectable, signal, WritableSignal } from '@angular/core';
+import {
+  afterRenderEffect,
+  effect,
+  inject,
+  Injectable,
+  signal,
+  untracked,
+  WritableSignal,
+} from '@angular/core';
 import { BroadcastApi } from './broadcast-api';
 import { Signalr } from './signalr';
 import { BroadcastState } from '../models/broadcast-state';
@@ -8,6 +16,7 @@ import { Mode } from '../models/mode';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
 import { MatchColor } from '../models/match-color';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +25,8 @@ export class BroadcastStateService {
   private readonly _api = inject(BroadcastApi);
   private readonly _signalr = inject(Signalr);
   private readonly _log = inject(LogService);
+
+  private _translocoService: TranslocoService = inject(TranslocoService);
 
   constructor() {
     const scope = this._log.beginScope('BroadcastStateService');
@@ -34,6 +45,32 @@ export class BroadcastStateService {
       this._log.info('Broadcast state updated from SignalR');
     });
 
+    // Translate our maps whenever the current active language changes
+    afterRenderEffect(() => {
+      const currentLanguage = this._translocoService.activeLang();
+      this._log.trace('New language selected, translating all map names', {
+        newLanguage: currentLanguage,
+      });
+
+      untracked(() => {
+        const availableMaps = this.availableMaps()
+          .map((map) => {
+            const currentMapName = this._translocoService.translate(`map.${map.id}`);
+
+            return { ...map, mapName: currentMapName };
+          })
+          .sort((a, b) => {
+            if (a.mapName < b.mapName) return -1;
+            if (a.mapName > b.mapName) return 1;
+            return 0;
+          });
+
+        console.log(availableMaps);
+
+        this.availableMaps.set(availableMaps);
+      });
+    });
+
     this._signalr.connectionType = SignalrServiceConnection.BroadcastState;
 
     this._signalr.start();
@@ -46,10 +83,10 @@ export class BroadcastStateService {
   /**
    * Available data
    */
-  availableMaps: Map[] = [
+  availableMaps: WritableSignal<Map[]> = signal<Map[]>([
     {
       id: 'scorch-gorge',
-      mapName: 'Sengkluft',
+      mapName: this._translocoService.translate('map.scorch-gorge'),
       imageUrl: 'assets/maps/scorch-gorge.png',
     },
     {
@@ -172,7 +209,7 @@ export class BroadcastStateService {
       mapName: 'Dekabahnstation',
       imageUrl: 'assets/maps/Urchin_Underpass.png',
     },
-  ];
+  ]);
   availableModes: Mode[] = [
     {
       id: 'tw',
@@ -308,7 +345,7 @@ export class BroadcastStateService {
     const scope = this._log.beginScope('BroadcastStateService.addMap');
 
     const state = this.state();
-    const defaultMap = this.availableMaps[0];
+    const defaultMap = this.availableMaps()[0];
     const defaultMode = this.availableModes[1];
 
     const newMap = {
