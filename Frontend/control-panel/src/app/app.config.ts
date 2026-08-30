@@ -13,6 +13,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig } from '@angular/material/dialog';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco, TranslocoService } from '@jsverse/transloco';
+import { provideMarkdown } from 'ngx-markdown';
 import { firstValueFrom } from 'rxjs';
 import translocoConfig from '../../transloco.config';
 
@@ -28,6 +29,7 @@ export const appConfig: ApplicationConfig = {
       useValue: { ...new MatDialogConfig(), hasBackdrop: true },
     },
     provideHttpClient(),
+    provideMarkdown(),
     provideTransloco({
       config: {
         availableLangs: ['en', 'de'],
