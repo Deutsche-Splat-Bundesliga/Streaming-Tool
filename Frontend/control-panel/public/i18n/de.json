@@ -16,12 +16,18 @@
   "text.streamer": "Streamer",
   "text.commentators": "Kommentatoren",
   "text.commentator-settings": "{{text.streamer}} & {{text.commentators}}",
+  "text.comm-box-blend-mode": "Ein- / Ausblendemodus",
+  "text.in-seconds": "In Sekunden",
+  "text.time-visible": "Zeit sichtbar ({{text.in-seconds}})",
+  "text.time-hidden": "Zeit unsichtbar ({{text.in-seconds}})",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",
   "button.tourney-settings": "Turniereinstellungen",
   "button.socials-settings": "Socials",
   "button.api-settings": "API-{{text.settings}}",
+  "button.blend-mode-manual": "Manuell",
+  "button.blend-mode-auto": "Automatisch",
 
   "map.scorch-gorge": "Sengkluft",
   "map.eeltail-alley": "Streifenaal-Straße",

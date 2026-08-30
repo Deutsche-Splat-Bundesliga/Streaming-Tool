@@ -16,12 +16,18 @@
   "text.streamer": "Streamer",
   "text.commentators": "Commentators",
   "text.commentator-settings": "{{text.streamer}} & {{text.commentators}}",
+  "text.comm-box-blend-mode": "{{text.show-commbox}} / {{text.hide-commbox}} Mode",
+  "text.in-seconds": "In seconds",
+  "text.time-visible": "Visibile for... ({{text.in-seconds}})",
+  "text.time-hidden": "Hidden for... ({{text.in-seconds}})",
 
   "button.next-color": "Next Color",
   "button.show-commbox-temp": "{{text.show-commbox}} Temporarily",
   "button.tourney-settings": "Tournament {{text.settings}}",
   "button.socials-settings": "Socials",
   "button.api-settings": "API {{text.settings}}",
+  "button.blend-mode-manual": "Manual",
+  "button.blend-mode-auto": "Automatic",
 
   "map.scorch-gorge": "Scorch Gorge",
   "map.eeltail-alley": "Eeltail Alley",

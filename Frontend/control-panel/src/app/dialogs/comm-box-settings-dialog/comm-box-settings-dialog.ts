@@ -4,10 +4,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-comm-box-settings-dialog',
-  imports: [MatDialogModule, FormsModule],
+  imports: [MatDialogModule, FormsModule, TranslocoDirective],
   templateUrl: './comm-box-settings-dialog.html',
   styleUrl: './comm-box-settings-dialog.scss',
 })
