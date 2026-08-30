@@ -11,6 +11,8 @@
   "text.hide-commbox": "Ausblenden",
   "text.show-hide-commbox": "Ein- / {{text.hide-commbox}}\n{{text.commentator-box}}",
   "text.other-settings": "Restliche {{text.settings}}",
+  "text.color-settings": "Farbeinstellungen",
+  "text.color-lock": "Color Lock",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",

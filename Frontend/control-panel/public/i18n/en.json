@@ -11,6 +11,8 @@
   "text.hide-commbox": "Hide",
   "text.show-hide-commbox": "{{text.show-commbox}} / {{text.hide-commbox}}\n{{text.commentator-box}}",
   "text.other-settings": "Other {{text.settings}}",
+  "text.color-settings": "Color {{text.settings}}",
+  "text.color-lock": "Color Lock",
 
   "button.next-color": "Next Color",
   "button.show-commbox-temp": "{{text.show-commbox}} Temporarily",
