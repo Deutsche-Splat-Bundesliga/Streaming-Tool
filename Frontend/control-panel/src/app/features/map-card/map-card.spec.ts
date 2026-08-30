@@ -64,7 +64,7 @@ describe('MapCard', () => {
     },
   ]);
 
-  const availableModes: Mode[] = [
+  const availableModes: WritableSignal<Mode[]> = signal<Mode[]>([
     {
       id: 'sz',
       name: 'Herrschaft',
@@ -73,7 +73,7 @@ describe('MapCard', () => {
       id: 'tc',
       name: 'Turm-Kommando',
     },
-  ];
+  ]);
 
   const mockState = signal<BroadcastState>(defaultState);
 

@@ -228,6 +228,7 @@ describe('BroadcastStateService', () => {
 
     expect(service.availableMaps()[0]).toEqual({
       id: 'scorch-gorge',
+      mapName: 'Sengkluft',
     });
   });
 
@@ -246,7 +247,7 @@ describe('BroadcastStateService', () => {
   });
 
   it('should expose available modes', () => {
-    expect(service.availableModes).toEqual([
+    expect(service.availableModes()).toEqual([
       {
         id: 'tw',
         name: 'Revierkampf',
