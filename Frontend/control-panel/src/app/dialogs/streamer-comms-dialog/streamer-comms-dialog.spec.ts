@@ -4,6 +4,7 @@ import { StreamerCommsDialog } from './streamer-comms-dialog';
 import { BroadcastState } from '../../models/broadcast-state';
 import { signal } from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('StreamerCommsDialog', () => {
   let component: StreamerCommsDialog;
@@ -39,7 +40,7 @@ describe('StreamerCommsDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StreamerCommsDialog],
+      imports: [StreamerCommsDialog, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,

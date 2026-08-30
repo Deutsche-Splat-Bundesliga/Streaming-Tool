@@ -3,10 +3,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { FormsModule } from '@angular/forms';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-streamer-comms-dialog',
-  imports: [MatDialogModule, FormsModule],
+  imports: [MatDialogModule, FormsModule, TranslocoDirective],
   templateUrl: './streamer-comms-dialog.html',
   styleUrl: './streamer-comms-dialog.scss',
 })

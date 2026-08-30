@@ -13,11 +13,13 @@
   "text.other-settings": "Restliche {{text.settings}}",
   "text.color-settings": "Farbeinstellungen",
   "text.color-lock": "Color Lock",
+  "text.streamer": "Streamer",
+  "text.commentators": "Kommentatoren",
+  "text.commentator-settings": "{{text.streamer}} & {{text.commentators}}",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",
   "button.tourney-settings": "Turniereinstellungen",
-  "button.commentator-settings": "Streamer & Kommentatoren",
   "button.socials-settings": "Socials",
   "button.api-settings": "API-{{text.settings}}",
 
