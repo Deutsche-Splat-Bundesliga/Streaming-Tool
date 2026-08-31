@@ -174,7 +174,7 @@ public class BroadcastStateServiceTests
 
         Assert.That(result.Maps, Has.Count.EqualTo(1));
         Assert.That(result.Maps[0].Id, Is.EqualTo(existingId));
-        Assert.That(result.Maps[0].ModeId, Is.EqualTo("inkblot-art-academy"));
+        Assert.That(result.Maps[0].MapId, Is.EqualTo("inkblot-art-academy"));
         Assert.That(result.Maps[0].ModeId, Is.EqualTo("tc"));
     }
 
