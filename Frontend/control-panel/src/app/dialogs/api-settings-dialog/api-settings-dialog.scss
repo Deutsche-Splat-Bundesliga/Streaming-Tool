@@ -9,14 +9,14 @@ section {
   margin-bottom: 1.5rem;
 }
 
-.hint {
+.hint::ng-deep p {
   margin: 0.5rem 0 0 0;
   font-size: 0.875rem;
   opacity: 0.8;
   line-height: 1.4;
 }
 
-.hint code,
+.hint::ng-deep code,
 .api-key-item__meta code,
 .created-api-key__code {
   background: #1c1e26;
