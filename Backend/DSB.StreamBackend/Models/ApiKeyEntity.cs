@@ -37,7 +37,7 @@ public class ApiKeyEntity
     /// <summary>
     /// Gets or sets when the key was created (UTC).
     /// </summary>
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     /// <summary>
     /// Gets or sets when the key was last used to authenticate a request (UTC),

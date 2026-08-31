@@ -189,7 +189,7 @@ public class ApiAuthenticationMiddleware(
     {
         ApiLogEntryDto entry = new()
         {
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.Now,
             Method = context.Request.Method,
             Path = context.Request.Path.ToString(),
             StatusCode = statusCodeOverride ?? (HttpStatusCode)context.Response.StatusCode,
