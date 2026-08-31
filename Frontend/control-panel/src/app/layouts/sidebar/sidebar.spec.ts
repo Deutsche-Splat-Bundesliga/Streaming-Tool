@@ -10,6 +10,10 @@ import { LogService } from '../../services/log';
 import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 import { getTranslocoModule } from '../../transloco-testing.module';
 
+// Remove this once marked-katex-extension import error is fixed
+vi.mock('ngx-markdown', () => ({
+  default: {},
+}));
 describe('Sidebar', () => {
   let component: Sidebar;
   let fixture: ComponentFixture<Sidebar>;
