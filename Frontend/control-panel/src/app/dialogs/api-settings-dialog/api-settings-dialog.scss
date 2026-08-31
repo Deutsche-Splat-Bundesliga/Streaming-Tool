@@ -88,7 +88,7 @@ section {
   gap: 0.75rem;
   background: #2b2e3a;
   border-radius: 0.625rem;
-  padding: 0.625rem 0.875rem;
+  padding: 0.625rem 0.75rem;
 }
 
 .api-key-item__info {
@@ -134,7 +134,7 @@ section {
 
 .api-log-entry {
   display: grid;
-  grid-template-columns: 5rem 3.5rem 1fr 3rem auto;
+  grid-template-columns: 6rem 3rem 1fr 3rem auto;
   gap: 0.5rem;
   align-items: center;
   background: #2b2e3a;
