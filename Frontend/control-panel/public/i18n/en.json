@@ -53,6 +53,7 @@
   "button.counterpick": "Counterpick",
   "button.create": "Create",
   "button.clear": "Clear",
+  "button.dismiss": "Dismiss",
 
   "input.placeholder.api-key-name": "Name (e.g. Stream Deck)",
 
@@ -88,6 +89,9 @@
   "mode.tc": "Tower Control",
   "mode.cb": "Clam Blitz",
 
+  "language.dateFormat": "MM/dd/yyyy",
+  "language.timeFormat": "hh:mm:ss a",
+  "language.dateTimeFormat": "{{language.dateFormat}} {{language.timeFormat}}",
   "language.en": "English",
   "language.de": "Deutsch"
 }

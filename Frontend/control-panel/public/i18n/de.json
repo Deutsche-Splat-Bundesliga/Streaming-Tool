@@ -53,6 +53,7 @@
   "button.counterpick": "Counterpick",
   "button.create": "Erstellen",
   "button.clear": "Leeren",
+  "button.dismiss": "Verstanden",
 
   "input.placeholder.api-key-name": "Name (z.B. Stream Deck)",
 
@@ -88,6 +89,9 @@
   "mode.tc": "Turm-Kommando",
   "mode.cb": "Muschelchaos",
 
+  "language.dateFormat": "dd.MM.yyyy",
+  "language.timeFormat": "HH:mm:ss",
+  "language.dateTimeFormat": "{{language.dateFormat}} {{language.timeFormat}}",
   "language.en": "English",
   "language.de": "Deutsch"
 }

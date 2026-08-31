@@ -152,22 +152,6 @@ export class ApiSettingsDialog implements OnInit {
   }
 
   /**
-   * Get current date format, depending on the string
-   */
-  get dateTimeFormat(): string {
-    let dateTimeFormat = 'dd.MM.yyyy HH:mm';
-    switch (this._translocoService.getActiveLang()) {
-      case 'en':
-        {
-          dateTimeFormat = 'MM/dd/yyyy HH:mm';
-        }
-        break;
-    }
-
-    return dateTimeFormat;
-  }
-
-  /**
    * Getter exposing the access level enum to the template.
    */
   get accessLevel(): typeof ApiKeyAccessLevel {

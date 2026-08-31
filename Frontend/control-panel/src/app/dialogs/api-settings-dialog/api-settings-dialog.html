@@ -57,7 +57,7 @@
             </button>
           </div>
           <button class="click-button dismiss-created-key-button" (click)="dismissCreatedKey()">
-            Verstanden
+            {{ t('button.dismiss') }}
           </button>
         </div>
       }
@@ -70,9 +70,10 @@
               <span class="api-key-item__meta">
                 <code>{{ key.keyPrefix }}…</code>
                 · {{ accessLevelLabel(key.accessLevel) }} · {{ t('text.created') }}
-                {{ key.createdAt | date: dateTimeFormat }}
+                {{ key.createdAt | date: t('language.dateTimeFormat') }}
                 @if (key.lastUsedAt) {
-                  · {{ t('text.api-key-last-used') }} {{ key.lastUsedAt | date: dateTimeFormat }}
+                  · {{ t('text.api-key-last-used') }}
+                  {{ key.lastUsedAt | date: t('language.dateTimeFormat') }}
                 } @else {
                   · {{ t('text.api-key-unused') }}
                 }
@@ -98,7 +99,9 @@
       <div class="api-log-list">
         @for (entry of reversedLog(); track $index) {
           <div class="api-log-entry" [class.rejected]="entry.wasRejected">
-            <span class="api-log-entry__time">{{ entry.timestamp | date: 'HH:mm:ss' }}</span>
+            <span class="api-log-entry__time">{{
+              entry.timestamp | date: t('language.timeFormat')
+            }}</span>
             <span class="api-log-entry__method">{{ entry.method }}</span>
             <span class="api-log-entry__path">{{ entry.path }}</span>
             <span class="api-log-entry__status">{{ entry.statusCode }}</span>
