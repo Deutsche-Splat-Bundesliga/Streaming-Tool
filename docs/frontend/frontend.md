@@ -84,7 +84,7 @@ Key properties:
 - `commentator1`, `commentator2`
 - `showMapScreen`, `showScoreBox`, `showCommentatorBox`, `showInfobox`
 - `maps` (`MapState[]`)
-- `season`, `division`, `week`
+- `season`, `division`, `week`, `isLeague`, `tournamentName`, `bracketName`
 - `currentColorsId`, `colorLockActive`
 
 ### `CommentatorBoxTimeData`

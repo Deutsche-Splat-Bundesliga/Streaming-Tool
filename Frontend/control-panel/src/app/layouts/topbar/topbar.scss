@@ -8,7 +8,7 @@
 }
 
 .topbar {
-  height: 4.5;
+  height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,17 +23,71 @@
   border-bottom: 0.0625rem solid #343744;
 }
 
-.title {
+.tournament-info-section,
+.team-name-score-section {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.team-name-score-section {
+  column-gap: 0.5rem;
+}
+
+input {
+  font-size: 1.125rem;
+  width: 17.5rem;
+  padding: 0.5rem;
+
+  &.bracket-name-input {
+    text-align: center;
+  }
+
+  &.team-alpha-name-input {
+    text-align: right;
+  }
+
+  &[type='number'] {
+    text-align: center;
+    width: 2.5rem;
+  }
+}
+
+.tournament-info-section input {
+  margin-left: 0.25rem;
+}
+
+select {
+  padding: 0.5rem;
+  font-size: 1.125rem;
+
+  &.division-select {
+    margin-right: 0.5rem;
+  }
+}
+
+.division-color-display {
+  height: 2rem;
+  width: 2rem;
+  background-color: var(--current-division-color);
+  margin-right: 0;
+  border-radius: 0.5rem;
+}
+
+.info-text {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
 .score {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: bold;
 }
 
-.division {
-  font-size: 1.5rem;
-  font-weight: bold;
+.info-separator {
+  display: block;
+  height: 2rem;
+  padding-left: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 0.125rem solid white;
 }

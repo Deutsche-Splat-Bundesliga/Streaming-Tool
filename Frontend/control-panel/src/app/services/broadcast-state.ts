@@ -247,6 +247,9 @@ export class BroadcastStateService {
     season: 10,
     division: 1,
     week: 1,
+    isLeague: false,
+    tournamentName: '',
+    bracketName: '',
     currentColorsId: 0,
     colorLockActive: false,
   });

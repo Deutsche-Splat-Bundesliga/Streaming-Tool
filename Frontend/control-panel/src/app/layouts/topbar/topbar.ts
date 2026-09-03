@@ -4,10 +4,12 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { Signalr } from '../../services/signalr';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { FormsModule } from '@angular/forms';
+import { Division } from '../../models/division';
 
 @Component({
   selector: 'app-topbar',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss',
 })
@@ -34,6 +36,11 @@ export class Topbar implements OnInit, OnDestroy {
   });
 
   /**
+   * Service that manages broadcast state and division data.
+   */
+  stateService: BroadcastStateService = inject(BroadcastStateService);
+
+  /**
    * Broadcast state signal shared across the application.
    */
   state: WritableSignal<BroadcastState> = inject(BroadcastStateService).state;
@@ -42,6 +49,11 @@ export class Topbar implements OnInit, OnDestroy {
    * SignalR connection state signal.
    */
   isConnected: WritableSignal<boolean> = inject(Signalr).isConnected;
+
+  /**
+   * Available divisions for the broadcast state.
+   */
+  availableDivisions: Division[] = this.stateService.availableDivisions;
 
   /**
    * Angular lifecycle hook called after component initialization.

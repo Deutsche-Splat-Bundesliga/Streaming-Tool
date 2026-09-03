@@ -21,46 +21,6 @@ public class SidebarTests : PageTest
     }
 
     [Test]
-    public async Task Sidebar_Teams_BothInputsAreVisible()
-    {
-        var teamInputs = Page.Locator(".sidebar section:has(h2:text('Teams')) input");
-        await Expect(teamInputs.First).ToBeVisibleAsync();
-        await Expect(teamInputs.Nth(1)).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Sidebar_TeamAlphaName_UpdatesTopbar()
-    {
-        var alphaInput = Page.Locator(".sidebar section:has(h2:text('Teams')) input").First;
-        await alphaInput.ClearAsync();
-        await alphaInput.FillAsync("AlphaE2E");
-
-        await Expect(Page.Locator(".topbar .score")).ToContainTextAsync("AlphaE2E");
-    }
-
-    [Test]
-    public async Task Sidebar_TeamBravoName_UpdatesTopbar()
-    {
-        var bravoInput = Page.Locator(".sidebar section:has(h2:text('Teams')) input").Nth(1);
-        await bravoInput.ClearAsync();
-        await bravoInput.FillAsync("BravoE2E");
-
-        await Expect(Page.Locator(".topbar .score")).ToContainTextAsync("BravoE2E");
-    }
-
-    [Test]
-    public async Task Sidebar_TeamAlphaName_RespectsMaxLength()
-    {
-        var alphaInput = Page.Locator(".sidebar section:has(h2:text('Teams')) input").First;
-        // maxLength is 30 characters
-        await alphaInput.ClearAsync();
-        await alphaInput.FillAsync("WayTooLongTeamNameHereSeriously");
-
-        var value = await alphaInput.InputValueAsync();
-        Assert.That(value.Length, Is.LessThanOrEqualTo(30), "Team name should be capped at 30 characters.");
-    }
-
-    [Test]
     public async Task Sidebar_AlphaIsLeft_ToggleSliderIsVisible()
     {
         var toggleSlider = Page.Locator(".sidebar .swap-sides app-toggle-slider.toggle-slider-alpha-left");

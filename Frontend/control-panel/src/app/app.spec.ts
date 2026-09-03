@@ -32,6 +32,9 @@ describe('App', () => {
     division: 3,
     startTime: new Date(),
     week: 1,
+    isLeague: false,
+    tournamentName: '',
+    bracketName: '',
     currentColorsId: 0,
     colorLockActive: false,
   });

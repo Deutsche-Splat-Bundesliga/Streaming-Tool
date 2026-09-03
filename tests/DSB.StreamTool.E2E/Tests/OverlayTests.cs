@@ -74,13 +74,6 @@ public partial class OverlayTests : PageTest
     }
 
     [Test]
-    public async Task Infobox_ShowsLeagueText()
-    {
-        await Page.GotoAsync($"{BaseUrl}/overlay/info-box");
-        await Expect(Page.Locator(".infobox .tourney-info")).ToContainTextAsync(SeasonWeekDivisionRegex());
-    }
-
-    [Test]
     public async Task Infobox_ShowsVersusContainer()
     {
         await Page.GotoAsync($"{BaseUrl}/overlay/info-box");
@@ -230,7 +223,4 @@ public partial class OverlayTests : PageTest
 
         await endScreenPage.CloseAsync();
     }
-
-    [GeneratedRegex(@"^Season \d+ - Woche \d+ - Division [1-8]")]
-    private static partial Regex SeasonWeekDivisionRegex();
 }

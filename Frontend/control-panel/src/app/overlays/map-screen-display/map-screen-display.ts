@@ -66,6 +66,19 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
     }
   }
 
+  // TODO: Make this function into a seperate service once we introduce further branding options
+  /**
+   * Gets the tournament info string in the overlay header depending on if the current format is a league or normal tournament setting
+   * @returns {string} Tournament info (Bracket, Name, ...)
+   */
+  get tournamentInfo(): string {
+    const info = this.state().isLeague
+      ? `${this.state().tournamentName} Season ${this.state().season} - Woche ${this.state().week} - Division ${this.state().division}`
+      : `${this.state().tournamentName} - ${this.state().bracketName}`;
+
+    return info.replace(/- $/, '').trim();
+  }
+
   /**
    * Gets the CSS class for the winning team logo.
    * @param winner {'alpha' | 'bravo'} - The winning team identifier.
