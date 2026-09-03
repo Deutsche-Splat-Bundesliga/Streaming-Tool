@@ -43,6 +43,8 @@
   "text.no-api-keys-created": "No API keys created yet",
   "text.session-api-log": "API log (Session)",
   "text.session-no-requests": "No API requests in this session yet.",
+  "text.season": "Season",
+  "text.week": "Week",
 
   "button.next-color": "Next Color",
   "button.show-commbox-temp": "{{text.show-commbox}} Temporarily",
@@ -88,6 +90,8 @@
   "mode.rm": "Rainmaker",
   "mode.tc": "Tower Control",
   "mode.cb": "Clam Blitz",
+
+  "notification.no-backend-connection": "Backend is not connected!",
 
   "language.dateFormat": "MM/dd/yyyy",
   "language.timeFormat": "hh:mm:ss a",

@@ -43,6 +43,8 @@
   "text.no-api-keys-created": "Noch keine API-Keys vergeben",
   "text.session-api-log": "API-Log (Session)",
   "text.session-no-requests": "Noch keine API-Anfragen in dieser Session.",
+  "text.season": "Saison",
+  "text.week": "Woche",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",
@@ -88,6 +90,8 @@
   "mode.rm": "Operation Goldfisch",
   "mode.tc": "Turm-Kommando",
   "mode.cb": "Muschelchaos",
+
+  "notification.no-backend-connection": "Aktuell keine Verbindung zum Backend!",
 
   "language.dateFormat": "dd.MM.yyyy",
   "language.timeFormat": "HH:mm:ss",

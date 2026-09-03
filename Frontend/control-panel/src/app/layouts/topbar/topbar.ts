@@ -6,10 +6,11 @@ import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 import { FormsModule } from '@angular/forms';
 import { Division } from '../../models/division';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-topbar',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslocoDirective],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss',
 })

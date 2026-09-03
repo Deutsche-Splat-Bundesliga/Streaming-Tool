@@ -66,7 +66,7 @@ export class MapScreenDisplay implements OnInit, OnDestroy {
     }
   }
 
-  // TODO: Make this function into a seperate service once we introduce further branding options
+  // TODO: Make this function into a seperate service once we introduce further branding options, and also add translation!
   /**
    * Gets the tournament info string in the overlay header depending on if the current format is a league or normal tournament setting
    * @returns {string} Tournament info (Bracket, Name, ...)
