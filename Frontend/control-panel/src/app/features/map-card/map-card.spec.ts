@@ -1,4 +1,4 @@
-import { signal } from '@angular/core';
+import { signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -9,6 +9,7 @@ import { MapState } from '../../models/map-state';
 import { Map } from '../../models/map';
 import { Mode } from '../../models/mode';
 import { LogService } from '../../services/log';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('MapCard', () => {
   let component: MapCard;
@@ -18,10 +19,7 @@ describe('MapCard', () => {
     id: 'map-1',
     order: 1,
     mapId: 'scorch-gorge',
-    mapName: 'Sengkluft',
     modeId: 'sz',
-    modeName: 'Herrschaft',
-    imageUrl: 'assets/maps/scorch-gorge.png',
     isVisible: true,
   };
 
@@ -29,10 +27,7 @@ describe('MapCard', () => {
     id: 'map-2',
     order: 2,
     mapId: 'eeltail-alley',
-    mapName: 'Streifenaal-Straße',
     modeId: 'tc',
-    modeName: 'Turm-Kommando',
-    imageUrl: 'assets/maps/eeltail-alley.png',
     isVisible: true,
     winner: 'bravo',
   };
@@ -62,20 +57,18 @@ describe('MapCard', () => {
     colorLockActive: false,
   };
 
-  const availableMaps: Map[] = [
+  const availableMaps: WritableSignal<Map[]> = signal<Map[]>([
     {
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
-      imageUrl: 'assets/maps/scorch-gorge.png',
     },
     {
       id: 'eeltail-alley',
       mapName: 'Streifenaal-Straße',
-      imageUrl: 'assets/maps/eeltail-alley.png',
     },
-  ];
+  ]);
 
-  const availableModes: Mode[] = [
+  const availableModes: WritableSignal<Mode[]> = signal<Mode[]>([
     {
       id: 'sz',
       name: 'Herrschaft',
@@ -84,7 +77,7 @@ describe('MapCard', () => {
       id: 'tc',
       name: 'Turm-Kommando',
     },
-  ];
+  ]);
 
   const mockState = signal<BroadcastState>(defaultState);
 
@@ -114,7 +107,7 @@ describe('MapCard', () => {
     mockState.set(defaultState);
 
     await TestBed.configureTestingModule({
-      imports: [MapCard],
+      imports: [MapCard, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,
@@ -278,8 +271,6 @@ describe('MapCard', () => {
         {
           ...map,
           mapId: 'eeltail-alley',
-          mapName: 'Streifenaal-Straße',
-          imageUrl: 'assets/maps/eeltail-alley.png',
         },
         secondMap,
       ],
@@ -307,7 +298,6 @@ describe('MapCard', () => {
         {
           ...map,
           modeId: 'tc',
-          modeName: 'Turm-Kommando',
         },
         secondMap,
       ],

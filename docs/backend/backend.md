@@ -106,15 +106,14 @@ The entire Broadcast State is held in the database as **a single row** (`Broadca
 
 Foreign Key `BroadcastStateEntityId → BroadcastStates.Id` with `ON DELETE CASCADE`.
 
-| Column                | Type            | Description        |
-| --------------------- | --------------- | ------------------ |
-| `Id`                  | `string` (GUID) | Primary Key        |
-| `Order`               | `int`           | Order              |
-| `MapId` / `MapName`   | `string`        | Map Reference      |
-| `ModeId` / `ModeName` | `string`        | Mode Reference     |
-| `ImageUrl`            | `string`        | Preview Image      |
-| `Winner`              | `string?`       | `null` = No Result |
-| `IsVisible`           | `bool`          | Overlay Visibility |
+| Column      | Type            | Description        |
+| ----------- | --------------- | ------------------ |
+| `Id`        | `string` (GUID) | Primary Key        |
+| `Order`     | `int`           | Order              |
+| `MapId`     | `string`        | Map Reference      |
+| `ModeId`    | `string`        | Mode Reference     |
+| `Winner`    | `string?`       | `null` = No Result |
+| `IsVisible` | `bool`          | Overlay Visibility |
 
 ### `Socials` (1 Column)
 

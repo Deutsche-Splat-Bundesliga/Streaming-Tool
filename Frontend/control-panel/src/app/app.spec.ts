@@ -10,6 +10,7 @@ import { SocialsService } from './services/socials';
 import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
 import { CommBoxDisplayMode } from './enums/comm-box-display-modes';
 import { Division } from './models/division';
+import { getTranslocoModule } from './transloco-testing.module';
 
 describe('App', () => {
   let component: App;
@@ -63,7 +64,7 @@ describe('App', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [App, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,

@@ -1,111 +1,119 @@
-<h1 mat-dialog-title>API-Einstellungen</h1>
-<mat-dialog-content>
-  <section class="auth-section">
-    <h2>Authentifizierung</h2>
-    <label
-      class="allow-unauthenticated-label"
-      (click)="toggleAllowUnauthenticated()"
-    >
-      <app-toggle-slider
-        class="toggle-slider-allow-unauthenticated"
-        [class.toggled]="!apiService.settings().allowUnauthenticatedRequests"
-      />
-      API-Key erzwingen
-    </label>
-    <p class="hint">
+<main *transloco="let t">
+  <h1 mat-dialog-title>{{ t('text.api-settings') }}</h1>
+  <mat-dialog-content>
+    <section class="auth-section">
+      <h2>{{ t('text.api-authentication') }}</h2>
+      <label class="allow-unauthenticated-label" (click)="toggleAllowUnauthenticated()">
+        <app-toggle-slider
+          class="toggle-slider-allow-unauthenticated"
+          [class.toggled]="!apiService.settings().allowUnauthenticatedRequests"
+        />
+        {{ t('text.force-api-key') }}
+      </label>
       @if (apiService.settings().allowUnauthenticatedRequests) {
-        Aktuell darf <strong>jeder</strong> ohne API-Key auf die API zugreifen. Für den lokalen
-        Betrieb ist das in Ordnung. Aktiviere den Schalter, wenn die API im Netzwerk erreichbar ist.
+        <markdown class="hint">
+          {{ t('text.api-key-hint-unauthenticated') }}
+        </markdown>
       } @else {
-        Externe Clients müssen einen API-Key im Header <code>X-Api-Key</code> senden. Das Control
-        Panel funktioniert weiterhin ohne Key.
+        <markdown class="hint">
+          {{ t('text.api-key-hint-authenticated') }}
+        </markdown>
       }
-    </p>
-  </section>
+    </section>
 
-  <section class="keys-section">
-    <h2>API-Keys</h2>
+    <section class="keys-section">
+      <h2>{{ t('text.api-keys') }}</h2>
 
-    <div class="create-key__form">
-      <input
-        class="api-key-name-input"
-        placeholder="Name (z. B. Stream Deck)"
-        [ngModel]="newKeyName()"
-        (ngModelChange)="newKeyName.set($event)"
-        maxLength="40"
-      />
-      <select
-        class="api-key-access-level-select"
-        [ngModel]="newKeyAccessLevel()"
-        (ngModelChange)="newKeyAccessLevel.set($event)"
-      >
-        <option [ngValue]="accessLevel.ReadWrite">Lesen & Schreiben</option>
-        <option [ngValue]="accessLevel.ReadOnly">Nur Lesen</option>
-      </select>
-      <button class="click-button create-api-key-button" (click)="createKey()">Erstellen</button>
-    </div>
-
-    @if (createdKey(); as created) {
-      <div class="created-api-key">
-        <p class="created-api-key__hint">
-          Dieser Key wird <strong>nur jetzt</strong> angezeigt. Kopiere ihn und bewahre ihn sicher auf.
-        </p>
-        <div class="created-api-key__value">
-          <code class="created-api-key__code">{{ created.key }}</code>
-          <button class="click-button copy-api-key-button" (click)="copyCreatedKey()">
-            {{ copied() ? 'Kopiert ✓' : 'Kopieren' }}
-          </button>
-        </div>
-        <button class="click-button dismiss-created-key-button" (click)="dismissCreatedKey()">
-          Verstanden
+      <div class="create-key__form">
+        <input
+          class="api-key-name-input"
+          [placeholder]="t('input.placeholder.api-key-name')"
+          [ngModel]="newKeyName()"
+          (ngModelChange)="newKeyName.set($event)"
+          maxLength="40"
+        />
+        <select
+          class="api-key-access-level-select"
+          [ngModel]="newKeyAccessLevel()"
+          (ngModelChange)="newKeyAccessLevel.set($event)"
+        >
+          <option [ngValue]="accessLevel.ReadWrite">{{ t('text.read-write-permissions') }}</option>
+          <option [ngValue]="accessLevel.ReadOnly">{{ t('text.read-only-permissions') }}</option>
+        </select>
+        <button class="click-button create-api-key-button" (click)="createKey()">
+          {{ t('button.create') }}
         </button>
       </div>
-    }
 
-    <div class="api-key-list">
-      @for (key of apiService.keys(); track key.id) {
-        <div class="api-key-item">
-          <div class="api-key-item__info">
-            <span class="api-key-item__name">{{ key.name }}</span>
-            <span class="api-key-item__meta">
-              <code>{{ key.keyPrefix }}…</code>
-              · {{ accessLevelLabel(key.accessLevel) }}
-              · erstellt {{ key.createdAt | date: 'dd.MM.yyyy HH:mm' }}
-              @if (key.lastUsedAt) {
-                · zuletzt genutzt {{ key.lastUsedAt | date: 'dd.MM.yyyy HH:mm' }}
-              } @else {
-                · noch nie genutzt
-              }
-            </span>
+      @if (createdKey(); as created) {
+        <div class="created-api-key">
+          <markdown class="created-api-key__hint">
+            {{ t('text.api-key-created-hint') }}
+          </markdown>
+          <div class="created-api-key__value">
+            <code class="created-api-key__code">{{ created.key }}</code>
+            <button class="click-button copy-api-key-button" (click)="copyCreatedKey()">
+              {{ copied() ? t('text.copied') + ' ✓' : t('text.copy') }}
+            </button>
           </div>
-          <button class="click-button revoke-api-key-button" (click)="revokeKey(key)">Widerrufen</button>
+          <button class="click-button dismiss-created-key-button" (click)="dismissCreatedKey()">
+            {{ t('button.dismiss') }}
+          </button>
         </div>
-      } @empty {
-        <p class="empty-hint">Noch keine API-Keys vergeben.</p>
       }
-    </div>
-  </section>
 
-  <section class="log-section">
-    <div class="log-section__header">
-      <h2>API-Log (Session)</h2>
-      <button class="click-button clear-api-log-button" (click)="clearLog()">Leeren</button>
-    </div>
-    <div class="api-log-list">
-      @for (entry of reversedLog(); track $index) {
-        <div class="api-log-entry" [class.rejected]="entry.wasRejected">
-          <span class="api-log-entry__time">{{ entry.timestamp | date: 'HH:mm:ss' }}</span>
-          <span class="api-log-entry__method">{{ entry.method }}</span>
-          <span class="api-log-entry__path">{{ entry.path }}</span>
-          <span class="api-log-entry__status">{{ entry.statusCode }}</span>
-          <span class="api-log-entry__source">{{ entry.source }}</span>
-        </div>
-      } @empty {
-        <p class="empty-hint">Noch keine API-Anfragen in dieser Session.</p>
-      }
-    </div>
-  </section>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button class="click-button" mat-dialog-close>✖</button>
-</mat-dialog-actions>
+      <div class="api-key-list">
+        @for (key of apiService.keys(); track key.id) {
+          <div class="api-key-item">
+            <div class="api-key-item__info">
+              <span class="api-key-item__name">{{ key.name }}</span>
+              <span class="api-key-item__meta">
+                <code>{{ key.keyPrefix }}…</code>
+                · {{ accessLevelLabel(key.accessLevel) }} · {{ t('text.created') }}
+                {{ key.createdAt | date: t('language.dateTimeFormat') }}
+                @if (key.lastUsedAt) {
+                  · {{ t('text.api-key-last-used') }}
+                  {{ key.lastUsedAt | date: t('language.dateTimeFormat') }}
+                } @else {
+                  · {{ t('text.api-key-unused') }}
+                }
+              </span>
+            </div>
+            <button class="click-button revoke-api-key-button" (click)="revokeKey(key)">
+              {{ t('text.revoke') }}
+            </button>
+          </div>
+        } @empty {
+          <p class="empty-hint">{{ t('text.no-api-keys-created') }}</p>
+        }
+      </div>
+    </section>
+
+    <section class="log-section">
+      <div class="log-section__header">
+        <h2>{{ t('text.session-api-log') }}</h2>
+        <button class="click-button clear-api-log-button" (click)="clearLog()">
+          {{ t('button.clear') }}
+        </button>
+      </div>
+      <div class="api-log-list">
+        @for (entry of reversedLog(); track $index) {
+          <div class="api-log-entry" [class.rejected]="entry.wasRejected">
+            <span class="api-log-entry__time">{{
+              entry.timestamp | date: t('language.timeFormat')
+            }}</span>
+            <span class="api-log-entry__method">{{ entry.method }}</span>
+            <span class="api-log-entry__path">{{ entry.path }}</span>
+            <span class="api-log-entry__status">{{ entry.statusCode }}</span>
+            <span class="api-log-entry__source">{{ entry.source }}</span>
+          </div>
+        } @empty {
+          <p class="empty-hint">{{ t('text.session-no-requests') }}</p>
+        }
+      </div>
+    </section>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="click-button" mat-dialog-close>✖</button>
+  </mat-dialog-actions>
+</main>

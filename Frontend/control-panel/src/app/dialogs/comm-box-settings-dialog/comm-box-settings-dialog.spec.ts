@@ -5,6 +5,7 @@ import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 import { signal } from '@angular/core';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('CommBoxSettingsDialog', () => {
   let component: CommBoxSettingsDialog;
@@ -24,7 +25,7 @@ describe('CommBoxSettingsDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommBoxSettingsDialog],
+      imports: [CommBoxSettingsDialog, getTranslocoModule()],
       providers: [
         {
           provide: CommentatorBoxTimeDataService,

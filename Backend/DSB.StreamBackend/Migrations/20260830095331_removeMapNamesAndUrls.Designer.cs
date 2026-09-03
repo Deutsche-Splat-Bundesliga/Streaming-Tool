@@ -3,6 +3,7 @@ using System;
 using DSB.StreamBackend.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    partial class StreamToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260830095331_removeMapNamesAndUrls")]
+    partial class removeMapNamesAndUrls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.19");
@@ -79,10 +82,6 @@ namespace DSB.StreamBackend.Migrations
                     b.Property<bool>("AlphaIsLeft")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("BracketName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("ColorLockActive")
                         .HasColumnType("INTEGER");
 
@@ -98,9 +97,6 @@ namespace DSB.StreamBackend.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Division")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsLeague")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ScoreAlpha")
@@ -139,10 +135,6 @@ namespace DSB.StreamBackend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TournamentName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Week")
                         .HasColumnType("INTEGER");
 
@@ -155,13 +147,11 @@ namespace DSB.StreamBackend.Migrations
                         {
                             Id = 1,
                             AlphaIsLeft = true,
-                            BracketName = "",
                             ColorLockActive = false,
                             Commentator1 = "",
                             Commentator2 = "",
                             CurrentColorsId = 0,
                             Division = 1,
-                            IsLeague = false,
                             ScoreAlpha = 0,
                             ScoreBravo = 0,
                             Season = 10,
@@ -173,7 +163,6 @@ namespace DSB.StreamBackend.Migrations
                             Streamer = "",
                             TeamAlphaName = "Team Alpha",
                             TeamBravoName = "Team Bravo",
-                            TournamentName = "",
                             Week = 0
                         });
                 });

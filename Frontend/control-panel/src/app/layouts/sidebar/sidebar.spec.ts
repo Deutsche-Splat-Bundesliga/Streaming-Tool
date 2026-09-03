@@ -8,7 +8,12 @@ import { BroadcastState } from '../../models/broadcast-state';
 import { Division } from '../../models/division';
 import { LogService } from '../../services/log';
 import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
+// Remove this once marked-katex-extension import error is fixed
+vi.mock('ngx-markdown', () => ({
+  default: {},
+}));
 describe('Sidebar', () => {
   let component: Sidebar;
   let fixture: ComponentFixture<Sidebar>;
@@ -67,7 +72,7 @@ describe('Sidebar', () => {
     mockState.set(defaultState);
 
     await TestBed.configureTestingModule({
-      imports: [Sidebar],
+      imports: [Sidebar, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,

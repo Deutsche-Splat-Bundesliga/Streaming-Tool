@@ -1,19 +1,21 @@
-<div class="sidebar">
+<div class="sidebar" *transloco="let t">
   <section>
-    <h2>Farben</h2>
+    <h2>{{ t('text.colors') }}</h2>
     @if (!state().colorLockActive) {
-      <button class="click-button" (click)="handleNextColorButtonClick()">Nächste Farbe</button>
+      <button class="click-button" (click)="handleNextColorButtonClick()">
+        {{ t('button.next-color') }}
+      </button>
     }
     <button
       class="click-button open-colors-settings-dialog-button"
       (click)="handleColorSettingsButtonClick()"
     >
-      Einstellungen
+      {{ t('text.settings') }}
     </button>
   </section>
   <section>
     <div class="swap-sides">
-      <h2>Seiten wechseln</h2>
+      <h2>{{ t('text.change-team-sides') }}</h2>
       <label
         (click)="
           stateService.update({
@@ -26,13 +28,13 @@
           class="toggle-slider-alpha-left"
           [class.toggled]="state().alphaIsLeft"
         />
-        Alpha links
+        {{ t('text.alpha-left') }}
       </label>
     </div>
   </section>
 
   <section>
-    <h2>Sichtbarkeit des Overlays</h2>
+    <h2>{{ t('text.overlay-visibility') }}</h2>
     <label
       (click)="
         stateService.update({
@@ -45,7 +47,7 @@
         class="toggle-slider-show-map-screen"
         [class.toggled]="state().showMapScreen"
       />
-      Kartenanzeige
+      {{ t('text.map-overview') }}
     </label>
 
     <label
@@ -60,7 +62,7 @@
         class="toggle-slider-show-score-box"
         [class.toggled]="state().showScoreBox"
       />
-      Spielstand
+      {{ t('text.score') }}
     </label>
 
     <label
@@ -75,18 +77,18 @@
         class="toggle-slider-show-commentator-box"
         [class.toggled]="state().showCommentatorBox"
       />
-      Kommentatoren
+      {{ t('text.commentator-box') }}
     </label>
   </section>
 
   <section>
-    <h2>Ein- / Ausblenden Kommentatorenbox</h2>
+    <h2>{{ t('text.show-hide-commbox') }}</h2>
     <button
       class="click-button hide-comm-box-button"
       [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
       (click)="handleHideButtonClick()"
     >
-      Ausblenden
+      {{ t('text.hide-commbox') }}
     </button>
 
     <button
@@ -94,7 +96,7 @@
       [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
       (click)="handleShowButtonClick()"
     >
-      Einblenden
+      {{ t('text.show-commbox') }}
     </button>
 
     <button
@@ -102,41 +104,45 @@
       [disabled]="commentatorBoxTimeData().displayMode !== commBoxDisplayMode.Manual"
       (click)="handleShowTempButtonClick()"
     >
-      Temporär Einblenden
+      {{ t('button.show-commbox-temp') }}
     </button>
   </section>
 
   <section>
-    <h2>Restliche Einstellungen</h2>
+    <h2>{{ t('text.other-settings') }}</h2>
     <button
       class="click-button open-tourney-settings-dialog-button"
       (click)="handleTourneySettingsButtonClick()"
     >
-      Turniereinstellungen
+      {{ t('button.tourney-settings') }}
     </button>
     <button
       class="click-button open-streamer-comms-dialog-button"
       (click)="handleStreamerCommsButtonClick()"
     >
-      Streamer & Kommentatoren
+      {{ t('text.commentator-settings') }}
     </button>
     <button
       class="click-button open-comm-box-settings-dialog-button"
       (click)="handleCommBoxSettingsButtonClick()"
     >
-      Ein- / Ausblenden Kommentatorenbox
+      {{ t('text.show-hide-commbox') }}
     </button>
     <button
       class="click-button open-socials-dialog-button"
       (click)="handleSocialsSettingsButtonClick()"
     >
-      Socials
+      {{ t('text.socials') }}
     </button>
     <button
       class="click-button open-api-settings-dialog-button"
       (click)="handleApiSettingsButtonClick()"
     >
-      API-Einstellungen
+      {{ t('text.api-settings') }}
+    </button>
+
+    <button class="click-button open-settings-dialog-button" (click)="handleSettingsButtonClick()">
+      {{ t('text.settings') }}
     </button>
   </section>
   <img src="assets/dsb/DSB_Logo.png" width="100px" />

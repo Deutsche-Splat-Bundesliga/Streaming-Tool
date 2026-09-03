@@ -4,10 +4,11 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { NgStyle } from '@angular/common';
 import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-change-colors-dialog',
-  imports: [MatDialogModule, NgStyle, ToggleSlider],
+  imports: [MatDialogModule, NgStyle, ToggleSlider, TranslocoDirective],
   templateUrl: './change-colors-dialog.html',
   styleUrl: './change-colors-dialog.scss',
 })

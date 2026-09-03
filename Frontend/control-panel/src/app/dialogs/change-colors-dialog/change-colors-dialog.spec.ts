@@ -4,6 +4,7 @@ import { ChangeColorsDialog } from './change-colors-dialog';
 import { BroadcastState } from '../../models/broadcast-state';
 import { signal } from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('ChangeColorsDialog', () => {
   let component: ChangeColorsDialog;
@@ -42,7 +43,7 @@ describe('ChangeColorsDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChangeColorsDialog],
+      imports: [ChangeColorsDialog, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,

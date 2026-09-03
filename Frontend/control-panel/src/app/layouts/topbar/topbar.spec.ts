@@ -7,6 +7,7 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { Signalr } from '../../services/signalr';
 import { BroadcastState } from '../../models/broadcast-state';
 import { LogService } from '../../services/log';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('Topbar', () => {
   let component: Topbar;
@@ -66,7 +67,7 @@ describe('Topbar', () => {
 
     TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
-      imports: [Topbar],
+      imports: [Topbar, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,

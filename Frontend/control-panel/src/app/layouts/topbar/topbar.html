@@ -1,112 +1,114 @@
-@if (!isConnected()) {
-  <div class="connection-warning">&#9888; Aktuell keine Verbindung zum Backend!</div>
-}
-<div class="topbar">
-  <section class="tournament-name-section">
-    <input
-      class="tournament-name-input"
-      placeholder="Turniername"
-      type="text"
-      [ngModel]="state().tournamentName"
-      (ngModelChange)="
-        stateService.update({
-          tournamentName: $event,
-        })
-      "
-      maxlength="30"
-    />
-  </section>
-
-  <section class="tournament-info-section">
-    @if (state().isLeague) {
-      <span class="info-text">Season</span>
+<main *transloco="let t">
+  @if (!isConnected()) {
+    <div class="connection-warning">&#9888; {{ t('notification.no-backend-connection') }}</div>
+  }
+  <div class="topbar">
+    <section class="tournament-name-section">
       <input
-        class="season-input"
-        type="number"
-        [ngModel]="state().season"
-        (ngModelChange)="
-          stateService.update({
-            season: $event,
-          })
-        "
-      />
-
-      <div class="info-separator"></div>
-      <span class="info-text">Woche</span>
-
-      <input
-        class="week-input"
-        type="number"
-        [ngModel]="state().week"
-        (ngModelChange)="
-          stateService.update({
-            week: $event,
-          })
-        "
-      />
-
-      <div class="info-separator"></div>
-
-      <select
-        class="division-select"
-        [ngModel]="state().division"
-        (ngModelChange)="
-          stateService.update({
-            division: $event,
-          })
-        "
-      >
-        @for (division of availableDivisions; track division) {
-          <option [ngValue]="division.id">
-            {{ division.name }}
-          </option>
-        }
-      </select>
-
-      <div class="division-color-display"></div>
-    } @else {
-      <input
-        class="bracket-name-input"
-        placeholder="Bracket"
+        class="tournament-name-input"
+        placeholder="Turniername"
         type="text"
-        [ngModel]="state().bracketName"
+        [ngModel]="state().tournamentName"
         (ngModelChange)="
           stateService.update({
-            bracketName: $event,
+            tournamentName: $event,
           })
         "
         maxlength="30"
       />
-    }
-  </section>
+    </section>
 
-  <section class="team-name-score-section">
-    <input
-      class="team-alpha-name-input"
-      [ngModel]="state().teamAlphaName"
-      (ngModelChange)="
-        stateService.update({
-          teamAlphaName: $event,
-        })
-      "
-      maxLength="30"
-    />
+    <section class="tournament-info-section">
+      @if (state().isLeague) {
+        <span class="info-text">{{ t('text.season') }}</span>
+        <input
+          class="season-input"
+          type="number"
+          [ngModel]="state().season"
+          (ngModelChange)="
+            stateService.update({
+              season: $event,
+            })
+          "
+        />
 
-    <span class="score">
-      {{ state().scoreAlpha }}
-      :
-      {{ state().scoreBravo }}
-    </span>
+        <div class="info-separator"></div>
+        <span class="info-text">{{ t('text.week') }}</span>
 
-    <input
-      class="team-bravo-name-input"
-      [ngModel]="state().teamBravoName"
-      (ngModelChange)="
-        stateService.update({
-          teamBravoName: $event,
-        })
-      "
-      maxLength="30"
-    />
-  </section>
-</div>
+        <input
+          class="week-input"
+          type="number"
+          [ngModel]="state().week"
+          (ngModelChange)="
+            stateService.update({
+              week: $event,
+            })
+          "
+        />
+
+        <div class="info-separator"></div>
+
+        <select
+          class="division-select"
+          [ngModel]="state().division"
+          (ngModelChange)="
+            stateService.update({
+              division: $event,
+            })
+          "
+        >
+          @for (division of availableDivisions; track division) {
+            <option [ngValue]="division.id">
+              {{ division.name }}
+            </option>
+          }
+        </select>
+
+        <div class="division-color-display"></div>
+      } @else {
+        <input
+          class="bracket-name-input"
+          placeholder="Bracket"
+          type="text"
+          [ngModel]="state().bracketName"
+          (ngModelChange)="
+            stateService.update({
+              bracketName: $event,
+            })
+          "
+          maxlength="30"
+        />
+      }
+    </section>
+
+    <section class="team-name-score-section">
+      <input
+        class="team-alpha-name-input"
+        [ngModel]="state().teamAlphaName"
+        (ngModelChange)="
+          stateService.update({
+            teamAlphaName: $event,
+          })
+        "
+        maxLength="30"
+      />
+
+      <span class="score">
+        {{ state().scoreAlpha }}
+        :
+        {{ state().scoreBravo }}
+      </span>
+
+      <input
+        class="team-bravo-name-input"
+        [ngModel]="state().teamBravoName"
+        (ngModelChange)="
+          stateService.update({
+            teamBravoName: $event,
+          })
+        "
+        maxLength="30"
+      />
+    </section>
+  </div>
+</main>

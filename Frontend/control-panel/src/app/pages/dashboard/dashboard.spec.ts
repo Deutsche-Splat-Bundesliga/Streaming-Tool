@@ -6,6 +6,7 @@ import { Dashboard } from './dashboard';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { LogService } from '../../services/log';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 @Component({
   selector: 'app-map-card',
@@ -66,7 +67,7 @@ describe('Dashboard', () => {
     mockState.set(defaultState);
 
     await TestBed.configureTestingModule({
-      imports: [Dashboard],
+      imports: [Dashboard, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,

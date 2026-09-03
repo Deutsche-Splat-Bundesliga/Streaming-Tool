@@ -8,6 +8,8 @@ import { ApiKeyCreated } from '../../models/api-key-created';
 import { ApiKeyAccessLevel } from '../../enums/api-key-access-level';
 import { ToggleSlider } from '../../features/toggle-slider/toggle-slider';
 import { LogService } from '../../services/log';
+import { MarkdownComponent } from 'ngx-markdown';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 
 /**
  * Dialog for configuring the public REST API: toggling authentication,
@@ -15,12 +17,24 @@ import { LogService } from '../../services/log';
  */
 @Component({
   selector: 'app-api-settings-dialog',
-  imports: [MatDialogModule, FormsModule, ToggleSlider, DatePipe],
+  imports: [
+    MatDialogModule,
+    FormsModule,
+    ToggleSlider,
+    DatePipe,
+    MarkdownComponent,
+    TranslocoDirective,
+  ],
   templateUrl: './api-settings-dialog.html',
   styleUrl: './api-settings-dialog.scss',
 })
 export class ApiSettingsDialog implements OnInit {
   private readonly _log: LogService = inject(LogService);
+
+  /**
+   * Transloco service to translate texts
+   */
+  private _translocoService: TranslocoService = inject(TranslocoService);
 
   /**
    * Service managing API settings, keys and the live request log.
@@ -63,6 +77,7 @@ export class ApiSettingsDialog implements OnInit {
    * Toggles whether unauthenticated API requests are allowed.
    */
   toggleAllowUnauthenticated(): void {
+    console.log(!this.apiService.settings().allowUnauthenticatedRequests);
     this.apiService.setAllowUnauthenticatedRequests(
       !this.apiService.settings().allowUnauthenticatedRequests,
     );
@@ -131,7 +146,9 @@ export class ApiSettingsDialog implements OnInit {
    * Returns a human-readable label for the given access level.
    */
   accessLevelLabel(accessLevel: number): string {
-    return accessLevel === ApiKeyAccessLevel.ReadOnly ? 'Nur Lesen' : 'Lesen & Schreiben';
+    return accessLevel === ApiKeyAccessLevel.ReadOnly
+      ? this._translocoService.translate('text.read-only-permissions')
+      : this._translocoService.translate('text.read-write-permissions');
   }
 
   /**

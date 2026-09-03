@@ -6,6 +6,7 @@ import {
   NgZone,
   WritableSignal,
   OnDestroy,
+  afterNextRender,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BroadcastState } from './models/broadcast-state';
@@ -14,6 +15,7 @@ import { SocialsService } from './services/socials';
 import { Socials } from './models/socials';
 import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
 import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +25,11 @@ import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
 })
 export class App implements OnDestroy {
   protected readonly title = signal('control-panel');
+
+  /**
+   * Transloco service that handles translation settings
+   */
+  private _translocoService: TranslocoService = inject(TranslocoService);
 
   /**
    * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the score box component to update its UI accordingly whenever the state changes. This setup enables the score box to display the current team names and scores based on the latest broadcast state received from the service.
@@ -102,10 +109,21 @@ export class App implements OnDestroy {
   });
 
   /**
+   * Effect that fires after every page render to get the last selected active language from local storage and to set it in transloco
+   */
+  private _currentLanguageEffect = afterNextRender(() => {
+    const currentLanguage = localStorage.getItem('currentLanguage');
+    if (currentLanguage) {
+      this._translocoService.setActiveLang(currentLanguage);
+    }
+  });
+
+  /**
    * Destroys all effects on component destroy
    */
   ngOnDestroy(): void {
     this._divisionColorEffect.destroy();
     this._matchColorsEffect.destroy();
+    this._currentLanguageEffect.destroy();
   }
 }

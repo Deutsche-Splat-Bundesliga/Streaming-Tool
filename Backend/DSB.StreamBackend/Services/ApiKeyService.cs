@@ -86,7 +86,7 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
                 KeyPrefix = plaintextKey[..DisplayPrefixLength],
                 KeyHash = ComputeHash(plaintextKey),
                 AccessLevel = accessLevel,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
 
             db.ApiKeys.Add(entity);
@@ -163,7 +163,7 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
             return null;
         }
 
-        entity.LastUsedAt = DateTime.UtcNow;
+        entity.LastUsedAt = DateTime.Now;
 
         await db.SaveChangesAsync();
 

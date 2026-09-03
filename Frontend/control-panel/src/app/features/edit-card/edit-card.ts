@@ -1,10 +1,21 @@
-import { Component, EventEmitter, Output, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  inject,
+  OnDestroy,
+  OnInit,
+  WritableSignal,
+} from '@angular/core';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { Mode } from '../../models/mode';
+import { BroadcastStateService } from '../../services/broadcast-state';
 
 @Component({
   selector: 'app-edit-card',
-  imports: [],
+  imports: [TranslocoDirective],
   templateUrl: './edit-card.html',
   styleUrl: './edit-card.scss',
 })
@@ -20,6 +31,11 @@ export class EditCard implements OnInit, OnDestroy {
   private readonly _scope: LogScope = this._log.beginScope('EditCard');
 
   /**
+   * Service managing broadcast state updates.
+   */
+  private _stateService: BroadcastStateService = inject(BroadcastStateService);
+
+  /**
    * Event emitter triggered when the close button of the edit card is clicked.
    */
   @Output() onCloseClick: EventEmitter<void> = new EventEmitter<void>();
@@ -33,6 +49,11 @@ export class EditCard implements OnInit, OnDestroy {
    * Event emitter triggered when the delete action is initiated.
    */
   @Output() onDeleteMap: EventEmitter<void> = new EventEmitter<void>();
+
+  /**
+   * Signal for available modes with translations
+   */
+  availableModes: WritableSignal<Mode[]> = this._stateService.availableModes;
 
   /**
    * Angular lifecycle hook called when the component is initialized.

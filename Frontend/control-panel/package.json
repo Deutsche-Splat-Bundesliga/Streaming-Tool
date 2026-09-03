@@ -22,9 +22,12 @@
     "@angular/platform-server": "^22.1.4",
     "@angular/router": "^22.1.4",
     "@angular/ssr": "^22.1.6",
+    "@jsverse/transloco": "^8.4.0",
     "@microsoft/signalr": "^10.0.0",
     "@vitest/browser-playwright": "^4.1.11",
     "express": "^5.1.0",
+    "marked": "^18.0.11",
+    "ngx-markdown": "^22.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

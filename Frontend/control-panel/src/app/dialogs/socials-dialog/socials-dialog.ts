@@ -3,10 +3,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SocialsService } from '../../services/socials';
 import { Socials } from '../../models/socials';
 import { FormsModule } from '@angular/forms';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-socials-dialog',
-  imports: [MatDialogModule, FormsModule],
+  imports: [MatDialogModule, FormsModule, TranslocoDirective],
   templateUrl: './socials-dialog.html',
   styleUrl: './socials-dialog.scss',
 })

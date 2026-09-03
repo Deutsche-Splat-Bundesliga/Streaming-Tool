@@ -141,16 +141,18 @@ public class BroadcastStateServiceTests
         {
             Maps =
             [
-                new MapStateDto { Id = "", Order = 0, MapName = "Scorch Gorge", ModeId = "sz", ModeName = "Splat Zones" },
-                new MapStateDto { Id = "", Order = 1, MapName = "Eeltail Alley", ModeId = "tc", ModeName = "Tower Control" }
+                new MapStateDto { Id="", MapId = "scorch-gorge", Order = 0, ModeId = "sz" },
+                new MapStateDto { Id="", MapId = "eeltail-alley", Order = 1, ModeId = "tc" }
             ]
         };
 
         var result = await _service.UpdateStateAsync(dto);
 
         Assert.That(result.Maps, Has.Count.EqualTo(2));
-        Assert.That(result.Maps[0].MapName, Is.EqualTo("Scorch Gorge"));
-        Assert.That(result.Maps[1].MapName, Is.EqualTo("Eeltail Alley"));
+        Assert.That(result.Maps[0].MapId, Is.EqualTo("scorch-gorge"));
+        Assert.That(result.Maps[0].ModeId, Is.EqualTo("sz"));
+        Assert.That(result.Maps[1].MapId, Is.EqualTo("eeltail-alley"));
+        Assert.That(result.Maps[1].ModeId, Is.EqualTo("tc"));
     }
 
     [Test]
@@ -162,7 +164,7 @@ public class BroadcastStateServiceTests
             Id = 1,
             Maps =
             [
-                new MapStateEntity { Id = existingId, Order = 0, MapName = "Old Name", ModeId = "sz", ModeName = "Splat Zones", BroadcastStateEntityId = 1 }
+                new MapStateEntity { Id = existingId, Order = 0, MapId = "scorch-gorge", ModeId = "sz", BroadcastStateEntityId = 1 }
             ]
         });
         await _db.SaveChangesAsync();
@@ -171,7 +173,7 @@ public class BroadcastStateServiceTests
         {
             Maps =
             [
-                new MapStateDto { Id = existingId, Order = 0, MapName = "New Name", ModeId = "tc", ModeName = "Tower Control" }
+                new MapStateDto { Id = existingId, Order = 0, MapId = "inkblot-art-academy", ModeId = "tc" }
             ]
         };
 
@@ -179,7 +181,7 @@ public class BroadcastStateServiceTests
 
         Assert.That(result.Maps, Has.Count.EqualTo(1));
         Assert.That(result.Maps[0].Id, Is.EqualTo(existingId));
-        Assert.That(result.Maps[0].MapName, Is.EqualTo("New Name"));
+        Assert.That(result.Maps[0].MapId, Is.EqualTo("inkblot-art-academy"));
         Assert.That(result.Maps[0].ModeId, Is.EqualTo("tc"));
     }
 
@@ -194,15 +196,15 @@ public class BroadcastStateServiceTests
             Id = 1,
             Maps =
             [
-                new MapStateEntity { Id = keepId, Order = 0, MapName = "Keep", BroadcastStateEntityId = 1 },
-                new MapStateEntity { Id = removeId, Order = 1, MapName = "Remove", BroadcastStateEntityId = 1 }
+                new MapStateEntity { Id = keepId, Order = 0, MapId = "inkblot-art-academy", BroadcastStateEntityId = 1 },
+                new MapStateEntity { Id = removeId, Order = 1, MapId = "scorch-gorge", BroadcastStateEntityId = 1 }
             ]
         });
         await _db.SaveChangesAsync();
 
         var dto = new BroadcastStateDto
         {
-            Maps = [new MapStateDto { Id = keepId, Order = 0, MapName = "Keep" }]
+            Maps = [new MapStateDto { Id = keepId, Order = 0, MapId = "inkblot-art-academy" }]
         };
 
         var result = await _service.UpdateStateAsync(dto);
@@ -218,17 +220,17 @@ public class BroadcastStateServiceTests
         {
             Maps =
             [
-                new MapStateDto { Id = "", Order = 2, MapName = "Third" },
-                new MapStateDto { Id = "", Order = 0, MapName = "First" },
-                new MapStateDto { Id = "", Order = 1, MapName = "Second" }
+                new MapStateDto { Id = "", Order = 2, MapId = "Third" },
+                new MapStateDto { Id = "", Order = 0, MapId = "First" },
+                new MapStateDto { Id = "", Order = 1, MapId = "Second" }
             ]
         };
 
         var result = await _service.UpdateStateAsync(dto);
 
-        Assert.That(result.Maps[0].MapName, Is.EqualTo("First"));
-        Assert.That(result.Maps[1].MapName, Is.EqualTo("Second"));
-        Assert.That(result.Maps[2].MapName, Is.EqualTo("Third"));
+        Assert.That(result.Maps[0].MapId, Is.EqualTo("First"));
+        Assert.That(result.Maps[1].MapId, Is.EqualTo("Second"));
+        Assert.That(result.Maps[2].MapId, Is.EqualTo("Third"));
     }
 
     [Test]
@@ -236,7 +238,7 @@ public class BroadcastStateServiceTests
     {
         var dto = new BroadcastStateDto
         {
-            Maps = [new MapStateDto { Id = "", Order = 0, MapName = "New Map" }]
+            Maps = [new MapStateDto { Id = "", Order = 0, MapId = "New Map" }]
         };
 
         var result = await _service.UpdateStateAsync(dto);
@@ -252,15 +254,15 @@ public class BroadcastStateServiceTests
             Id = 1,
             Maps =
             [
-                new MapStateEntity { Id = Guid.NewGuid().ToString(), Order = 1, MapName = "Second", BroadcastStateEntityId = 1 },
-                new MapStateEntity { Id = Guid.NewGuid().ToString(), Order = 0, MapName = "First", BroadcastStateEntityId = 1 }
+                new MapStateEntity { Id = Guid.NewGuid().ToString(), Order = 1, MapId = "Second", BroadcastStateEntityId = 1 },
+                new MapStateEntity { Id = Guid.NewGuid().ToString(), Order = 0, MapId = "First", BroadcastStateEntityId = 1 }
             ]
         });
         await _db.SaveChangesAsync();
 
         var result = await _service.GetStateAsync();
 
-        Assert.That(result.Maps[0].MapName, Is.EqualTo("First"));
-        Assert.That(result.Maps[1].MapName, Is.EqualTo("Second"));
+        Assert.That(result.Maps[0].MapId, Is.EqualTo("First"));
+        Assert.That(result.Maps[1].MapId, Is.EqualTo("Second"));
     }
 }

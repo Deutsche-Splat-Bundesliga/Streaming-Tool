@@ -9,10 +9,11 @@ import { Mode } from '../../models/mode';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-map-card',
-  imports: [FormsModule, EditCard, NgClass],
+  imports: [FormsModule, EditCard, NgClass, TranslocoDirective],
   templateUrl: './map-card.html',
   styleUrl: './map-card.scss',
 })
@@ -43,18 +44,14 @@ export class MapCard implements OnInit, OnDestroy {
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
   /**
-   * Available maps sorted alphabetically by name.
+   * Available maps signal from broadcast state that gets the translated and alphabetically sorted maps
    */
-  availableMaps: Map[] = this.stateService.availableMaps.sort((a, b) => {
-    if (a.mapName < b.mapName) return -1;
-    if (a.mapName > b.mapName) return 1;
-    return 0;
-  });
+  availableMaps: WritableSignal<Map[]> = this.stateService.availableMaps;
 
   /**
    * Available modes for map selection.
    */
-  availableModes: Mode[] = this.stateService.availableModes;
+  availableModes: WritableSignal<Mode[]> = this.stateService.availableModes;
 
   /**
    * Whether the edit menu is visible.
@@ -67,7 +64,6 @@ export class MapCard implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._log.debug('MapCard initialized', {
       mapId: this.map?.id,
-      mapName: this.map?.mapName,
     });
   }
 
@@ -186,7 +182,7 @@ export class MapCard implements OnInit, OnDestroy {
       currentMapId: this.map.id,
     });
 
-    const selected = this.availableMaps.find((m) => m.id === mapId);
+    const selected = this.availableMaps().find((m) => m.id === mapId);
 
     if (!selected) {
       this._log.error('Selected map not found', {
@@ -200,8 +196,6 @@ export class MapCard implements OnInit, OnDestroy {
         return {
           ...m,
           mapId,
-          mapName: selected.mapName,
-          imageUrl: selected.imageUrl,
         };
       }
       return m;
@@ -220,7 +214,7 @@ export class MapCard implements OnInit, OnDestroy {
       mapId: this.map.id,
     });
 
-    const selected = this.availableModes.find((m) => m.id === modeId);
+    const selected = this.availableModes().find((m) => m.id === modeId);
 
     if (!selected) {
       this._log.error('Selected mode not found', {
@@ -234,7 +228,6 @@ export class MapCard implements OnInit, OnDestroy {
         return {
           ...m,
           modeId: selected.id,
-          modeName: selected.name,
         };
       }
       return m;

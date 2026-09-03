@@ -75,7 +75,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
 
         LogEntry entry = new()
         {
-            Timestamp = DateTime.UtcNow,
+            Timestamp = DateTime.Now,
             Level = level,
             Message = message,
             Exception = ex,

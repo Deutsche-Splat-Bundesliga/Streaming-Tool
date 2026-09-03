@@ -34,7 +34,7 @@
         [class.map-won]="map.winner !== null"
         [class.is-visible]="map.isVisible"
       >
-        <img class="map-image" [src]="map.imageUrl" />
+        <img class="map-image" [src]="'assets/maps/' + map.mapId + '.png'" />
 
         <img
           class="mode-image"

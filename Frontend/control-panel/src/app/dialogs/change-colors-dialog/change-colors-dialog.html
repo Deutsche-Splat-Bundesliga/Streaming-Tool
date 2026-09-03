@@ -1,36 +1,38 @@
 @let visibleColors =
   state().colorLockActive ? stateService.colorLockColors : stateService.matchColors;
-<h1 mat-dialog-title>Farbeinstellungen</h1>
-<mat-dialog-content>
-  <label
-    (click)="
-      stateService.update({
-        colorLockActive: !state().colorLockActive,
-        currentColorsId: 0,
-      })
-    "
-  >
-    Color Lock
-    <app-toggle-slider [class.toggled]="state().colorLockActive" />
-  </label>
-  <h2>Farben</h2>
-  <div class="colors__container">
-    @for (color of visibleColors; track color.id) {
-      <div class="color-display__container">
-        <div class="color-display" [ngStyle]="{ 'background-color': color.colorAlpha }"></div>
-        <div class="color-display" [ngStyle]="{ 'background-color': color.colorBravo }"></div>
-        <app-toggle-slider
-          [class.toggled]="state().currentColorsId === color.id"
-          (onToggleSliderClick)="
-            stateService.update({
-              currentColorsId: color.id,
-            })
-          "
-        />
-      </div>
-    }
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button class="click-button" mat-dialog-close>✖</button>
-</mat-dialog-actions>
+<main *transloco="let t">
+  <h1 mat-dialog-title>{{ t('text.color-settings') }}</h1>
+  <mat-dialog-content>
+    <label
+      (click)="
+        stateService.update({
+          colorLockActive: !state().colorLockActive,
+          currentColorsId: 0,
+        })
+      "
+    >
+      {{ t('text.color-lock') }}
+      <app-toggle-slider [class.toggled]="state().colorLockActive" />
+    </label>
+    <h2>{{ t('text.colors') }}</h2>
+    <div class="colors__container">
+      @for (color of visibleColors; track color.id) {
+        <div class="color-display__container">
+          <div class="color-display" [ngStyle]="{ 'background-color': color.colorAlpha }"></div>
+          <div class="color-display" [ngStyle]="{ 'background-color': color.colorBravo }"></div>
+          <app-toggle-slider
+            [class.toggled]="state().currentColorsId === color.id"
+            (onToggleSliderClick)="
+              stateService.update({
+                currentColorsId: color.id,
+              })
+            "
+          />
+        </div>
+      }
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="click-button" mat-dialog-close>✖</button>
+  </mat-dialog-actions>
+</main>

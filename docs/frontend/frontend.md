@@ -112,21 +112,12 @@ Key properties:
 
 - `dispose()`
 
-### MapPoolEntry
-
-- `id`
-- `mapName`
-- `imageUrl`
-
 ### MapState
 
 - `id`
 - `order`
 - `mapId`
-- `mapName`
 - `modeId`
-- `modeName`
-- `imageUrl`
 - `winner`
 - `isVisible`
 
@@ -134,7 +125,6 @@ Key properties:
 
 - `id`
 - `mapName`
-- `imageUrl`
 
 ### Mode
 

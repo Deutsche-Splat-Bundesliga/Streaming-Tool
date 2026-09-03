@@ -7,9 +7,12 @@ import { BroadcastStateService } from './broadcast-state';
 import { BroadcastApi } from './broadcast-api';
 import { Signalr } from './signalr';
 import { BroadcastState } from '../models/broadcast-state';
+import { TranslocoService } from '@jsverse/transloco';
+import { getTranslocoModule } from '../transloco-testing.module';
 
 describe('BroadcastStateService', () => {
   let service: BroadcastStateService;
+  let translocoService: TranslocoService;
 
   const defaultState: BroadcastState = {
     teamAlphaName: 'Team Alpha',
@@ -59,14 +62,18 @@ describe('BroadcastStateService', () => {
     mockSignalr.start.mockResolvedValue(undefined);
 
     TestBed.configureTestingModule({
+      imports: [getTranslocoModule()],
       providers: [
         BroadcastStateService,
+        TranslocoService,
         { provide: BroadcastApi, useValue: mockApi },
         { provide: Signalr, useValue: mockSignalr },
       ],
     });
 
     service = TestBed.inject(BroadcastStateService);
+    translocoService = TestBed.inject(TranslocoService);
+    translocoService.setActiveLang('en');
   });
 
   afterEach(() => {
@@ -144,15 +151,18 @@ describe('BroadcastStateService', () => {
         id: '00000000-0000-0000-0000-000000000000',
         order: 1,
         mapId: 'scorch-gorge',
-        mapName: 'Sengkluft',
         modeId: 'sz',
-        modeName: 'Herrschaft',
-        imageUrl: 'assets/maps/scorch-gorge.png',
         isVisible: true,
       },
     ]);
 
     expect(mockApi.updateState).toHaveBeenCalledWith(service.state());
+  });
+
+  it('should translate map name to German', () => {
+    translocoService.setActiveLang('de');
+    const germanName = translocoService.translate('map.scorch-gorge');
+    expect(germanName).toEqual('Sengkluft');
   });
 
   it('should add maps with increasing order numbers', () => {
@@ -175,10 +185,7 @@ describe('BroadcastStateService', () => {
           id: 'map-1',
           order: 1,
           mapId: 'scorch-gorge',
-          mapName: 'Sengkluft',
           modeId: 'sz',
-          modeName: 'Herrschaft',
-          imageUrl: 'assets/maps/scorch-gorge.png',
           isVisible: true,
           winner: 'alpha',
         },
@@ -186,10 +193,7 @@ describe('BroadcastStateService', () => {
           id: 'map-2',
           order: 2,
           mapId: 'eeltail-alley',
-          mapName: 'Streifenaal-Straße',
           modeId: 'tc',
-          modeName: 'Turm-Kommando',
-          imageUrl: 'assets/maps/eeltail-alley.png',
           isVisible: true,
           winner: 'bravo',
         },
@@ -197,10 +201,7 @@ describe('BroadcastStateService', () => {
           id: 'map-3',
           order: 3,
           mapId: 'hagglefish-market',
-          mapName: 'Schnapperchen-Basar',
           modeId: 'rm',
-          modeName: 'Operation Goldfisch',
-          imageUrl: 'assets/maps/hagglefish-market.png',
           isVisible: true,
           winner: 'alpha',
         },
@@ -226,12 +227,11 @@ describe('BroadcastStateService', () => {
   });
 
   it('should expose available maps', () => {
-    expect(service.availableMaps.length).toBeGreaterThan(0);
+    expect(service.availableMaps().length).toBeGreaterThan(0);
 
-    expect(service.availableMaps[0]).toEqual({
+    expect(service.availableMaps()[0]).toEqual({
       id: 'scorch-gorge',
       mapName: 'Sengkluft',
-      imageUrl: 'assets/maps/scorch-gorge.png',
     });
   });
 
@@ -250,7 +250,7 @@ describe('BroadcastStateService', () => {
   });
 
   it('should expose available modes', () => {
-    expect(service.availableModes).toEqual([
+    expect(service.availableModes()).toEqual([
       {
         id: 'tw',
         name: 'Revierkampf',

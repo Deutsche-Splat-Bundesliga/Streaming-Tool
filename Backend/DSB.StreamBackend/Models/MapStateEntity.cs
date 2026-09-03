@@ -21,24 +21,9 @@ public class MapStateEntity
     public string MapId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Human-readable name of the map.
-    /// </summary>
-    public string MapName { get; set; } = string.Empty;
-
-    /// <summary>
     /// Identifier for the game mode associated with the map.
     /// </summary>
     public string ModeId { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Human-readable name of the game mode.
-    /// </summary>
-    public string ModeName { get; set; } = string.Empty;
-
-    /// <summary>
-    /// URL for the map image used in the broadcast overlay.
-    /// </summary>
-    public string ImageUrl { get; set; } = string.Empty;
 
     /// <summary>
     /// Name of the winning team or player for this map, if available.

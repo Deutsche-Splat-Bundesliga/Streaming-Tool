@@ -1,7 +1,7 @@
-<h1 mat-dialog-title>Ein- / Ausblenden Kommentatorbox</h1>
-<mat-dialog-content>
-  <section class="commbox-display-mode-section">
-    <h2>Ein- / Ausblendemodus</h2>
+<main *transloco="let t">
+  <h1 mat-dialog-title>{{ t('text.show-hide-commbox') }}</h1>
+  <mat-dialog-content>
+    <h2>{{ t('text.comm-box-blend-mode') }}</h2>
     <div class="comm-box-display-state-buttons__container">
       <button
         class="toggle-button display-mode-button manual-display-mode-button"
@@ -12,7 +12,7 @@
           })
         "
       >
-        Manuell
+        {{ t('button.blend-mode-manual') }}
       </button>
       <button
         class="toggle-button display-mode-button auto-display-mode-button"
@@ -23,62 +23,62 @@
           })
         "
       >
-        Automatisch
+        {{ t('button.blend-mode-auto') }}
       </button>
     </div>
-  </section>
 
-  @switch (commentatorBoxTimeData().displayMode) {
-    @case (commBoxDisplayMode.Manual) {
-      <section class="comm-box-visible-time-input__section no-margin">
-        <h2>Zeit sichtbar (In Sekunden)</h2>
-        <input
-          class="show-comm-box-interval-input"
-          type="number"
-          min="5"
-          [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
-          (ngModelChange)="
-            commentatorBoxTimeDataService.update({
-              hideDisplayIntervalInSeconds: $event,
-            })
-          "
-        />
-      </section>
+    @switch (commentatorBoxTimeData().displayMode) {
+      @case (commBoxDisplayMode.Manual) {
+        <section class="comm-box-visible-time-input__section no-margin">
+          <h2>{{ t('text.time-visible') }}</h2>
+          <input
+            class="show-comm-box-interval-input"
+            type="number"
+            min="5"
+            [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
+            (ngModelChange)="
+              commentatorBoxTimeDataService.update({
+                hideDisplayIntervalInSeconds: $event,
+              })
+            "
+          />
+        </section>
+      }
+
+      @case (commBoxDisplayMode.Auto) {
+        <section class="comm-box-visible-time-input__section">
+          <h2>{{ t('text.time-visible') }}</h2>
+          <input
+            class="show-comm-box-interval-input"
+            type="number"
+            min="5"
+            [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
+            (ngModelChange)="
+              commentatorBoxTimeDataService.update({
+                hideDisplayIntervalInSeconds: $event,
+              })
+            "
+          />
+        </section>
+
+        <section class="comm-box-hidden-time-input__section">
+          <h2>{{ t('text.time-hidden') }}</h2>
+          <input
+            class="hide-comm-box-interval-input"
+            type="number"
+            min="5"
+            [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
+            (ngModelChange)="
+              commentatorBoxTimeDataService.update({
+                showDisplayIntervalInSeconds: $event,
+              })
+            "
+          />
+        </section>
+      }
     }
-
-    @case (commBoxDisplayMode.Auto) {
-      <section class="comm-box-visible-time-input__section">
-        <h2>Zeit sichtbar (In Sekunden)</h2>
-        <input
-          class="show-comm-box-interval-input"
-          type="number"
-          min="5"
-          [ngModel]="commentatorBoxTimeData().hideDisplayIntervalInSeconds"
-          (ngModelChange)="
-            commentatorBoxTimeDataService.update({
-              hideDisplayIntervalInSeconds: $event,
-            })
-          "
-        />
-      </section>
-
-      <section class="comm-box-hidden-time-input__section">
-        <h2>Zeit unsichtbar (In Sekunden)</h2>
-        <input
-          class="hide-comm-box-interval-input"
-          type="number"
-          min="5"
-          [ngModel]="commentatorBoxTimeData().showDisplayIntervalInSeconds"
-          (ngModelChange)="
-            commentatorBoxTimeDataService.update({
-              showDisplayIntervalInSeconds: $event,
-            })
-          "
-        />
-      </section>
-    }
-  }
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button class="click-button" mat-dialog-close>✖</button>
-</mat-dialog-actions>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="click-button" mat-dialog-close>✖</button>
+  </mat-dialog-actions>
+</main>
