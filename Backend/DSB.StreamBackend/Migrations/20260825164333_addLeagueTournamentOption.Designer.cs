@@ -3,6 +3,7 @@ using System;
 using DSB.StreamBackend.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSB.StreamBackend.Migrations
 {
     [DbContext(typeof(StreamToolDbContext))]
-    partial class StreamToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260825164333_addLeagueTournamentOption")]
+    partial class addLeagueTournamentOption
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.19");
@@ -215,6 +218,10 @@ namespace DSB.StreamBackend.Migrations
                     b.Property<int>("BroadcastStateEntityId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsVisible")
                         .HasColumnType("INTEGER");
 
@@ -222,7 +229,15 @@ namespace DSB.StreamBackend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("MapName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ModeId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModeName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

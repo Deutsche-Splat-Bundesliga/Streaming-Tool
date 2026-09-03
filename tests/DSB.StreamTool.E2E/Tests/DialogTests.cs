@@ -32,35 +32,13 @@ public class DialogTests : PageTest
     }
 
     [Test]
-    public async Task Dialog_TourneySettings_Division_SelectIsVisible()
+    public async Task Dialog_TourneySettings_TourneyFormatButtons_Visible()
     {
         var dialogOpenButton = Page.Locator(".sidebar .open-tourney-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
-        await Expect(Page.Locator(".tourney-settings-dialog")).ToBeVisibleAsync();
-
-        var divisionSelect = Page.Locator(".tourney-settings-dialog section:has(h2:text('Division')) select");
-        await Expect(divisionSelect).ToBeVisibleAsync();
-    }
-
-    [Test]
-    public async Task Dialog_TourneySettings_Division_SelectHasOptions()
-    {
-        var dialogOpenButton = Page.Locator(".sidebar .open-tourney-settings-dialog-button");
-        await dialogOpenButton.ClickAsync();
-
-        var options = Page.Locator(".tourney-settings-dialog section:has(h2:text('Division')) select option");
-        var count = await options.CountAsync();
-        Assert.That(count, Is.GreaterThan(0), "Division select should have at least one option.");
-    }
-
-    [Test]
-    public async Task Dialog_TourneySettings_Week_IsVisible()
-    {
-        var dialogOpenButton = Page.Locator(".sidebar .open-tourney-settings-dialog-button");
-        await dialogOpenButton.ClickAsync();
-
-        await Expect(Page.Locator(".tourney-settings-dialog .week-section input")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".tourney-settings-dialog .tourney-format-buttons__container .standard-format-button")).ToBeVisibleAsync();
+        await Expect(Page.Locator(".tourney-settings-dialog .tourney-format-buttons__container .league-format-button")).ToBeVisibleAsync();
     }
 
     [Test]
@@ -145,7 +123,9 @@ public class DialogTests : PageTest
         var dialogOpenButton = Page.Locator(".sidebar .open-colors-settings-dialog-button");
         await dialogOpenButton.ClickAsync();
 
-        var colorContainers = Page.Locator(".color-settings-dialog .color-display__container");
+        await Expect(Page.Locator(".color-settings-dialog .colors__container")).ToBeVisibleAsync();
+
+        var colorContainers = Page.Locator(".color-settings-dialog .colors__container .color-display__container");
         var count = await colorContainers.CountAsync();
         Assert.That(count, Is.GreaterThanOrEqualTo(2), "Color options containers should have at least two container with colors.");
     }

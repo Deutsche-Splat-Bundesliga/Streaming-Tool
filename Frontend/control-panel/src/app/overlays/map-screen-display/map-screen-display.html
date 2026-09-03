@@ -1,8 +1,6 @@
 <div class="map-screen" [class.overlay-hidden]="!state().showMapScreen">
   <div class="header dsb-panel dsb-gradient">
-    <span class="match tourney-info">
-      Season {{ state().season }} - Woche {{ state().week }} - Division {{ state().division }}
-    </span>
+    <span class="match tourney-info"> {{ tournamentInfo }} </span>
 
     <div class="team-name-container team-alpha-name-container">
       <span class="ink-splat-logo team-alpha-color"></span>

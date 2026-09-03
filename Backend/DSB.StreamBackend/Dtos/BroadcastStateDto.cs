@@ -85,6 +85,21 @@ public class BroadcastStateDto
     public int Week { get; set; }
 
     /// <summary>
+    /// Gets or sets if the current tournament is a league format tournament or a normal bracket tournament
+    /// </summary>
+    public bool IsLeague { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets the name of the current tournament
+    /// </summary>
+    public string TournamentName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the name of the current bracket
+    /// </summary>
+    public string BracketName { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the start time of the match
     /// </summary>
     public DateTime StartTime { get; set; }

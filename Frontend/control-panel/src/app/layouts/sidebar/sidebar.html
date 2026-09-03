@@ -1,27 +1,5 @@
 <div class="sidebar" *transloco="let t">
   <section>
-    <h2>Teams</h2>
-    <input
-      [ngModel]="state().teamAlphaName"
-      (ngModelChange)="
-        stateService.update({
-          teamAlphaName: $event,
-        })
-      "
-      maxLength="30"
-    />
-    <input
-      [ngModel]="state().teamBravoName"
-      (ngModelChange)="
-        stateService.update({
-          teamBravoName: $event,
-        })
-      "
-      maxLength="30"
-    />
-  </section>
-
-  <section>
     <h2>{{ t('text.colors') }}</h2>
     @if (!state().colorLockActive) {
       <button class="click-button" (click)="handleNextColorButtonClick()">

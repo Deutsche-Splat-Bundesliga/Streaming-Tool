@@ -32,10 +32,13 @@ export interface BroadcastState {
   // Maps
   maps: MapState[];
 
-  // League Information
+  // Tournament Information
   season: number;
   division: number;
   week: number;
+  isLeague: boolean;
+  tournamentName: string;
+  bracketName: string;
 
   // Color Information
   currentColorsId: number;

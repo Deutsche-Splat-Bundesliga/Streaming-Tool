@@ -1,7 +1,5 @@
 <div class="infobox dsb-panel dsb-gradient" [class.overlay-hidden]="!state().showInfobox">
-  <span class="tourney-info"
-    >Season {{ state().season }} - Woche {{ state().week }} - Division {{ state().division }}</span
-  >
+  <span class="tourney-info">{{ tournamentInfo }}</span>
 
   <div class="versus">
     <app-resizable-text

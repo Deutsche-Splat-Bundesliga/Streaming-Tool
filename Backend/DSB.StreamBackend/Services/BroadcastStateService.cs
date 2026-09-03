@@ -68,6 +68,9 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
         entity.Season = dto.Season;
         entity.Division = dto.Division;
         entity.Week = dto.Week;
+        entity.IsLeague = dto.IsLeague;
+        entity.TournamentName = dto.TournamentName;
+        entity.BracketName = dto.BracketName;
 
         entity.StartTime = dto.StartTime;
 
@@ -183,6 +186,9 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
             Season = entity.Season,
             Division = entity.Division,
             Week = entity.Week,
+            IsLeague = entity.IsLeague,
+            TournamentName = entity.TournamentName,
+            BracketName = entity.BracketName,
             StartTime = entity.StartTime,
             CurrentColorsId = entity.CurrentColorsId,
             ColorLockActive = entity.ColorLockActive
