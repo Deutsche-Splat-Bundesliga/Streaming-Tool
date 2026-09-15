@@ -7,7 +7,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { formatDate } from '@angular/common';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
-import { MapState } from '../../models/map-state';
+import { Ajv } from 'ajv';
 
 @Component({
   selector: 'app-tourney-settings-dialog',
@@ -17,30 +17,47 @@ import { MapState } from '../../models/map-state';
 })
 export class TourneySettingsDialog implements OnDestroy {
   /**
-   * Object that holds schema and type definitions for basic json export.
-   * Property `maps` gets validated seperately
+   * ajv instance that is used for verifying json structure and it's types
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private readonly _jsonSchema: any = {
-    tournamentName: 'string',
-    bracketName: 'string',
-    teamAlpha: 'string',
-    teamBravo: 'string',
-    division: 'number',
-    week: 'number',
-    season: 'number',
-    isLeague: 'boolean',
-  };
+  private readonly _ajv = new Ajv();
 
   /**
-   * Object that holds schema and type definitions for MapState json import.
-   * Properties `mapId`, `modeId` and `winner` get validated seperately
+   * Schema that ajv uses to validate import of set data from json
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private readonly _mapSchema: any = {
-    id: 'string',
-    order: 'number',
-    isVisible: 'boolean',
+  private readonly _exportSchema = {
+    type: 'object',
+    properties: {
+      tournamentName: { type: 'string' },
+      bracketName: { type: 'string' },
+      teamAlphaName: { type: 'string' },
+      teamBravoName: { type: 'string' },
+      division: { type: 'number' },
+      week: { type: 'number' },
+      season: { type: 'number' },
+      isLeague: { type: 'boolean' },
+      maps: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            mapId: { type: 'string' },
+            modeId: { type: 'string' },
+            order: { type: 'number' },
+            winner: { type: ['string', 'null'] },
+            isVisible: { type: 'boolean' },
+          },
+          additionalProperties: false,
+          get required() {
+            return Object.keys(this.properties);
+          },
+        },
+      },
+    },
+    additionalProperties: false,
+    get required() {
+      return Object.keys(this.properties);
+    },
   };
 
   /**
@@ -76,8 +93,8 @@ export class TourneySettingsDialog implements OnDestroy {
     const setData = {
       tournamentName: this.state().tournamentName,
       bracketName: this.state().bracketName,
-      teamAlpha: this.state().teamAlphaName,
-      teamBravo: this.state().teamBravoName,
+      teamAlphaName: this.state().teamAlphaName,
+      teamBravoName: this.state().teamBravoName,
       division: this.state().division,
       week: this.state().week,
       season: this.state().season,
@@ -134,9 +151,22 @@ export class TourneySettingsDialog implements OnDestroy {
 
       const file = await setDataFile.getFile();
       const setData = JSON.parse(await file.text()) as BroadcastState;
-      if (this.validateJsonData(setData)) {
-        this.stateService.update(setData);
+      if (!this._ajv.validate(this._exportSchema, setData)) {
+        throw new Error(this._ajv.errorsText());
       }
+
+      const newMaps = setData.maps.map((map) => {
+        map.winner = null;
+        return map;
+      });
+      const newData: BroadcastState = {
+        ...this.state(),
+        ...setData,
+        scoreAlpha: 0,
+        scoreBravo: 0,
+        maps: newMaps,
+      };
+      this.stateService.update(newData);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.name === 'AbortError') {
@@ -145,119 +175,6 @@ export class TourneySettingsDialog implements OnDestroy {
 
       this._log.error('An error occured during the import of the set data JSON file!', error);
     }
-  }
-
-  /**
-   * Validates the imported json file and the types of it's properties
-   * @param data {any} Imported data from json
-   * @returns If json data is valid or invalid
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private validateJsonData(data: any): boolean {
-    for (const objEntry of Object.entries(data)) {
-      const [key, value] = objEntry;
-      const valueType = typeof value;
-      const expectedType = this._jsonSchema[key];
-      if (key === 'maps') {
-        if (!this.validateMapData(data.maps)) {
-          return false;
-        }
-      } else {
-        if (!expectedType) {
-          this._log.warn(
-            `JSONImport: Property '${key}' is not defined in JSON schema and will be ignored during import`,
-          );
-          continue;
-        }
-
-        if (expectedType !== valueType) {
-          this._log.error(
-            `JSONImport: Property '${key}' is of type '${valueType}', expected '${expectedType}'`,
-          );
-          return false;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  /**
-   * Validates the MapState[] data from json import
-   * @param data {MapState[]} Map data from json import
-   * @returns If map data is valid or invalid
-   */
-  private validateMapData(maps: MapState[]): boolean {
-    if (!Array.isArray(maps)) {
-      this._log.error(`JSONImport: Property 'maps' is not an array!`);
-      return false;
-    }
-
-    for (const map of maps) {
-      if (typeof map !== 'object') {
-        this._log.error(
-          `JSONImport: Non-object found in property 'maps'! All values in array must be an object!`,
-        );
-        return false;
-      }
-
-      for (const objEntry of Object.entries(map)) {
-        const [key, value] = objEntry;
-        const valueType = typeof value;
-        const expectedType = this._mapSchema[key];
-        switch (key) {
-          case 'winner':
-            {
-              const allowedWinnerValues = [null, 'alpha', 'bravo'];
-              if (!allowedWinnerValues.includes(value)) {
-                this._log.error(
-                  `JSONImport: Property 'winner' has value '${value}', expected 'alpha', 'bravo' or null!`,
-                );
-                return false;
-              }
-            }
-            break;
-
-          case 'mapId':
-            {
-              if (!this.stateService.availableMaps().find((map) => map.id === value)) {
-                this._log.error(`JSONImport: Map ID '${value}' is invalid!`);
-                return false;
-              }
-            }
-            break;
-
-          case 'modeId':
-            {
-              if (!this.stateService.availableModes().find((mode) => mode.id === value)) {
-                this._log.error(`JSONImport: Mode ID '${value}' is invalid!`);
-                return false;
-              }
-            }
-            break;
-
-          default:
-            {
-              if (!expectedType) {
-                this._log.warn(
-                  `JSONImport: Property '${key}' is not defined in JSON schema and will be ignored during import`,
-                );
-                continue;
-              }
-
-              if (expectedType !== valueType) {
-                this._log.error(
-                  `JSONImport: Property '${key}' is of type '${valueType}', expected '${expectedType}'`,
-                );
-                return false;
-              }
-            }
-            break;
-        }
-      }
-    }
-
-    return true;
   }
 
   /**
