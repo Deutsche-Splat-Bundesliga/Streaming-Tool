@@ -1,14 +1,13 @@
 @use '../dialog-theme.scss';
 
-.tourney-format-buttons__container {
+.tourney-format-buttons__container,
+.set-data-export-import-buttons__container {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   column-gap: 1rem;
 }
 
-button.toggle-button,
-.export-set-data-button,
-.import-set-data-button {
+button.toggle-button {
   width: 5rem;
 }

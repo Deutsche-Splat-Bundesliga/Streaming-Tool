@@ -43,9 +43,15 @@
     </section>
 
     <section class="import-export-section">
-      <h2>Import / Export Tournament Data</h2>
-      <button class="click-button export-set-data-button" (click)="exportSetData()">Export</button>
-      <button class="click-button import-set-data-button" (click)="importSetData()">Import</button>
+      <h2>{{ t('text.import-export-set-data') }}</h2>
+      <div class="set-data-export-import-buttons__container">
+        <button class="click-button export-set-data-button" (click)="exportSetData()">
+          {{ t('button.export-to-json') }}
+        </button>
+        <button class="click-button import-set-data-button" (click)="importSetData()">
+          {{ t('button.import-from-json') }}
+        </button>
+      </div>
     </section>
   </mat-dialog-content>
   <mat-dialog-actions>

@@ -48,6 +48,7 @@
   "text.tourney-settings": "Turniereinstellungen",
   "text.tourney-format": "Turnierformat",
   "text.start-time": "Startzeit",
+  "text.import-export-set-data": "Set-Daten importieren / exportieren",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",
@@ -60,6 +61,8 @@
   "button.dismiss": "Verstanden",
   "button.standard": "Standard",
   "button.league": "Liga",
+  "button.export-to-json": "Exportiere zu JSON",
+  "button.import-from-json": "Importiere von JSON",
 
   "input.placeholder.api-key-name": "Name (z.B. Stream Deck)",
 
