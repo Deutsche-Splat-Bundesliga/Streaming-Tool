@@ -8,6 +8,7 @@ import { formatDate } from '@angular/common';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 import { Ajv } from 'ajv';
+import { MapState } from '../../models/map-state';
 
 @Component({
   selector: 'app-tourney-settings-dialog',
@@ -84,22 +85,17 @@ export class TourneySettingsDialog implements OnDestroy {
    * Export set data in JSON format, and download it to the drive of the user as a JSON file
    */
   async exportSetData(): Promise<void> {
-    const mapData = this.state().maps.map((map) => {
-      return {
-        ...map,
-        winner: null,
-      };
-    });
-    const setData = {
-      tournamentName: this.state().tournamentName,
-      bracketName: this.state().bracketName,
-      teamAlphaName: this.state().teamAlphaName,
-      teamBravoName: this.state().teamBravoName,
-      division: this.state().division,
-      week: this.state().week,
-      season: this.state().season,
-      isLeague: this.state().isLeague,
-      maps: mapData,
+    const currentState = this.state();
+    const setData: Partial<BroadcastState> = {
+      tournamentName: currentState.tournamentName,
+      bracketName: currentState.bracketName,
+      teamAlphaName: currentState.teamAlphaName,
+      teamBravoName: currentState.teamBravoName,
+      division: currentState.division,
+      week: currentState.week,
+      season: currentState.season,
+      isLeague: currentState.isLeague,
+      maps: this.resetMapWinners(currentState),
     };
     const blob = new Blob([JSON.stringify(setData, null, 2)], { type: 'application/json' });
     const formattedDate = formatDate(new Date(), 'yyyyMMdd', 'en');
@@ -128,7 +124,7 @@ export class TourneySettingsDialog implements OnDestroy {
         return;
       }
 
-      this._log.error('An error occured during the import of the set data JSON file!', error);
+      this._log.error('An error occured during the export of the set data JSON file!', error);
     }
   }
 
@@ -155,16 +151,12 @@ export class TourneySettingsDialog implements OnDestroy {
         throw new Error(this._ajv.errorsText());
       }
 
-      const newMaps = setData.maps.map((map) => {
-        map.winner = null;
-        return map;
-      });
       const newData: BroadcastState = {
         ...this.state(),
         ...setData,
         scoreAlpha: 0,
         scoreBravo: 0,
-        maps: newMaps,
+        maps: this.resetMapWinners(setData),
       };
       this.stateService.update(newData);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -175,6 +167,20 @@ export class TourneySettingsDialog implements OnDestroy {
 
       this._log.error('An error occured during the import of the set data JSON file!', error);
     }
+  }
+
+  /**
+   * Sets all `winner` properties in `BroadcastState.maps` to `null` during export and import of JSON file
+   * @param state Current `BroadcastState` during export, or `BroadcastState` with infos from JSON during import
+   * @returns `MapState[]` with all `winner` properties set to `null`
+   */
+  private resetMapWinners(state: BroadcastState): MapState[] {
+    return state.maps.map((map) => {
+      return {
+        ...map,
+        winner: null,
+      };
+    });
   }
 
   /**
