@@ -134,7 +134,7 @@ export class TourneySettingsDialog implements OnDestroy {
   async importSetData(): Promise<void> {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const [setDataFile] = await (window as any).showOpenFilePicker({
+      const [setDataFile] = (await (window as any).showOpenFilePicker({
         types: [
           {
             accept: {
@@ -143,9 +143,13 @@ export class TourneySettingsDialog implements OnDestroy {
           },
         ],
         multiple: false,
-      });
+      })) as FileSystemFileHandle[];
 
       const file = await setDataFile.getFile();
+      if (!file.name.endsWith('.json')) {
+        throw new Error('Imported file is not a json file!');
+      }
+
       const setData = JSON.parse(await file.text()) as BroadcastState;
       if (!this._ajv.validate(this._exportSchema, setData)) {
         throw new Error(this._ajv.errorsText());
