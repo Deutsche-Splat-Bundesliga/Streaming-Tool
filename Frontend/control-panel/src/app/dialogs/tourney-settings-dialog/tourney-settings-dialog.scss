@@ -24,3 +24,17 @@ label.import-set-data-button {
   font-family: sans-serif;
   letter-spacing: normal;
 }
+
+.import-export-notification {
+  &.hidden {
+    opacity: 0;
+  }
+
+  &.success {
+    color: #00ff00;
+  }
+
+  &.error {
+    color: #ff0000;
+  }
+}

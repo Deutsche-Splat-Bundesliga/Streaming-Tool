@@ -49,6 +49,9 @@
   "text.tourney-format": "Turnierformat",
   "text.start-time": "Startzeit",
   "text.import-export-set-data": "Set-Daten importieren / exportieren",
+  "text.set-data-export-successful": "Export der Set-Daten war erfolgreich!",
+  "text.set-data-import-successful": "Import der Set-Daten war erfolgreich!",
+  "text.set-data-import-error": "Es gab einen Fehler beim Importieren der Set-Daten!",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",
