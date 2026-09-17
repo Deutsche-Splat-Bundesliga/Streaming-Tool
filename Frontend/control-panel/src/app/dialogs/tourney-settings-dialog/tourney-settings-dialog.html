@@ -48,9 +48,15 @@
         <button class="click-button export-set-data-button" (click)="exportSetData()">
           {{ t('button.export-to-json') }}
         </button>
-        <button class="click-button import-set-data-button" (click)="importSetData()">
+        <label for="file-upload-input" class="click-button import-set-data-button">
           {{ t('button.import-from-json') }}
-        </button>
+        </label>
+        <input
+          id="file-upload-input"
+          type="file"
+          accept="application/json"
+          (change)="importSetData($event)"
+        />
       </div>
     </section>
   </mat-dialog-content>

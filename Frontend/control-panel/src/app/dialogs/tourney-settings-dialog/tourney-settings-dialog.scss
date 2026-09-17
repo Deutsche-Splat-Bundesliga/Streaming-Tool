@@ -1,4 +1,5 @@
 @use '../dialog-theme.scss';
+@use '../../../mixins' as mixins;
 
 .tourney-format-buttons__container,
 .set-data-export-import-buttons__container {
@@ -10,4 +11,16 @@
 
 button.toggle-button {
   width: 5rem;
+}
+
+input#file-upload-input {
+  display: none;
+}
+
+label.import-set-data-button {
+  @include mixins.sidebar-button;
+  font-weight: normal;
+  font-size: 0.843rem;
+  font-family: sans-serif;
+  letter-spacing: normal;
 }

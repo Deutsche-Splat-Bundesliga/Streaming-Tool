@@ -4,7 +4,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { formatDate } from '@angular/common';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 import { Ajv } from 'ajv';
@@ -97,85 +96,55 @@ export class TourneySettingsDialog implements OnDestroy {
       isLeague: currentState.isLeague,
       maps: this.resetMapWinners(currentState),
     };
-    const blob = new Blob([JSON.stringify(setData, null, 2)], { type: 'application/json' });
-    const formattedDate = formatDate(new Date(), 'yyyyMMdd', 'en');
-    const fileName = `set-data-${formattedDate}.json`;
+    const setDataBlob = new Blob([JSON.stringify(setData, null, 2)], { type: 'application/json' });
+    const blobUrl = window.URL.createObjectURL(setDataBlob);
 
-    try {
-      // We are reaching fast inverse square root levels of cursed with this one
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const saveFileHandle = await (window as any).showSaveFilePicker({
-        suggestedName: fileName,
-        types: [
-          {
-            accept: {
-              'application/json': ['.json'],
-            },
-          },
-        ],
-      });
-      const saveFileWriter =
-        (await saveFileHandle.createWritable()) as FileSystemWritableFileStream;
-      await saveFileWriter.write(blob);
-      await saveFileWriter.close();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
-        return;
-      }
+    this._log.trace('Exporting set data as json to drive', setData);
 
-      this._log.error('An error occured during the export of the set data JSON file!', error);
-    }
+    const tempAnchor = document.createElement('a');
+    tempAnchor.style.display = 'none';
+    tempAnchor.download = 'dsb-tool-set-data.json';
+    tempAnchor.href = blobUrl;
+
+    document.body.appendChild(tempAnchor);
+    tempAnchor.click();
+    window.URL.revokeObjectURL(blobUrl);
+    tempAnchor.remove();
   }
 
   /**
    * Import set data from a JSON file that sits on the drive of the user
+   * @param e {Event} `change` event from file input when a file is uploaded
    */
-  async importSetData(): Promise<void> {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const [setDataFile] = (await (window as any).showOpenFilePicker({
-        types: [
-          {
-            accept: {
-              'application/json': ['.json'],
-            },
-          },
-        ],
-        multiple: false,
-      })) as FileSystemFileHandle[];
-
-      const file = await setDataFile.getFile();
-      if (!file.name.endsWith('.json')) {
-        throw new Error('Imported file is not a json file!');
-      }
-
-      const setData = JSON.parse(await file.text()) as BroadcastState;
-      if (!this._ajv.validate(this._exportSchema, setData)) {
-        throw new Error(this._ajv.errorsText());
-      }
-
-      const newData: BroadcastState = {
-        ...this.state(),
-        ...setData,
-        scoreAlpha: 0,
-        scoreBravo: 0,
-        maps: this.resetMapWinners(setData),
-      };
-      this.stateService.update(newData);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
-        return;
-      }
-
-      this._log.error('An error occured during the import of the set data JSON file!', error);
+  async importSetData(e: Event): Promise<void> {
+    const fileInput = e.target as HTMLInputElement;
+    if (!fileInput.files?.length) {
+      this._log.error('ImportSetData: No files were uploaded!');
+      return;
     }
+
+    const file = fileInput.files[0];
+    const setData = JSON.parse(await file.text()) as BroadcastState;
+    if (!this._ajv.validate(this._exportSchema, setData)) {
+      this._log.error(`ImportSetData: Validation of data failed!`, this._ajv.errorsText());
+      return;
+    }
+
+    this._log.trace('Successfully imported set data json file, writing to BroadcastState', setData);
+
+    const newData: BroadcastState = {
+      ...this.state(),
+      ...setData,
+      scoreAlpha: 0,
+      scoreBravo: 0,
+      maps: this.resetMapWinners(setData),
+    };
+    this.stateService.update(newData);
   }
 
   /**
    * Sets all `winner` properties in `BroadcastState.maps` to `null` during export and import of JSON file
-   * @param state Current `BroadcastState` during export, or `BroadcastState` with infos from JSON during import
+   * @param state {BroadcastState} Current `BroadcastState` during export, or `BroadcastState` with infos from JSON during import
    * @returns `MapState[]` with all `winner` properties set to `null`
    */
   private resetMapWinners(state: BroadcastState): MapState[] {
