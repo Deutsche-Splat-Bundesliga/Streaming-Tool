@@ -65,8 +65,8 @@
   "button.dismiss": "Dismiss",
   "button.standard": "Standard",
   "button.league": "League",
-  "button.export-to-json": "Export to JSON",
-  "button.import-from-json": "Import from JSON",
+  "button.export-to-json": "Export",
+  "button.import-from-json": "Import",
 
   "input.placeholder.api-key-name": "Name (e.g. Stream Deck)",
 
