@@ -8,6 +8,7 @@ import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
 import { Ajv } from 'ajv';
 import { MapState } from '../../models/map-state';
+import { SetDataExportSchema } from '../../types/ajv-schemas/set-data-import-export';
 
 @Component({
   selector: 'app-tourney-settings-dialog',
@@ -25,45 +26,6 @@ export class TourneySettingsDialog implements OnDestroy {
    * Transloco service that handles translation settings
    */
   private _translocoService: TranslocoService = inject(TranslocoService);
-
-  /**
-   * Schema that ajv uses to validate import of set data from json
-   */
-  private readonly _exportSchema = {
-    type: 'object',
-    properties: {
-      tournamentName: { type: 'string' },
-      bracketName: { type: 'string' },
-      teamAlphaName: { type: 'string' },
-      teamBravoName: { type: 'string' },
-      division: { type: 'number' },
-      week: { type: 'number' },
-      season: { type: 'number' },
-      isLeague: { type: 'boolean' },
-      maps: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: { type: 'string' },
-            mapId: { type: 'string' },
-            modeId: { type: 'string' },
-            order: { type: 'number' },
-            winner: { type: ['string', 'null'] },
-            isVisible: { type: 'boolean' },
-          },
-          additionalProperties: false,
-          get required() {
-            return Object.keys(this.properties);
-          },
-        },
-      },
-    },
-    additionalProperties: false,
-    get required() {
-      return Object.keys(this.properties);
-    },
-  };
 
   /**
    * Local logger instance for edit card operations.
@@ -143,7 +105,7 @@ export class TourneySettingsDialog implements OnDestroy {
 
     try {
       const setData = JSON.parse(await file.text()) as BroadcastState;
-      if (!this._ajv.validate(this._exportSchema, setData)) {
+      if (!this._ajv.validate(SetDataExportSchema, setData)) {
         this.showNotification(
           this._translocoService.translate('text.set-data-import-error'),
           'error',
