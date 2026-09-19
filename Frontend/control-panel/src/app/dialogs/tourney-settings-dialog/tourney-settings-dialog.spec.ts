@@ -4,6 +4,7 @@ import { TourneySettingsDialog } from './tourney-settings-dialog';
 import { BroadcastState } from '../../models/broadcast-state';
 import { signal } from '@angular/core';
 import { BroadcastStateService } from '../../services/broadcast-state';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('TourneySettingsDialog', () => {
   let component: TourneySettingsDialog;
@@ -42,7 +43,7 @@ describe('TourneySettingsDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TourneySettingsDialog],
+      imports: [TourneySettingsDialog, getTranslocoModule()],
       providers: [
         {
           provide: BroadcastStateService,
