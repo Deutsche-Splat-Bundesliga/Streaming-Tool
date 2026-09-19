@@ -140,31 +140,44 @@ export class TourneySettingsDialog implements OnDestroy {
     }
 
     const file = fileInput.files[0];
-    const setData = JSON.parse(await file.text()) as BroadcastState;
-    if (!this._ajv.validate(this._exportSchema, setData)) {
+
+    try {
+      const setData = JSON.parse(await file.text()) as BroadcastState;
+      if (!this._ajv.validate(this._exportSchema, setData)) {
+        this.showNotification(
+          this._translocoService.translate('text.set-data-import-error'),
+          'error',
+        );
+        this._log.error(`ImportSetData: Validation of data failed!`, this._ajv.errorsText());
+        return;
+      }
+
+      this._log.trace(
+        'Successfully imported set data json file, writing to BroadcastState',
+        setData,
+      );
+
+      const newData: BroadcastState = {
+        ...this.state(),
+        ...setData,
+        scoreAlpha: 0,
+        scoreBravo: 0,
+        maps: this.resetMapWinners(setData),
+      };
+      this.stateService.update(newData);
+
+      this.showNotification(
+        this._translocoService.translate('text.set-data-import-successful'),
+        'success',
+      );
+    } catch (error) {
+      this._log.error('Error during import of set data json file!', error);
+
       this.showNotification(
         this._translocoService.translate('text.set-data-import-error'),
         'error',
       );
-      this._log.error(`ImportSetData: Validation of data failed!`, this._ajv.errorsText());
-      return;
     }
-
-    this._log.trace('Successfully imported set data json file, writing to BroadcastState', setData);
-
-    const newData: BroadcastState = {
-      ...this.state(),
-      ...setData,
-      scoreAlpha: 0,
-      scoreBravo: 0,
-      maps: this.resetMapWinners(setData),
-    };
-    this.stateService.update(newData);
-
-    this.showNotification(
-      this._translocoService.translate('text.set-data-import-successful'),
-      'success',
-    );
   }
 
   /**
