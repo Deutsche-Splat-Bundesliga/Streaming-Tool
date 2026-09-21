@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased](Unreleased)
 
+### Added
+
+- Added translation for map names, mode names, and other overlay and dashboard texts
+- Added a feature to export set data into a json file, and import it from a json file
+- Added REST API to allow interacting with the streaming tool via external programs and/or devices
+
 ## [1.1](1.1) - 2026-08-15
 
 ### Added
@@ -25,12 +31,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 
 ### Security
+
 - Updated Angular to latest version
 - Updated various dependencies to fixed version
 
 ## [1.1.0-Beta.1](1.1.0-Beta.1) - 2026-06-26
 
 ### Added
+
 - Added CODE_OF_CONDUCT.md for community standards
 - Added SECURITY.md for vulnerability reporting guidelines
 - Added PR Template Base documentation
