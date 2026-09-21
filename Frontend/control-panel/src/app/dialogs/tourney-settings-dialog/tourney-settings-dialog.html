@@ -1,46 +1,70 @@
-<h1 mat-dialog-title>Turniereinstellungen</h1>
-<mat-dialog-content>
-  <section class="is-league-section">
-    <h2>Turnierformat</h2>
-    <div class="tourney-format-buttons__container">
-      <button
-        class="standard-format-button toggle-button"
-        [class.toggled]="!state().isLeague"
-        (click)="
-          stateService.update({
-            isLeague: false,
-          })
-        "
-      >
-        Standard
-      </button>
-      <button
-        class="league-format-button toggle-button"
-        [class.toggled]="state().isLeague"
-        (click)="
-          stateService.update({
-            isLeague: true,
-          })
-        "
-      >
-        Liga
-      </button>
-    </div>
-  </section>
+<main *transloco="let t">
+  <h1 mat-dialog-title>{{ t('text.tourney-settings') }}</h1>
+  <mat-dialog-content>
+    <section class="is-league-section">
+      <h2>{{ t('text.tourney-format') }}</h2>
+      <div class="tourney-format-buttons__container">
+        <button
+          class="standard-format-button toggle-button"
+          [class.toggled]="!state().isLeague"
+          (click)="
+            stateService.update({
+              isLeague: false,
+            })
+          "
+        >
+          {{ t('button.standard') }}
+        </button>
+        <button
+          class="league-format-button toggle-button"
+          [class.toggled]="state().isLeague"
+          (click)="
+            stateService.update({
+              isLeague: true,
+            })
+          "
+        >
+          {{ t('button.league') }}
+        </button>
+      </div>
+    </section>
 
-  <section class="start-time-section">
-    <h2>Startzeit</h2>
-    <input
-      type="datetime-local"
-      [ngModel]="state().startTime"
-      (ngModelChange)="
-        stateService.update({
-          startTime: $event,
-        })
-      "
-    />
-  </section>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button class="click-button" mat-dialog-close>✖</button>
-</mat-dialog-actions>
+    <section class="start-time-section">
+      <h2>{{ t('text.start-time') }}</h2>
+      <input
+        type="datetime-local"
+        [ngModel]="state().startTime"
+        (ngModelChange)="
+          stateService.update({
+            startTime: $event,
+          })
+        "
+      />
+    </section>
+
+    <section class="import-export-section">
+      <h2>{{ t('text.import-export-set-data') }}</h2>
+      <div class="set-data-export-import-buttons__container">
+        <button class="click-button export-set-data-button" (click)="exportSetData()">
+          {{ t('button.export-to-json') }}
+        </button>
+        <label for="file-upload-input" class="click-button import-set-data-button">
+          {{ t('button.import-from-json') }}
+        </label>
+        <input
+          id="file-upload-input"
+          type="file"
+          accept="application/json"
+          (change)="importSetData($event)"
+        />
+      </div>
+    </section>
+
+    <section class="import-export-notification-section">
+      <span class="import-export-notification hidden"></span>
+    </section>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="click-button" mat-dialog-close>✖</button>
+  </mat-dialog-actions>
+</main>

@@ -45,6 +45,13 @@
   "text.session-no-requests": "No API requests in this session yet.",
   "text.season": "Season",
   "text.week": "Week",
+  "text.tourney-settings": "Tournament Settings",
+  "text.tourney-format": "Tournament Format",
+  "text.start-time": "Start Time",
+  "text.import-export-set-data": "Import / Export Set Data",
+  "text.set-data-export-successful": "Set data exported successfully!",
+  "text.set-data-import-successful": "Set data imported successfully!",
+  "text.set-data-import-error": "An error occured while importing set data!",
 
   "button.next-color": "Next Color",
   "button.show-commbox-temp": "{{text.show-commbox}} Temporarily",
@@ -56,6 +63,10 @@
   "button.create": "Create",
   "button.clear": "Clear",
   "button.dismiss": "Dismiss",
+  "button.standard": "Standard",
+  "button.league": "League",
+  "button.export-to-json": "Export",
+  "button.import-from-json": "Import",
 
   "input.placeholder.api-key-name": "Name (e.g. Stream Deck)",
 
