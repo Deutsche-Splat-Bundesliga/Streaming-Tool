@@ -8,6 +8,11 @@ body:
     attributes:
       label: Summary
       description: Please provide a clear and concide description for your feature.
+      value: """ 
+        As a:
+        I want:
+        So that:
+      """
     validations:
       required: true
   - type: textarea
