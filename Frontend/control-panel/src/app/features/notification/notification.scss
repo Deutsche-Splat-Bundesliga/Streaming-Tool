@@ -1,0 +1,41 @@
+.notification__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  column-gap: 0.5rem;
+  align-items: center;
+  background-color: red;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+}
+
+.notification-icon {
+  aspect-ratio: 1 / 1;
+  width: 2.5rem;
+  background-color: white;
+  mask-image: url('../../../../public/assets/notifications/circle-x.svg');
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+}
+
+.notification-text {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.btn-dismiss-notification {
+  aspect-ratio: 1 / 1;
+  height: 1.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  mask-image: url('../../../../public/assets/misc/close-dismiss.svg');
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
