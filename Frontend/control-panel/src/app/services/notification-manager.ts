@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { Notification } from '../models/notification';
 import { LogService } from './log';
 import { LogScope } from '../models/log-scope';
@@ -21,12 +21,11 @@ export class NotificationManager {
   /**
    * All currently active notifications that should be displayed
    */
-  notifications: Notification[] = [
-    { id: 'test-1', type: NotificationType.Info, text: 'Test 1', duration: 5000 },
+  notifications: WritableSignal<Notification[]> = signal<Notification[]>([
+    { id: 'test-1', type: NotificationType.Info, text: 'Test 1', duration: 7500 },
     { id: 'test-2', type: NotificationType.Success, text: 'Test 2', duration: 5000 },
-    { id: 'test-3', type: NotificationType.Warning, text: 'Test 3', duration: 5000 },
-    { id: 'test-4', type: NotificationType.Error, text: 'Test 4', duration: 5000 },
-  ];
+    { id: 'test-3', type: NotificationType.Warning, text: 'Test 3', duration: 2500 },
+  ]);
 
   /**
    * Create a notification with a unique id, type, text and a duration for when it should disappear
@@ -41,7 +40,7 @@ export class NotificationManager {
     text: string,
     duration: number = 5000,
   ): void {
-    if (this.notifications.find((ntf) => ntf.id === id)) {
+    if (this.notifications().find((ntf) => ntf.id === id)) {
       this._log.error(`Unable to create notification with id '${id}', already exists!`);
       return;
     }
@@ -53,7 +52,8 @@ export class NotificationManager {
       duration,
     };
 
-    this.notifications.push(newNotification);
+    const notifications = [...this.notifications(), newNotification];
+    this.notifications.set(notifications);
   }
 
   /**
@@ -61,18 +61,19 @@ export class NotificationManager {
    * @param id Id of the notification to be deleted
    */
   deleteNotification(id: string): void {
-    if (!this.notifications.find((ntf) => ntf.id === id)) {
+    if (!this.notifications().find((ntf) => ntf.id === id)) {
       this._log.warn(`Unable to find notification with id '${id}'`);
       return;
     }
 
-    this.notifications = this.notifications.filter((ntf) => ntf.id !== id);
+    const notifications = this.notifications().filter((ntf) => ntf.id !== id);
+    this.notifications.set(notifications);
   }
 
   /**
    * Dispose of all notifications in service
    */
   dispose(): void {
-    this.notifications = [];
+    this.notifications.set([]);
   }
 }
