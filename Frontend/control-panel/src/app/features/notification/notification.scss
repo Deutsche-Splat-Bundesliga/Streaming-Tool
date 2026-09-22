@@ -4,16 +4,30 @@
   justify-content: flex-start;
   column-gap: 0.5rem;
   align-items: center;
-  background-color: red;
   border-radius: 0.75rem;
   padding: 0.5rem;
+
+  &.type--error {
+    background-color: #c02921;
+  }
+
+  &.type--warning {
+    background-color: #df7f01;
+  }
+
+  &.type--success {
+    background-color: #00a645;
+  }
+
+  &.type--info {
+    background-color: #4e6d85;
+  }
 }
 
 .notification-icon {
   aspect-ratio: 1 / 1;
   width: 2.5rem;
   background-color: white;
-  mask-image: url('../../../../public/assets/notifications/circle-x.svg');
   mask-repeat: no-repeat;
   mask-size: 100%;
 }
@@ -38,4 +52,20 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.type--error .notification-icon {
+  mask-image: url('../../../../public/assets/notifications/circle-x.svg');
+}
+
+.type--warning .notification-icon {
+  mask-image: url('../../../../public/assets/notifications/alert-circle.svg');
+}
+
+.type--success .notification-icon {
+  mask-image: url('../../../../public/assets/notifications/circle-check.svg');
+}
+
+.type--info .notification-icon {
+  mask-image: url('../../../../public/assets/notifications/info-circle.svg');
 }
