@@ -2,5 +2,7 @@
   <span class="notification-icon"></span>
   <span class="notification-text">Notification works!</span>
 
-  <button class="btn-dismiss-notification"></button>
+  <button class="btn-dismiss-notification" (click)="dismissBtnClick($event)"></button>
+
+  <div class="notification-timer" #ntfTimer></div>
 </div>
