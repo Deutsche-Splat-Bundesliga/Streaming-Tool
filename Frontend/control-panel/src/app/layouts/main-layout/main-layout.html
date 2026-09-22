@@ -7,8 +7,9 @@
   </div>
 
   <div class="notification__container">
-    @for (notification of notificationManager.notifications; track notification.id) {
+    @for (notification of notificationManager.notifications(); track notification.id) {
       <app-notification
+        [id]="notification.id"
         [type]="notification.type"
         [text]="notification.text"
         [duration]="notification.duration"
