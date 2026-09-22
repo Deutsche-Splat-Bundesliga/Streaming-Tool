@@ -1,8 +1,18 @@
 <div class="layout">
-    <app-sidebar />
+  <app-sidebar />
 
-    <div class="content">
-        <app-topbar />
-        <router-outlet />
-    </div>
+  <div class="content">
+    <app-topbar />
+    <router-outlet />
+  </div>
+
+  <div class="notification__container">
+    @for (notification of notificationManager.notifications; track notification.id) {
+      <app-notification
+        [type]="notification.type"
+        [text]="notification.text"
+        [duration]="notification.duration"
+      ></app-notification>
+    }
+  </div>
 </div>

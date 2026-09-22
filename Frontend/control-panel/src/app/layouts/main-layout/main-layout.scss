@@ -11,3 +11,12 @@
   flex-direction: column;
   overflow: hidden;
 }
+
+.notification__container {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-flow: column-reverse nowrap;
+  row-gap: 1rem;
+}
