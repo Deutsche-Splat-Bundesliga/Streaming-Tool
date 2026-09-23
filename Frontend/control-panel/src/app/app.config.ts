@@ -11,6 +11,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig } from '@angular/material/dialog';
+import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco, TranslocoService } from '@jsverse/transloco';
 import { provideMarkdown } from 'ngx-markdown';
@@ -27,6 +28,12 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useValue: { ...new MatDialogConfig(), hasBackdrop: true },
+    },
+    {
+      provide: OVERLAY_DEFAULT_CONFIG,
+      useValue: {
+        usePopover: false,
+      },
     },
     provideHttpClient(),
     provideMarkdown(),
