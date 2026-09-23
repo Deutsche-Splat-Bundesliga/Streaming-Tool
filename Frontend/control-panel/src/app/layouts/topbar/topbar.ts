@@ -7,7 +7,6 @@ import {
   afterNextRender,
   AfterRenderRef,
   afterRenderEffect,
-  untracked,
 } from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
@@ -46,27 +45,28 @@ export class Topbar implements OnInit, OnDestroy {
    * Effect that logs SignalR connection state changes.
    */
   private _connectionEffect = afterRenderEffect(() => {
-    if (!this._isInitialized) {
-      return;
-    }
-
     const connected = this.isConnected();
     this._log.debug('SignalR connection state changed', {
       connected,
     });
 
-    untracked(() => {
-      if (!connected) {
-        this._notificationManager.createPermanentNotification(
-          'ntf-backend-not-connected',
-          NotificationType.Error,
-          'notification.no-backend-connection',
-        );
-      } else {
-        this._notificationManager.dismissNotification('ntf-backend-not-connected');
-        this._notificationManager.createTempNotification(NotificationType.Success, 'Test');
-      }
-    });
+    if (!this._isInitialized) {
+      return;
+    }
+
+    if (!connected) {
+      this._notificationManager.createPermanentNotification(
+        'ntf-backend-not-connected',
+        NotificationType.Error,
+        'notification.no-backend-connection',
+      );
+    } else {
+      this._notificationManager.dismissNotification('ntf-backend-not-connected');
+      this._notificationManager.createTempNotification(
+        NotificationType.Success,
+        'notification.backend-reconnected',
+      );
+    }
   });
 
   /**

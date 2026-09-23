@@ -102,6 +102,7 @@
   "mode.cb": "Muschelchaos",
 
   "notification.no-backend-connection": "Aktuell keine Verbindung zum Backend!",
+  "notification.backend-reconnected": "Backend-Verbindung wiederhergestellt",
 
   "language.dateFormat": "dd.MM.yyyy",
   "language.timeFormat": "HH:mm:ss",

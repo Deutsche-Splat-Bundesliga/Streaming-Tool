@@ -103,6 +103,7 @@
   "mode.cb": "Clam Blitz",
 
   "notification.no-backend-connection": "Backend is not connected!",
+  "notification.backend-reconnected": "Reconnected to Backend",
 
   "language.dateFormat": "MM/dd/yyyy",
   "language.timeFormat": "hh:mm:ss a",
