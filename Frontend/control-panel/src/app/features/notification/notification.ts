@@ -7,13 +7,17 @@ import {
   OnDestroy,
   ViewContainerRef,
   ViewChild,
+  WritableSignal,
+  signal,
+  AfterRenderRef,
 } from '@angular/core';
 import { NotificationType } from '../../enums/notification-type';
 import { NgClass } from '@angular/common';
 import { NotificationManager } from '../../services/notification-manager';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
-  imports: [NgClass],
+  imports: [NgClass, TranslocoDirective],
   selector: 'app-notification',
   styleUrl: './notification.scss',
   templateUrl: './notification.html',
@@ -28,6 +32,8 @@ export class Notification implements OnDestroy {
 
   @ViewChild('ntfTimer') private _ntfTimerElem?: ElementRef;
 
+  notificationText: WritableSignal<string> = signal<string>('');
+
   private readonly _notificationManager: NotificationManager = inject(NotificationManager);
 
   private _timerAnimation?: Animation;
@@ -36,13 +42,6 @@ export class Notification implements OnDestroy {
     { opacity: 0, right: 'calc((var(--notification-width) + 2rem) * -1)' },
     { opacity: 1, right: '0' },
   ];
-  private readonly _slideInAnimOptions: KeyframeAnimationOptions = {
-    easing: 'ease-out',
-    fill: 'forwards',
-    duration: 500,
-  };
-
-  private readonly _timerAnimKeyFrames: Keyframe[] = [{ width: '100%' }, { width: '0' }];
 
   private _notificationTypeClasses: Map<NotificationType, string> = new Map([
     [NotificationType.Error, 'type--error'],
@@ -51,9 +50,23 @@ export class Notification implements OnDestroy {
     [NotificationType.Info, 'type--info'],
   ]);
 
-  private _onRenderEffect = afterNextRender(() => {
+  private _onRenderEffect: AfterRenderRef = afterNextRender(() => {
     const hostElement = this._elemRef.element.nativeElement as HTMLElement;
-    const animation = hostElement.animate(this._slideInAnimKeyFrames, this._slideInAnimOptions);
+    const slideInAnimOptions: KeyframeAnimationOptions = {
+      easing: 'ease-out',
+      fill: 'forwards',
+      duration: 500,
+    };
+    const animation = hostElement.animate(this._slideInAnimKeyFrames, slideInAnimOptions);
+
+    if (this.duration <= 0) {
+      if (!this._ntfTimerElem) {
+        return;
+      }
+      const timerElem = this._ntfTimerElem.nativeElement as HTMLElement;
+      timerElem.classList.add('hidden');
+      return;
+    }
 
     animation.onfinish = () => {
       this.startTimer();
@@ -82,8 +95,8 @@ export class Notification implements OnDestroy {
       fill: 'forwards',
     };
 
-    const animation = timerElem.animate(timerAnimKeyframes, timerAnimOptions);
-    animation.onfinish = () => {
+    this._timerAnimation = timerElem.animate(timerAnimKeyframes, timerAnimOptions);
+    this._timerAnimation.onfinish = () => {
       this.dismissNotification();
     };
   }
@@ -92,9 +105,14 @@ export class Notification implements OnDestroy {
     this._timerAnimation?.pause();
 
     const hostElement = this._elemRef.element.nativeElement as HTMLElement;
+    const slideOutAnimOptions: KeyframeAnimationOptions = {
+      easing: 'ease-in',
+      fill: 'forwards',
+      duration: 500,
+    };
     const animation = hostElement.animate(
       this._slideInAnimKeyFrames.reverse(),
-      this._slideInAnimOptions,
+      slideOutAnimOptions,
     );
     animation.onfinish = () => {
       this._notificationManager.deleteNotification(this.id);
