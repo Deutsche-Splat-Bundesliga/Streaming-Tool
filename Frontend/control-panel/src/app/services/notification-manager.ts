@@ -24,28 +24,50 @@ export class NotificationManager {
   notifications: WritableSignal<Notification[]> = signal<Notification[]>([]);
 
   /**
-   * Create a notification with a unique id, type, text and a duration for when it should disappear
-   * @param id Id of the notification that gets created. MUST be unique
+   * Creates a temporary notification with a unique id, type, text and a duration for when it should disappear
    * @param type Type of the notification
    * @param text Text that should be translated with Transloco
    * @param duration Duration of how long the notification should be displayed in milliseconds
    */
-  createNotification(
-    id: string,
-    type: NotificationType,
-    text: string,
-    duration: number = 5000,
-  ): void {
-    /*if (this.notifications().find((ntf) => ntf.id === id)) {
-      this._log.error(`Unable to create notification with id '${id}', already exists!`);
+  createTempNotification(type: NotificationType, text: string, duration: number = 5000): void {
+    if (duration <= 0) {
+      this._log.error(
+        "Unable to create a permanent notification with temp notification function! Use 'createPermanentNotification' instead!",
+      );
       return;
-    }*/
+    }
+
+    const ntfId = 'ntf-' + Math.random().toString(36).slice(2);
+    const newNotification: Notification = {
+      id: ntfId,
+      type,
+      text,
+      duration,
+    };
+
+    const notifications = [...this.notifications(), newNotification];
+    this.notifications.set(notifications);
+  }
+
+  /**
+   * Creates a permanent notification with a id, type and text
+   * @param id Id of the notification. MUST be unique
+   * @param type Type of the notification
+   * @param text Text that should be translated with Transloco
+   */
+  createPermanentNotification(id: string, type: NotificationType, text: string) {
+    if (this.notifications().find((ntf) => ntf.id === id)) {
+      this._log.error(
+        `Unable to create notification! Notification with id '${id}' already exists!`,
+      );
+      return;
+    }
 
     const newNotification: Notification = {
       id,
       type,
       text,
-      duration,
+      duration: 0,
     };
 
     const notifications = [...this.notifications(), newNotification];

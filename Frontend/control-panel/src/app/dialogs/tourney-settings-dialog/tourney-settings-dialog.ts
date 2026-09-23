@@ -85,8 +85,7 @@ export class TourneySettingsDialog implements OnDestroy {
     window.URL.revokeObjectURL(blobUrl);
     tempAnchor.remove();
 
-    this._notificationManager.createNotification(
-      'export-set-data-success',
+    this._notificationManager.createTempNotification(
       NotificationType.Success,
       'text.set-data-export-successful',
     );
@@ -99,8 +98,7 @@ export class TourneySettingsDialog implements OnDestroy {
   async importSetData(e: Event): Promise<void> {
     const fileInput = e.target as HTMLInputElement;
     if (!fileInput.files?.length) {
-      this._notificationManager.createNotification(
-        'import-set-data-no-files-error',
+      this._notificationManager.createTempNotification(
         NotificationType.Error,
         'text.set-data-import-error',
       );
@@ -115,8 +113,7 @@ export class TourneySettingsDialog implements OnDestroy {
 
       const setData = JSON.parse(await file.text()) as BroadcastState;
       if (!this._ajv.validate(SetDataExportSchema, setData)) {
-        this._notificationManager.createNotification(
-          'import-set-data-validation-error',
+        this._notificationManager.createTempNotification(
           NotificationType.Error,
           'text.set-data-import-error',
         );
@@ -138,16 +135,14 @@ export class TourneySettingsDialog implements OnDestroy {
       };
       this.stateService.update(newData);
 
-      this._notificationManager.createNotification(
-        'import-set-data-success',
+      this._notificationManager.createTempNotification(
         NotificationType.Success,
         'text.set-data-import-successful',
       );
     } catch (error) {
       this._log.error('Error during import of set data json file!', error);
 
-      this._notificationManager.createNotification(
-        'import-set-data-error-misc',
+      this._notificationManager.createTempNotification(
         NotificationType.Error,
         'text.set-data-import-error',
       );
