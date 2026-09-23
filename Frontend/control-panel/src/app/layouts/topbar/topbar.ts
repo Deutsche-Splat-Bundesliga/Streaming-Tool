@@ -1,4 +1,14 @@
-import { Component, inject, OnDestroy, OnInit, WritableSignal, effect } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  WritableSignal,
+  afterNextRender,
+  AfterRenderRef,
+  afterRenderEffect,
+  untracked,
+} from '@angular/core';
 import { BroadcastState } from '../../models/broadcast-state';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { Signalr } from '../../services/signalr';
@@ -7,6 +17,8 @@ import { LogScope } from '../../models/log-scope';
 import { FormsModule } from '@angular/forms';
 import { Division } from '../../models/division';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { NotificationManager } from '../../services/notification-manager';
+import { NotificationType } from '../../enums/notification-type';
 
 @Component({
   selector: 'app-topbar',
@@ -26,13 +38,34 @@ export class Topbar implements OnInit, OnDestroy {
   private readonly _scope: LogScope = this._log.beginScope('Topbar');
 
   /**
+   * Notification manager service that handles creation, deletion and displaying of notifications
+   */
+  private _notificationManager: NotificationManager = inject(NotificationManager);
+
+  /**
    * Effect that logs SignalR connection state changes.
    */
-  private _connectionEffect = effect(() => {
-    const connected = this.isConnected();
+  private _connectionEffect = afterRenderEffect(() => {
+    if (!this._isInitialized) {
+      return;
+    }
 
+    const connected = this.isConnected();
     this._log.debug('SignalR connection state changed', {
       connected,
+    });
+
+    untracked(() => {
+      if (!connected) {
+        this._notificationManager.createPermanentNotification(
+          'ntf-backend-not-connected',
+          NotificationType.Error,
+          'notification.no-backend-connection',
+        );
+      } else {
+        this._notificationManager.dismissNotification('ntf-backend-not-connected');
+        this._notificationManager.createTempNotification(NotificationType.Success, 'Test');
+      }
     });
   });
 
@@ -57,6 +90,24 @@ export class Topbar implements OnInit, OnDestroy {
   availableDivisions: Division[] = this.stateService.availableDivisions;
 
   /**
+   * Set initialized status of topbar to `true` 1500ms after render. This prevents the Backend not connected error message from showing during initialization of component
+   */
+  private _isInitialized: boolean = false;
+  private _initalizeTopbar: AfterRenderRef = afterNextRender(() => {
+    setTimeout(() => {
+      this._isInitialized = true;
+
+      if (!this.isConnected()) {
+        this._notificationManager.createPermanentNotification(
+          'ntf-backend-not-connected',
+          NotificationType.Error,
+          'notification.no-backend-connection',
+        );
+      }
+    }, 1500);
+  });
+
+  /**
    * Angular lifecycle hook called after component initialization.
    * @returns {void}
    */
@@ -79,5 +130,6 @@ export class Topbar implements OnInit, OnDestroy {
 
     this._connectionEffect.destroy();
     this._scope.dispose();
+    this._initalizeTopbar.destroy();
   }
 }
