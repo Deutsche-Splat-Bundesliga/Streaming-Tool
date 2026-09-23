@@ -92,7 +92,7 @@ Process.Start(new ProcessStartInfo
 });
 
 Console.WriteLine("Website opened in the browser.");
-Console.WriteLine("Streaming Tool started. This launcher can now be closed.\nPress any key to close...");
+Console.WriteLine("Streaming Tool started. This launcher can now be closed.\nPress any key to close this window...");
 Console.ReadKey();
 
 /// <summary>
@@ -182,7 +182,7 @@ static bool InstallNode()
 
     if (p.ExitCode == 0) return true;
 
-    Console.WriteLine("Fehler bei der Installation:");
+    Console.WriteLine("An error occurred while installing:");
     if (!string.IsNullOrWhiteSpace(output)) Console.WriteLine(output.Trim());
     if (!string.IsNullOrWhiteSpace(error)) Console.WriteLine(error.Trim());
 
@@ -213,7 +213,7 @@ static bool InstallDotNet()
 
     if (p.ExitCode == 0) return true;
 
-    Console.WriteLine("Fehler bei der Installation:");
+    Console.WriteLine("An error occurred while installing:");
     if (!string.IsNullOrWhiteSpace(output)) Console.WriteLine(output.Trim());
     if (!string.IsNullOrWhiteSpace(error)) Console.WriteLine(error.Trim());
 
@@ -225,6 +225,6 @@ static bool InstallDotNet()
 /// </summary>
 static void Pause()
 {
-    Console.WriteLine("Drücken Sie eine beliebige Taste...");
+    Console.WriteLine("Press any key...");
     Console.ReadKey();
 }
