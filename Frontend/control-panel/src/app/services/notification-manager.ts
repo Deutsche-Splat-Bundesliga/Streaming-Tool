@@ -1,4 +1,4 @@
-import { inject, Injectable, OnDestroy, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, OnDestroy, signal, untracked, WritableSignal } from '@angular/core';
 import { Notification } from '../models/notification';
 import { LogService } from './log';
 import { LogScope } from '../models/log-scope';
@@ -46,7 +46,7 @@ export class NotificationManager implements OnDestroy {
       isDismissed: false,
     };
 
-    const notifications = [...this.notifications(), newNotification];
+    const notifications = [...untracked(this.notifications), newNotification];
     this.notifications.set(notifications);
   }
 
@@ -57,7 +57,8 @@ export class NotificationManager implements OnDestroy {
    * @param text Text that should be translated with Transloco
    */
   createPermanentNotification(id: string, type: NotificationType, text: string) {
-    if (this.notifications().find((ntf) => ntf.id === id)) {
+    const notifications = untracked(this.notifications);
+    if (notifications.find((ntf) => ntf.id === id)) {
       this._log.error(
         `Unable to create notification! Notification with id '${id}' already exists!`,
       );
@@ -72,8 +73,8 @@ export class NotificationManager implements OnDestroy {
       isDismissed: false,
     };
 
-    const notifications = [...this.notifications(), newNotification];
-    this.notifications.set(notifications);
+    const newNotifications = [...notifications, newNotification];
+    this.notifications.set(newNotifications);
   }
 
   /**
@@ -82,7 +83,7 @@ export class NotificationManager implements OnDestroy {
    */
   dismissNotification(id: string) {
     // Create completely new array instead of referencing signal so signal notifies it's listeners when updating
-    const notifications = [...this.notifications()];
+    const notifications = [...untracked(this.notifications)];
     const itemIndex = notifications.findIndex((ntf) => ntf.id === id);
     if (itemIndex === -1) {
       this._log.warn(`Unable to find notification with id '${id}'`);
@@ -103,13 +104,14 @@ export class NotificationManager implements OnDestroy {
    * @param id Id of the notification to be deleted
    */
   deleteNotification(id: string): void {
-    if (!this.notifications().find((ntf) => ntf.id === id)) {
+    const notifications = [...untracked(this.notifications)];
+    if (!notifications.find((ntf) => ntf.id === id)) {
       this._log.warn(`Unable to find notification with id '${id}'`);
       return;
     }
 
-    const notifications = this.notifications().filter((ntf) => ntf.id !== id);
-    this.notifications.set(notifications);
+    const newNotifications = notifications.filter((ntf) => ntf.id !== id);
+    this.notifications.set(newNotifications);
   }
 
   /**
