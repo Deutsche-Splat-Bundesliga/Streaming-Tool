@@ -94,12 +94,6 @@ export class Notification implements OnDestroy {
     const animation = hostElement.animate(this._slideInAnimKeyFrames, slideInAnimOptions);
 
     if (this.duration <= 0) {
-      if (!this._ntfTimerElem) {
-        return;
-      }
-
-      const timerElem = this._ntfTimerElem.nativeElement as HTMLElement;
-      timerElem.classList.add('hidden');
       return;
     }
 
