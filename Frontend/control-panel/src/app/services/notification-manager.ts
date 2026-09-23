@@ -21,18 +21,14 @@ export class NotificationManager {
   /**
    * All currently active notifications that should be displayed
    */
-  notifications: WritableSignal<Notification[]> = signal<Notification[]>([
-    { id: 'test-1', type: NotificationType.Info, text: 'Test 1', duration: 7500 },
-    { id: 'test-2', type: NotificationType.Success, text: 'Test 2', duration: 5000 },
-    { id: 'test-3', type: NotificationType.Warning, text: 'Test 3', duration: 2500 },
-  ]);
+  notifications: WritableSignal<Notification[]> = signal<Notification[]>([]);
 
   /**
    * Create a notification with a unique id, type, text and a duration for when it should disappear
    * @param id Id of the notification that gets created. MUST be unique
    * @param type Type of the notification
    * @param text Text that should be translated with Transloco
-   * @param duration Duration of how long the notification should be displayed
+   * @param duration Duration of how long the notification should be displayed in milliseconds
    */
   createNotification(
     id: string,
@@ -40,10 +36,10 @@ export class NotificationManager {
     text: string,
     duration: number = 5000,
   ): void {
-    if (this.notifications().find((ntf) => ntf.id === id)) {
+    /*if (this.notifications().find((ntf) => ntf.id === id)) {
       this._log.error(`Unable to create notification with id '${id}', already exists!`);
       return;
-    }
+    }*/
 
     const newNotification: Notification = {
       id,
