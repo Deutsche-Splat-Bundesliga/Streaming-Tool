@@ -1,32 +1,32 @@
 #!/bin/sh
 
-echo "Streaming Tool wird gestartet..."
-echo "Suche nach Abhängigkeiten..."
+echo "Starting Streaming Tool..."
+echo "Checking dependencies..."
 
 # Check for Node.js
 echo "Checking for Node.js..."
 if ! command -v node >/dev/null 2>&1; then
-  echo "Node.js ist nicht installiert! Installieren? (y/N)"
+  echo "Node.js is not installed. Install it now? (y/N)"
   read -r installNode
   if [ "$installNode" = "y" ] || [ "$installNode" = "Y" ]; then
-    echo "Installiere Node.js..."
+    echo "Installing Node.js..."
     if command -v apt-get >/dev/null 2>&1; then
       sudo apt-get update && sudo apt-get install -y nodejs npm
     elif command -v brew >/dev/null 2>&1; then
       brew install node
     else
-      echo "Paketmanager nicht erkannt. Bitte installieren Sie Node.js manuell von https://nodejs.org"
+      echo "Package manager not found. Please install Node.js manually from https://nodejs.org"
       read -r -n 1 -s dummy
       exit 0
     fi
     if ! command -v node >/dev/null 2>&1; then
-      echo "Node.js Installation ist fehlgeschlagen. Bitte installieren Sie node.js manuell von https://nodejs.org. Druecken Sie eine beliebige Taste, um dieses Fenster zu schliessen..."
+      echo "Node.js installation failed. Please install Node.js manually from https://nodejs.org. Press any key to close this window..."
       read -r -n 1 -s dummy
       exit 0
     fi
-    echo "Node.js wurde erfolgreich installiert!"
+    echo "Node.js installed successfully!"
   else
-    echo "Node.js wird benoetigt. Druecken Sie eine beliebige Taste, um dieses Fenster zu schliessen..."
+    echo "Node.js is required. Press any key to close this window..."
     read -r -n 1 -s dummy
     exit 0
   fi
@@ -35,29 +35,29 @@ fi
 # Check for .NET
 echo "Checking for .NET..."
 if ! command -v dotnet >/dev/null 2>&1; then
-  echo ".NET ist nicht installiert! Installieren? (y/N)"
+  echo ".NET is not installed. Install it now? (y/N)"
   read -r installDotNet
   if [ "$installDotNet" = "y" ] || [ "$installDotNet" = "Y" ]; then
-    echo "Installiere .NET SDK..."
+    echo "Installing .NET 10 SDK..."
     if command -v apt-get >/dev/null 2>&1; then
       wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
       chmod +x dotnet-install.sh
-      sudo ./dotnet-install.sh --version 9.0
+      sudo ./dotnet-install.sh --version 10.0
       rm dotnet-install.sh
     elif command -v brew >/dev/null 2>&1; then
       brew install dotnet
     else
-      echo "Paketmanager nicht erkannt. Bitte installieren Sie .NET manuell von https://dotnet.microsoft.com/en-us/download/dotnet/9.0"
+      echo "Package manager not found. Please install .NET 10 manually from https://dotnet.microsoft.com/en-us/download/dotnet/10.0"
       read -r -n 1 -s dummy
       exit 0
     fi
     if ! command -v dotnet >/dev/null 2>&1; then
-      echo ".NET Installation ist fehlgeschlagen. Bitte installieren Sie .NET manuell von https://dotnet.microsoft.com/en-us/download/dotnet/9.0. Druecken Sie eine beliebige Taste, um dieses Fenster zu schliessen..."
+      echo ".NET installation failed. Please install .NET 10 manually from https://dotnet.microsoft.com/en-us/download/dotnet/10.0. Press any key to close this window..."
       read -r -n 1 -s dummy
       exit 0
     fi
   else
-    echo ".NET wird benoetigt. Druecken Sie eine beliebige Taste, um dieses Fenster zu schliessen..."
+    echo ".NET is required. Press any key to close this window..."
     read -r -n 1 -s dummy
     exit 0
   fi
@@ -91,10 +91,10 @@ fi
 if command -v xdg-open >/dev/null 2>&1; then
   xdg-open "http://localhost:4200"
 else
-  echo "Bitte oeffnen Sie http://localhost:4200 im Browser."
+  echo "Please open http://localhost:4200 in your browser."
 fi
 
-echo "Webseite wurde im Browser geoeffnet."
-echo "Streaming Tool gestartet. Druecken Sie eine beliebige Taste, um dieses Fenster zu schliessen..."
+echo "Website opened in the browser."
+echo "Streaming Tool started. Press any key to close this window..."
 read -r -n 1 -s dummy
 exit 0

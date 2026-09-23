@@ -3,60 +3,60 @@ using Microsoft.VisualBasic;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-Console.WriteLine("Streaming Tool wird gestartet...");
-Console.WriteLine("Suche nach Abhängigkeiten...");
+Console.WriteLine("Starting Streaming Tool...");
+Console.WriteLine("Checking dependencies...");
 
 if (!CommandExists("node"))
 {
-    Console.WriteLine("Node.js ist nicht installiert.");
-    Console.WriteLine("Soll Node.js jetzt installiert werden? (j/N)");
+    Console.WriteLine("Node.js is not installed.");
+    Console.WriteLine("Install it now? (y/N)");
     Console.Write("> ");
     char response = Console.ReadKey().KeyChar;
     Console.WriteLine();
     if (char.ToLower(response) == 'y')
     {
-        Console.WriteLine("Versuche Node.js mittels WinGet zu installieren...");
+        Console.WriteLine("Installing Node.js using WinGet...");
         bool installed = InstallNode();
-        if (installed) Console.WriteLine("Node.js wurde erfolgreich installiert.");
+        if (installed) Console.WriteLine("Node.js installed successfully.");
         else
         {
-            Console.WriteLine("Node.js konnte nicht installiert werden. Bitte hier installieren: https://nodejs.org/en/download");
+            Console.WriteLine("Node.js installation failed. Please install it from https://nodejs.org/en/download");
             Pause();
             return;
         }
 
         if (!CommandExists("node"))
         {
-            Console.WriteLine("Node.js wurde installiert, kann aber nicht gefunden werden.");
+            Console.WriteLine("Node.js was installed but could not be found.");
             Pause();
             return;
         }
     }
 }
 
-if (!DotNet9Exists())
+if (!DotNet10Exists())
 {
-    Console.WriteLine(".NET 9 ist nicht installiert.");
-    Console.WriteLine("Soll .NET 9 jetzt installiert werden? (j/N)");
+    Console.WriteLine(".NET 10 is not installed.");
+    Console.WriteLine("Install it now? (y/N)");
     Console.Write("> ");
     char response = Console.ReadKey().KeyChar;
     Console.WriteLine();
 
     if (char.ToLower(response) == 'y')
     {
-        Console.WriteLine("Versuche .NET 9 mittels WinGet zu installieren...");
+        Console.WriteLine("Installing .NET 10 using WinGet...");
         bool installed = InstallDotNet();
-        if (installed) Console.WriteLine(".NET 9 wurde erfolgreich installiert.");
+        if (installed) Console.WriteLine(".NET 10 installed successfully.");
         else
         {
-            Console.WriteLine(".NET 9 konnte nicht installiert werden. Bitte hier installieren: https://dotnet.microsoft.com/de-de/download/dotnet/9.0");
+            Console.WriteLine(".NET 10 installation failed. Please install it from https://dotnet.microsoft.com/en-us/download/dotnet/10.0");
             Pause();
             return;
         }
 
-        if (!DotNet9Exists())
+        if (!DotNet10Exists())
         {
-            Console.WriteLine(".NET 9 wurde installiert, kann aber nicht gefunden werden.");
+            Console.WriteLine(".NET 10 was installed but could not be found.");
             Pause();
             return;
         }
@@ -70,14 +70,14 @@ string backend = Path.Combine(root, "Backend", "DSB.StreamBackend");
 
 if (!File.Exists(Path.Combine(frontend, "package.json")))
 {
-    Console.WriteLine("Frontend wurde nicht gefunden!");
+    Console.WriteLine("Frontend not found!");
     Pause();
     return;
 }
 
 if (!File.Exists(Path.Combine(backend, "DSB.StreamBackend.csproj")))
 {
-    Console.WriteLine("Backend wurde nicht gefunden!");
+    Console.WriteLine("Backend not found!");
     Pause();
     return;
 }
@@ -91,8 +91,8 @@ Process.Start(new ProcessStartInfo
     UseShellExecute = true
 });
 
-Console.WriteLine("Webseite wurde im Browser geöffnet.");
-Console.WriteLine("Streaming Tool gestartet. Dieses Programm kann nun beendet werden.\nDrücken Sie eine beliebige Taste zum Schließen...");
+Console.WriteLine("Website opened in the browser.");
+Console.WriteLine("Streaming Tool started. This launcher can now be closed.\nPress any key to close...");
 Console.ReadKey();
 
 /// <summary>
@@ -117,10 +117,10 @@ static bool CommandExists(string command)
 }
 
 /// <summary>
-/// Checks whether .NET 9 is installed on the system
+/// Checks whether .NET 10 is installed on the system
 /// </summary>
-/// <returns>True if .NET 9 is found, otherwise false</returns>
-static bool DotNet9Exists()
+/// <returns>True if .NET 10 is found, otherwise false</returns>
+static bool DotNet10Exists()
 {
     if (!CommandExists("dotnet"))
         return false;
@@ -137,7 +137,7 @@ static bool DotNet9Exists()
     var output = p!.StandardOutput.ReadToEnd();
     p.WaitForExit();
 
-    return output.Split('\n').Any(x => x.TrimStart().StartsWith("9."));
+    return output.Split('\n').Any(x => x.TrimStart().StartsWith("10."));
 }
 
 /// <summary>
