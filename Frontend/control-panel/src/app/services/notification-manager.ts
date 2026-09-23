@@ -43,6 +43,7 @@ export class NotificationManager {
       type,
       text,
       duration,
+      isDismissed: false,
     };
 
     const notifications = [...this.notifications(), newNotification];
@@ -68,9 +69,32 @@ export class NotificationManager {
       type,
       text,
       duration: 0,
+      isDismissed: false,
     };
 
     const notifications = [...this.notifications(), newNotification];
+    this.notifications.set(notifications);
+  }
+
+  /**
+   * Dismiss notification and update it's component to trigger slide out animation
+   * @param id Id of notification to be dismissed
+   */
+  dismissNotification(id: string) {
+    // Create completely new array instead of referencing signal so signal notifies it's listeners when updating
+    const notifications = [...this.notifications()];
+    const itemIndex = notifications.findIndex((ntf) => ntf.id === id);
+    if (itemIndex === -1) {
+      this._log.warn(`Unable to find notification with id '${id}'`);
+      return;
+    }
+
+    if (notifications[itemIndex].isDismissed) {
+      this._log.warn(`Notification '${id}' is already being dismissed`);
+      return;
+    }
+
+    notifications[itemIndex].isDismissed = true;
     this.notifications.set(notifications);
   }
 
