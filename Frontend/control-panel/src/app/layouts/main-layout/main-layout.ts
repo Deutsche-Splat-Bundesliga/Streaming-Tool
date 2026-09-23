@@ -7,12 +7,10 @@ import { SocialsService } from '../../services/socials';
 import { CommentatorBoxTimeDataService } from '../../services/commentator-box-time-data';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
-import { NotificationManager } from '../../services/notification-manager';
-import { Notification } from '../../features/notification/notification';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [Sidebar, Topbar, RouterOutlet, Notification],
+  imports: [Sidebar, Topbar, RouterOutlet],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })
@@ -43,11 +41,6 @@ export class MainLayout implements OnInit, OnDestroy {
   private readonly _commentatorBoxTimeDataService: CommentatorBoxTimeDataService = inject(
     CommentatorBoxTimeDataService,
   );
-
-  /**
-   * Notification manager service that handles creation, deletion and displaying of notifications
-   */
-  notificationManager: NotificationManager = inject(NotificationManager);
 
   /**
    * Initialize the main layout and bootstrap required overlay services.
