@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, OnDestroy, signal, WritableSignal } from '@angular/core';
 import { Notification } from '../models/notification';
 import { LogService } from './log';
 import { LogScope } from '../models/log-scope';
@@ -7,7 +7,7 @@ import { NotificationType } from '../enums/notification-type';
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationManager {
+export class NotificationManager implements OnDestroy {
   /**
    * Local logger instance for edit card operations.
    */
@@ -117,5 +117,13 @@ export class NotificationManager {
    */
   dispose(): void {
     this.notifications.set([]);
+  }
+
+  /**
+   * Angular lifecycle hook called when the component is destroyed.
+   */
+  ngOnDestroy(): void {
+    this.dispose();
+    this._scope.dispose();
   }
 }
