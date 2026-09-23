@@ -2,7 +2,11 @@
   <span class="notification-icon"></span>
   <span class="notification-text">{{ t(text) }}</span>
 
-  <button class="btn-dismiss-notification" (click)="dismissBtnClick($event)"></button>
+  <button
+    class="btn-dismiss-notification"
+    [class.hidden]="duration <= 0"
+    (click)="dismissBtnClick($event)"
+  ></button>
 
   <div class="notification-timer" [class.hidden]="duration <= 0" #ntfTimer></div>
 </div>
