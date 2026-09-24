@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Notification } from './notification';
+import { getTranslocoModule } from '../../transloco-testing.module';
 
 describe('Notification', () => {
   let component: Notification;
@@ -7,7 +8,7 @@ describe('Notification', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Notification],
+      imports: [Notification, getTranslocoModule()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Notification);
