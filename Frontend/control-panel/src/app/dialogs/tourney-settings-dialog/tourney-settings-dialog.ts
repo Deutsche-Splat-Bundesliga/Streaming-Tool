@@ -87,7 +87,7 @@ export class TourneySettingsDialog implements OnDestroy {
 
     this._notificationManager.createTempNotification(
       NotificationType.Success,
-      'text.set-data-export-successful',
+      'notification.set-data-export-successful',
     );
   }
 
@@ -100,7 +100,7 @@ export class TourneySettingsDialog implements OnDestroy {
     if (!fileInput.files?.length) {
       this._notificationManager.createTempNotification(
         NotificationType.Error,
-        'text.set-data-import-error',
+        'notification.set-data-import-error',
       );
       this._log.error('ImportSetData: No files were uploaded!');
       return;
@@ -115,7 +115,7 @@ export class TourneySettingsDialog implements OnDestroy {
       if (!this._ajv.validate(SetDataExportSchema, setData)) {
         this._notificationManager.createTempNotification(
           NotificationType.Error,
-          'text.set-data-import-error',
+          'notification.set-data-import-error',
         );
         this._log.error(`ImportSetData: Validation of data failed!`, this._ajv.errorsText());
         return;
@@ -137,14 +137,14 @@ export class TourneySettingsDialog implements OnDestroy {
 
       this._notificationManager.createTempNotification(
         NotificationType.Success,
-        'text.set-data-import-successful',
+        'notification.set-data-import-successful',
       );
     } catch (error) {
       this._log.error('Error during import of set data json file!', error);
 
       this._notificationManager.createTempNotification(
         NotificationType.Error,
-        'text.set-data-import-error',
+        'notification.set-data-import-error',
       );
     }
   }
