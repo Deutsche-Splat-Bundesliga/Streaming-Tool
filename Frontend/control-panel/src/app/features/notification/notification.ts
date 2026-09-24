@@ -15,6 +15,8 @@ import { NotificationType } from '../../enums/notification-type';
 import { NgClass } from '@angular/common';
 import { NotificationManager } from '../../services/notification-manager';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { LogService } from '../../services/log';
+import { LogScope } from '../../models/log-scope';
 
 @Component({
   imports: [NgClass, TranslocoDirective],
@@ -27,6 +29,16 @@ export class Notification implements OnDestroy {
    * Get host element from constructor so we can modify it with classes at runtime
    */
   constructor(private readonly _elemRef: ViewContainerRef) {}
+
+  /**
+   * Local logger instance for edit card operations.
+   */
+  private readonly _log: LogService = inject(LogService);
+
+  /**
+   * Logging scope for this component lifecycle and actions.
+   */
+  private readonly _scope: LogScope = this._log.beginScope('Notification');
 
   /**
    * Inputs that hold our data for the notification
@@ -93,6 +105,13 @@ export class Notification implements OnDestroy {
     };
     const animation = hostElement.animate(this._slideInAnimKeyFrames, slideInAnimOptions);
 
+    this._log.trace('Rendered notification, starting slide in animation!', {
+      notificationId: this.id,
+      notificationType: this.type,
+      animKeyFrames: this._slideInAnimKeyFrames,
+      animOptions: slideInAnimOptions,
+    });
+
     if (this.duration <= 0) {
       return;
     }
@@ -130,6 +149,13 @@ export class Notification implements OnDestroy {
       fill: 'forwards',
     };
 
+    this._log.trace('Slide in animation finished, starting timer', {
+      notificationId: this.id,
+      notificationType: this.type,
+      animKeyFrames: timerAnimKeyframes,
+      animOptions: timerAnimOptions,
+    });
+
     this._timerAnimation = timerElem.animate(timerAnimKeyframes, timerAnimOptions);
     this._timerAnimation.onfinish = () => {
       this._notificationManager.dismissNotification(this.id);
@@ -143,15 +169,21 @@ export class Notification implements OnDestroy {
     this._timerAnimation?.pause();
 
     const hostElement = this._elemRef.element.nativeElement as HTMLElement;
+    const slideOutAnimKeyFrames = this._slideInAnimKeyFrames.reverse();
     const slideOutAnimOptions: KeyframeAnimationOptions = {
       easing: 'ease-in',
       fill: 'forwards',
       duration: 500,
     };
-    const animation = hostElement.animate(
-      this._slideInAnimKeyFrames.reverse(),
-      slideOutAnimOptions,
-    );
+    const animation = hostElement.animate(slideOutAnimKeyFrames, slideOutAnimOptions);
+
+    this._log.trace('Notification is dismissed, starting slide out animation', {
+      notificationId: this.id,
+      notificationType: this.type,
+      animKeyFrames: slideOutAnimKeyFrames,
+      animOptions: slideOutAnimOptions,
+    });
+
     animation.onfinish = () => {
       this._notificationManager.deleteNotification(this.id);
     };

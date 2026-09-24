@@ -46,6 +46,8 @@ export class NotificationManager implements OnDestroy {
       isDismissed: false,
     };
 
+    this._log.trace('Created new temporary notification', newNotification);
+
     const notifications = [...untracked(this.notifications), newNotification];
     this.notifications.set(notifications);
   }
@@ -73,6 +75,8 @@ export class NotificationManager implements OnDestroy {
       isDismissed: false,
     };
 
+    this._log.trace('Created new permanent notification', newNotification);
+
     const newNotifications = [...notifications, newNotification];
     this.notifications.set(newNotifications);
   }
@@ -96,6 +100,7 @@ export class NotificationManager implements OnDestroy {
     }
 
     notifications[itemIndex].isDismissed = true;
+    this._log.trace('Dismissed a notification', notifications[itemIndex]);
     this.notifications.set(notifications);
   }
 
@@ -105,12 +110,14 @@ export class NotificationManager implements OnDestroy {
    */
   deleteNotification(id: string): void {
     const notifications = [...untracked(this.notifications)];
-    if (!notifications.find((ntf) => ntf.id === id)) {
+    const toBeDeletedNotification = notifications.find((ntf) => ntf.id === id);
+    if (!toBeDeletedNotification) {
       this._log.warn(`Unable to find notification with id '${id}'`);
       return;
     }
 
     const newNotifications = notifications.filter((ntf) => ntf.id !== id);
+    this._log.trace('Deleted a notification', toBeDeletedNotification);
     this.notifications.set(newNotifications);
   }
 
@@ -118,6 +125,7 @@ export class NotificationManager implements OnDestroy {
    * Dispose of all notifications in service
    */
   dispose(): void {
+    this._log.trace('Disposing of all notifications');
     this.notifications.set([]);
   }
 
