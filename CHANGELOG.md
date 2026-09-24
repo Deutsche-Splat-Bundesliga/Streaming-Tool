@@ -4,9 +4,18 @@ All notable changes to the DSB Streaming Tool will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](Unreleased)
+## 1.2.0 - 2026-09-23
 
-## [1.1](1.1) - 2026-08-15
+### Changed
+
+- Updated Vitest and the Playwright browser adapter to version 5.0.1
+- Declared Angular CDK and Playwright explicitly for reliable frontend test dependency resolution
+
+### Fixed
+
+- Fixed npm installation and Angular unit-test setup after the Vitest 5 upgrade
+
+## [1.1.0](1.1.0) - 2026-08-15
 
 ### Added
 
@@ -18,19 +27,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Changed the commentator box design
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ### Security
+
 - Updated Angular to latest version
 - Updated various dependencies to fixed version
 
 ## [1.1.0-Beta.1](1.1.0-Beta.1) - 2026-06-26
 
 ### Added
+
 - Added CODE_OF_CONDUCT.md for community standards
 - Added SECURITY.md for vulnerability reporting guidelines
 - Added PR Template Base documentation
@@ -59,9 +64,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### When to Update
 
-- **For Every Release** — Create a new version section
-- **During Development** — Add entries to `[Unreleased]` section
-- **Before Merging** — Move unreleased changes to appropriate version
+- **For Every Change** — Create a new semantic version section
+- **Before Merging** — Ensure the change has an incremented version number
 
 ### Version Format
 
@@ -110,8 +114,7 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 Add links at the bottom for easy version comparison:
 
 ```markdown
-[Unreleased]: https://github.com/Hazeolation/Streaming-Tool/compare/v1.1...master
-[1.1]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.1
+[1.1.0]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.1.0
 [1.1.0-beta.1]: https://github.com/Hazeolation-Productions/Streaming-Tool/releases#release-v1.1.0-beta.1
 [1.0.0]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.0.0
 ```
