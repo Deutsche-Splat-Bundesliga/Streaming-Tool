@@ -69,6 +69,7 @@ describe('NotificationManager', () => {
     const createdNtf = notifications.find((ntf) => ntf.id === mockNtfId);
     expect(notifications.length).toBe(4);
     expect(createdNtf).not.toBeUndefined();
+    expect(createdNtf?.duration).toBe(0);
   });
 
   it('should dismiss notification', () => {
