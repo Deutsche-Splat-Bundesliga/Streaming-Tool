@@ -24,7 +24,7 @@ import { LogScope } from '../../models/log-scope';
   styleUrl: './notification.scss',
   templateUrl: './notification.html',
 })
-export class Notification implements OnDestroy {
+export class ToastNotification implements OnDestroy {
   /**
    * Get host element from constructor so we can modify it with classes at runtime
    */

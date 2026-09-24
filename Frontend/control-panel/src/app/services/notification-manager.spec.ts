@@ -40,6 +40,10 @@ describe('NotificationManager', () => {
     service.notifications.set(defaultNtfs);
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

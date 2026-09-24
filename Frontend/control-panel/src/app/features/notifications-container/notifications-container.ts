@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { NotificationManager } from '../../services/notification-manager';
-import { Notification } from '../notification/notification';
+import { ToastNotification } from '../notification/notification';
 
 @Component({
-  imports: [Notification],
+  imports: [ToastNotification],
   selector: 'app-notifications-container',
   styleUrl: './notifications-container.scss',
   templateUrl: './notifications-container.html',
