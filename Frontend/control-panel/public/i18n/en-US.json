@@ -107,6 +107,6 @@
   "language.dateFormat": "MM/dd/yyyy",
   "language.timeFormat": "hh:mm:ss a",
   "language.dateTimeFormat": "{{language.dateFormat}} {{language.timeFormat}}",
-  "language.en": "English",
-  "language.de": "Deutsch"
+  "language.en-US": "English",
+  "language.de-DE": "Deutsch"
 }

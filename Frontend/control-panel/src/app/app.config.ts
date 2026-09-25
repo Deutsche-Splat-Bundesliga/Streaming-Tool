@@ -32,8 +32,8 @@ export const appConfig: ApplicationConfig = {
     provideMarkdown(),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'de'],
-        defaultLang: 'en',
+        availableLangs: ['en-US', 'de-DE'],
+        defaultLang: 'en-US',
         // Remove this option if your application doesn't support changing language in runtime.
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
@@ -44,7 +44,7 @@ export const appConfig: ApplicationConfig = {
     // Preload our current languages or our default languages as a fallback
     provideAppInitializer(async () => {
       const transloco = inject(TranslocoService);
-      const defaultLanguage = translocoConfig.defaultLang ?? 'en';
+      const defaultLanguage = translocoConfig.defaultLang ?? 'en-US';
       const languages = translocoConfig.langs ?? [defaultLanguage];
       transloco.setActiveLang(defaultLanguage);
 
