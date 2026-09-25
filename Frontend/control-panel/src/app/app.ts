@@ -16,6 +16,7 @@ import { Socials } from './models/socials';
 import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
 import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
 import { TranslocoService } from '@jsverse/transloco';
+import translocoConfig from '../../transloco.config';
 
 @Component({
   selector: 'app-root',
@@ -111,11 +112,15 @@ export class App implements OnDestroy {
   /**
    * Effect that fires after every page render to get the last selected active language from local storage and to set it in transloco
    */
-  private _currentLanguageEffect = afterNextRender(() => {
-    const currentLanguage = localStorage.getItem('currentLanguage');
-    if (currentLanguage) {
-      this._translocoService.setActiveLang(currentLanguage);
-    }
+  private _currentLanguageOnRender = afterNextRender(() => {
+    const defaultLanguage = translocoConfig.defaultLang ?? 'en-US';
+    const currentLanguage = localStorage.getItem('currentLanguage') ?? defaultLanguage;
+
+    const availableLangs = this._translocoService.getAvailableLangs() as string[];
+    const newLanguage = availableLangs.includes(currentLanguage)
+      ? currentLanguage
+      : defaultLanguage;
+    this._translocoService.setActiveLang(newLanguage);
   });
 
   /**
@@ -124,6 +129,6 @@ export class App implements OnDestroy {
   ngOnDestroy(): void {
     this._divisionColorEffect.destroy();
     this._matchColorsEffect.destroy();
-    this._currentLanguageEffect.destroy();
+    this._currentLanguageOnRender.destroy();
   }
 }
