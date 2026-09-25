@@ -8,6 +8,8 @@ import { ApiKeyCreated } from '../models/api-key-created';
 import { ApiLogEntry } from '../models/api-log-entry';
 import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
+import { NotificationManager } from './notification-manager';
+import { NotificationType } from '../enums/notification-type';
 
 /**
  * Manages the API settings, issued API keys and the live API request log,
@@ -20,6 +22,11 @@ export class ApiManagementService {
   private readonly _api = inject(ApiManagementApi);
   private readonly _signalr = inject(Signalr);
   private readonly _log = inject(LogService);
+
+  /**
+   * Notification manager service that handles creation, deletion and displaying of notifications
+   */
+  private _notificationManager: NotificationManager = inject(NotificationManager);
 
   /**
    * The current API settings.
@@ -142,6 +149,11 @@ export class ApiManagementService {
    */
   deleteKey(id: string): void {
     this._log.info('Deleting API key', { id });
+
+    this._notificationManager.createTempNotification(
+      NotificationType.Success,
+      'notification.api-key-deleted',
+    );
 
     this._api.deleteKey(id).subscribe({
       next: () => this._log.info('API key deleted'),
