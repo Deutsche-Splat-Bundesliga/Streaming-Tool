@@ -1,13 +1,16 @@
 import { TranslocoTestingModule, TranslocoTestingOptions } from '@jsverse/transloco';
-import en from '../../public/i18n/en.json';
-import de from '../../public/i18n/de.json';
+import enUS from '../../public/i18n/en-US.json';
+import deDE from '../../public/i18n/de-DE.json';
 
 export function getTranslocoModule(options: TranslocoTestingOptions = {}) {
   return TranslocoTestingModule.forRoot({
-    langs: { en, de },
+    langs: {
+      'en-US': enUS,
+      'de-DE': deDE,
+    },
     translocoConfig: {
-      availableLangs: ['en', 'de'],
-      defaultLang: 'en',
+      availableLangs: ['en-US', 'de-DE'],
+      defaultLang: 'en-US',
     },
     preloadLangs: true,
     ...options,

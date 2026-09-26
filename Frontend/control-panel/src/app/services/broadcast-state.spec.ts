@@ -73,7 +73,7 @@ describe('BroadcastStateService', () => {
 
     service = TestBed.inject(BroadcastStateService);
     translocoService = TestBed.inject(TranslocoService);
-    translocoService.setActiveLang('en');
+    translocoService.setActiveLang('en-US');
   });
 
   afterEach(() => {
@@ -160,7 +160,7 @@ describe('BroadcastStateService', () => {
   });
 
   it('should translate map name to German', () => {
-    translocoService.setActiveLang('de');
+    translocoService.setActiveLang('de-DE');
     const germanName = translocoService.translate('map.scorch-gorge');
     expect(germanName).toEqual('Sengkluft');
   });
