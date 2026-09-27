@@ -49,9 +49,6 @@
   "text.tourney-format": "Turnierformat",
   "text.start-time": "Startzeit",
   "text.import-export-set-data": "Set-Daten importieren / exportieren",
-  "text.set-data-export-successful": "Export der Set-Daten war erfolgreich!",
-  "text.set-data-import-successful": "Import der Set-Daten war erfolgreich!",
-  "text.set-data-import-error": "Es gab einen Fehler beim Importieren der Set-Daten!",
 
   "button.next-color": "Nächste Farbe",
   "button.show-commbox-temp": "Temporär {{text.show-commbox}}",
@@ -102,6 +99,11 @@
   "mode.cb": "Muschelchaos",
 
   "notification.no-backend-connection": "Aktuell keine Verbindung zum Backend!",
+  "notification.backend-reconnected": "Backend-Verbindung wiederhergestellt",
+  "notification.api-key-deleted": "API-Key erfolgreich gelöscht",
+  "notification.set-data-export-successful": "Export der Set-Daten war erfolgreich!",
+  "notification.set-data-import-successful": "Import der Set-Daten war erfolgreich!",
+  "notification.set-data-import-error": "Es gab einen Fehler beim Importieren der Set-Daten!",
 
   "language.dateFormat": "dd.MM.yyyy",
   "language.timeFormat": "HH:mm:ss",

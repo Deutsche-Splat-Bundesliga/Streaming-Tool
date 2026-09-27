@@ -9,6 +9,8 @@ import { LogScope } from '../../models/log-scope';
 import { Ajv } from 'ajv';
 import { MapState } from '../../models/map-state';
 import { SetDataExportSchema } from '../../types/ajv-schemas/set-data-import-export';
+import { NotificationManager } from '../../services/notification-manager';
+import { NotificationType } from '../../enums/notification-type';
 
 @Component({
   selector: 'app-tourney-settings-dialog',
@@ -33,11 +35,14 @@ export class TourneySettingsDialog implements OnDestroy {
   private readonly _log: LogService = inject(LogService);
 
   /**
+   * Notification manager service that handles creation, deletion and displaying of notifications
+   */
+  private _notificationManager: NotificationManager = inject(NotificationManager);
+
+  /**
    * Logging scope for this component lifecycle and actions.
    */
   private readonly _scope: LogScope = this._log.beginScope('TourneySettingsDialog');
-
-  private _notificationTimeout: ReturnType<typeof setTimeout> | undefined;
 
   /**
    * Service that manages broadcast state and division data.
@@ -80,9 +85,9 @@ export class TourneySettingsDialog implements OnDestroy {
     window.URL.revokeObjectURL(blobUrl);
     tempAnchor.remove();
 
-    this.showNotification(
-      this._translocoService.translate('text.set-data-export-successful'),
-      'success',
+    this._notificationManager.createTempNotification(
+      NotificationType.Success,
+      'notification.set-data-export-successful',
     );
   }
 
@@ -93,9 +98,9 @@ export class TourneySettingsDialog implements OnDestroy {
   async importSetData(e: Event): Promise<void> {
     const fileInput = e.target as HTMLInputElement;
     if (!fileInput.files?.length) {
-      this.showNotification(
-        this._translocoService.translate('text.set-data-import-error'),
-        'error',
+      this._notificationManager.createTempNotification(
+        NotificationType.Error,
+        'notification.set-data-import-error',
       );
       this._log.error('ImportSetData: No files were uploaded!');
       return;
@@ -104,11 +109,13 @@ export class TourneySettingsDialog implements OnDestroy {
     const file = fileInput.files[0];
 
     try {
+      fileInput.value = '';
+
       const setData = JSON.parse(await file.text()) as BroadcastState;
       if (!this._ajv.validate(SetDataExportSchema, setData)) {
-        this.showNotification(
-          this._translocoService.translate('text.set-data-import-error'),
-          'error',
+        this._notificationManager.createTempNotification(
+          NotificationType.Error,
+          'notification.set-data-import-error',
         );
         this._log.error(`ImportSetData: Validation of data failed!`, this._ajv.errorsText());
         return;
@@ -128,16 +135,16 @@ export class TourneySettingsDialog implements OnDestroy {
       };
       this.stateService.update(newData);
 
-      this.showNotification(
-        this._translocoService.translate('text.set-data-import-successful'),
-        'success',
+      this._notificationManager.createTempNotification(
+        NotificationType.Success,
+        'notification.set-data-import-successful',
       );
     } catch (error) {
       this._log.error('Error during import of set data json file!', error);
 
-      this.showNotification(
-        this._translocoService.translate('text.set-data-import-error'),
-        'error',
+      this._notificationManager.createTempNotification(
+        NotificationType.Error,
+        'notification.set-data-import-error',
       );
     }
   }
@@ -156,51 +163,11 @@ export class TourneySettingsDialog implements OnDestroy {
     });
   }
 
-  private showNotification(text: string, type: string, duration: number = 5000): void {
-    const notification = document.body.querySelector('.import-export-notification');
-    if (!notification) {
-      this._log.error(
-        "ShowNotification: Unable to find notification element with class 'import-export-notification'",
-      );
-      return;
-    }
-
-    this._log.trace('Showing notification for import/export data', {
-      duration,
-      type,
-      text,
-    });
-    clearTimeout(this._notificationTimeout);
-
-    notification.textContent = text;
-    notification.classList.remove('hidden');
-    switch (type) {
-      case 'success':
-        {
-          notification.classList.add('success');
-          notification.classList.remove('error');
-        }
-        break;
-
-      default:
-        {
-          notification.classList.remove('success');
-          notification.classList.add('error');
-        }
-        break;
-    }
-
-    this._notificationTimeout = setTimeout(() => {
-      notification.classList.add('hidden');
-    }, duration);
-  }
-
   /**
    * Angular lifecycle hook called when the component is destroyed.
    */
   ngOnDestroy(): void {
     this._log.trace('TourneySettingsDialog destroyed');
     this._scope.dispose();
-    clearTimeout(this._notificationTimeout);
   }
 }

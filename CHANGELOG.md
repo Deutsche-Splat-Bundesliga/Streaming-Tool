@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## 1.2.0 - 2026-09-23
 
+### Added
+
+- Added translation for map names, mode names, and other overlay and dashboard texts
+- Added a feature to export set data into a json file, and import it from a json file
+- Added REST API to allow interacting with the streaming tool via external programs and/or devices
+- Added toast notifications to streaming tool dashboard
+
 ### Changed
 
 - Updated Vitest and the Playwright browser adapter to version 5.0.1
