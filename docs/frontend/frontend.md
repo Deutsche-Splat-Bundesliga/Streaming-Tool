@@ -136,6 +136,14 @@ Key properties:
 - `xHandle`
 - `discordInvite`
 
+### `Notification`
+
+- `id`
+- `type`
+- `text`
+- `duration`
+- `isDismissed`
+
 ---
 
 ## Services
@@ -220,6 +228,18 @@ The app uses six primary frontend services.
 ### `LogService`
 
 - Adds logging capabilities with various levels.
+
+### `NotificationManager`
+
+- Handles the creation, dismissing and deletion of toast notifications.
+- Notification types are stored in the `NotificationType` enum. Types are `Info`, `Success`, `Warning` and `Error`.
+- Methods:
+  - `createTempNotification(type, text, duration)` creates a temporary notification that will dismiss itself after `duration` expires, or can be dismissed via clicking the dismiss button.
+  - `createPermanentNotification(id, type, text)` creates a permanent notification that will be always shown until it is dismissed by `dismissNotification`.
+    - The `id` property MUST be unique, because only one instance of a permanent notification with a specific id can exist at a time.
+  - `dismissNotification(id)` dismisses a notification via dismiss button click, expired duration or from an external source by calling the function with the `id` of a notification.
+  - `deleteNotification(id)` deletes a notification from the `NotificationManager.notifications` signal. This also destroys the html component.
+  - `dispose()` disposes of all notifications in the `NotificationManager.notifications` signal.
 
 ---
 

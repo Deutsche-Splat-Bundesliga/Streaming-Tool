@@ -16,6 +16,9 @@ import { Socials } from './models/socials';
 import { CommentatorBoxTimeDataService } from './services/commentator-box-time-data';
 import { CommentatorBoxTimeData } from './models/commentator-box-time-data';
 import { TranslocoService } from '@jsverse/transloco';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { NotificationsContainer } from './features/notifications-container/notifications-container';
 import translocoConfig from '../../transloco.config';
 
 @Component({
@@ -31,6 +34,8 @@ export class App implements OnDestroy {
    * Transloco service that handles translation settings
    */
   private _translocoService: TranslocoService = inject(TranslocoService);
+
+  private _overlay = inject(Overlay);
 
   /**
    * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the score box component to update its UI accordingly whenever the state changes. This setup enables the score box to display the current team names and scores based on the latest broadcast state received from the service.
@@ -124,11 +129,25 @@ export class App implements OnDestroy {
   });
 
   /**
+   * Effect that fires after every page render to create the notifications overlay that also overlays on popups
+   */
+  private _notificationsOverlayonRender = afterNextRender(() => {
+    const overlayRef = this._overlay.create({
+      hasBackdrop: false,
+      panelClass: 'notifications-container-overlay',
+      usePopover: true,
+    });
+    const component = new ComponentPortal(NotificationsContainer);
+    overlayRef.attach(component);
+  });
+
+  /**
    * Destroys all effects on component destroy
    */
   ngOnDestroy(): void {
     this._divisionColorEffect.destroy();
     this._matchColorsEffect.destroy();
     this._currentLanguageOnRender.destroy();
+    this._notificationsOverlayonRender.destroy();
   }
 }
