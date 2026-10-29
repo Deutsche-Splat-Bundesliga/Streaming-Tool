@@ -4,39 +4,75 @@ All notable changes to the DSB Streaming Tool will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.2.2 - 2026-09-28
+## [1.2.3](1.2.3)
+
+### Dependencies
+
+- Updated Angular packages:
+  - `@angular/cdk`: `22.2.2` --> `22.2.4`
+  - `@angular/common`: `22.2.2` --> `22.2.3`
+  - `@angular/compiler`: `22.2.2` --> `22.2.3`
+  - `@angular/core`: `22.2.2` --> `22.2.3`
+  - `@angular/forms`: `22.2.2` --> `22.2.3`
+  - `@angular/material`: `22.2.2` --> `22.2.4`
+  - `@angular/platform-browser`: `22.2.2` --> `22.2.3`
+  - `@angular/platform-server`: `22.2.2` --> `22.2.3`
+  - `@angular/router`: `22.2.2` --> `22.2.3`
+  - `@angular/ssr`: `22.2.2` --> `22.2.4`
+  - `@angular/build`: `22.2.2` --> `22.2.4`
+  - `@angular/cli`: `22.2.2` --> `22.2.4`
+  - `@angular/compiler-cli`: `22.2.2` --> `22.2.3`
+- Updated the following npm packages:
+  - `@vitest/browser-playwright`: `5.0.3` --> `5.0.5`
+  - `express`: `5.2.1` --> `5.3.0`
+  - `marked`: `18.1.0` --> `18.1.1`
+  - `ngx-markdown`: `22.1.0` --> `22.1.1`
+  - `@types/node`: `26.6.4` --> `26.6.5`
+  - `eslint`: `10.12.0` --> `10.13.0`
+  - `jsdom`: `30.1.2` --> `30.1.3`
+  - `playwright`: `1.64.0` --> `1.64.1`
+  - `prettier`: `3.9.9` --> `3.9.10`
+  - `typescript-eslint`: `8.71.1` --> `8.72.0`
+  - `vitest`: `5.0.3` --> `5.0.5`
+- Updated the following NuGet packages:
+  - `Microsoft.AspNetCore.OpenApi`: `10.0.12` --> `10.0.14`
+  - `Microsoft.EntityFrameworkCore.Design`: `10.0.12` --> `10.0.14`
+  - `Microsoft.EntityFrameworkCore.Sqlite`: `10.0.12` --> `10.0.14`
+  - `Swashbuckle.AspNetCore`: `10.3.0` --> `10.3.1`
+
+## [1.2.2](1.2.2) - 2026-09-28
 
 ### Dependencies
 
 - Updated Angular Packages to `22.2.0`:
-    - `@angular/cdk`
-    - `@angular/common`
-    - `@angular/compiler`
-    - `@angular/core`
-    - `@angular/forms`
-    - `@angular/material`
-    - `@angular/platform-browser`
-    - `@angular/platform-server`
-    - `@angular/router`
-    - `@angular/ssr`
-    - `@angular/build`
-    - `@angular/cli`
-    - `@angular/compiler-cli`
+  - `@angular/cdk`
+  - `@angular/common`
+  - `@angular/compiler`
+  - `@angular/core`
+  - `@angular/forms`
+  - `@angular/material`
+  - `@angular/platform-browser`
+  - `@angular/platform-server`
+  - `@angular/router`
+  - `@angular/ssr`
+  - `@angular/build`
+  - `@angular/cli`
+  - `@angular/compiler-cli`
 - Updated the following packages:
-    - `marked`: `18.0.13` --> `18.0.14`
-    - `katex`: `0.16.47` --> `0.18.9`
-    - `eslint`: `10.10.0` --> `10.11.0`
-    - `jsdom`: `30.1.0` --> `30.1.1`
-    - `prettier`: `3.9.8` --> `3.9.9`
-    - `typescript-eslint`: `8.70.0` --> `8.70.1`
+  - `marked`: `18.0.13` --> `18.0.14`
+  - `katex`: `0.16.47` --> `0.18.9`
+  - `eslint`: `10.10.0` --> `10.11.0`
+  - `jsdom`: `30.1.0` --> `30.1.1`
+  - `prettier`: `3.9.8` --> `3.9.9`
+  - `typescript-eslint`: `8.70.0` --> `8.70.1`
 
-## 1.2.1 - 2026-09-26
+## [1.2.1](1.2.1) - 2026-09-26
 
 ### Fixed
 
 - Fixed bug where a language stored in the `localStorage` that doesn't have a translation threw console errors and caused the overlay to not render
 
-## 1.2.0 - 2026-09-23
+## [1.2.0](1.2.0) - 2026-09-23
 
 ### Added
 
@@ -153,7 +189,11 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 Add links at the bottom for easy version comparison:
 
 ```markdown
-[1.1.0]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.1.0
-[1.1.0-beta.1]: https://github.com/Hazeolation-Productions/Streaming-Tool/releases#release-v1.1.0-beta.1
-[1.0.0]: https://github.com/Hazeolation/Streaming-Tool/releases/tag/v1.0.0
+[1.2.3]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.2.3
+[1.2.2]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.2.2
+[1.2.1]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.2.1
+[1.2.0]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.2.0
+[1.1.0]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.1.0
+[1.1.0-beta.1]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases#release-v1.1.0-beta.1
+[1.0.0]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.0.0
 ```
