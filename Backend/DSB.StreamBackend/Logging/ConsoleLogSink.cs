@@ -8,6 +8,8 @@ namespace DSB.StreamBackend.Logging;
 /// </summary>
 public class ConsoleLogSink : ILogSink
 {
+    private static readonly object ConsoleLock = new();
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = false
@@ -16,47 +18,47 @@ public class ConsoleLogSink : ILogSink
     /// <inheritdoc />
     public Task WriteAsync(LogEntry entry)
     {
-        var originalColor = Console.ForegroundColor;
-
-        Console.ForegroundColor = GetColor(entry.Level);
-
-        Console.Write($"[{entry.Timestamp:HH:mm:ss}] ");
-
-        Console.Write($"[{entry.Level}] ");
-
-        if (!string.IsNullOrWhiteSpace(entry.Scope))
+        lock (ConsoleLock)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            var originalColor = Console.ForegroundColor;
 
-            Console.Write($"[{entry.Scope}] ");
+            try
+            {
+                Console.ForegroundColor = GetColor(entry.Level);
+                Console.Write($"[{entry.Timestamp:O}] [{entry.Level}] ");
 
-            Console.ForegroundColor = originalColor;
-        }
+                if (!string.IsNullOrWhiteSpace(entry.Source))
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write($"[{entry.Source}] ");
+                    Console.ForegroundColor = GetColor(entry.Level);
+                }
 
-        Console.ForegroundColor = originalColor;
+                Console.Write(entry.Message);
 
-        Console.Write(entry.Message);
+                if (entry.Data is not null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write(" | Data: ");
+                    Console.Write(JsonSerializer.Serialize(entry.Data, JsonOptions));
+                    Console.ForegroundColor = GetColor(entry.Level);
+                }
 
-        if (entry.Data is not null)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-
-            Console.Write(" | Data: ");
-
-            Console.Write(JsonSerializer.Serialize(entry.Data, JsonOptions));
-
-            Console.ForegroundColor = originalColor;
-        }
-
-        Console.WriteLine();
-
-        if (entry.Exception is not null)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-
-            Console.WriteLine(entry.Exception);
-
-            Console.ForegroundColor = originalColor;
+                if (entry.Exception is not null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(" | Exception: ");
+                    Console.WriteLine(entry.Exception);
+                }
+                else
+                {
+                    Console.WriteLine();
+                }
+            }
+            finally
+            {
+                Console.ForegroundColor = originalColor;
+            }
         }
 
         return Task.CompletedTask;
