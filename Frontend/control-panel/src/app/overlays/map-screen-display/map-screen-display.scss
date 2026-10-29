@@ -238,7 +238,7 @@ app-resizable-text {
   display: block;
   width: 100%;
   height: 100%;
-  mask-image: url('/assets/dsb/DSB_Outline_White.png');
+  mask-image: var(--brand-outline-logo, url('/assets/dsb/DSB_Outline_White.png'));
   mask-size: cover;
   mask-repeat: no-repeat;
   filter: drop-shadow(0.75em 0.75rem 0.25rem rgba(0, 0, 0, 0.75));

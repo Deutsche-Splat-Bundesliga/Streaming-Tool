@@ -1,5 +1,9 @@
 <div class="start-screen">
-  <img class="dsb-logo" src="assets/dsb/DSB_Logo-Large.png" />
+  <img
+    class="dsb-logo"
+    [src]="brandingService.branding().largeLogoUrl"
+    [alt]="brandingService.branding().organizationName"
+  />
   <div class="match-info__container">
     <span class="current-match-text"> Nächstes Match: </span>
 

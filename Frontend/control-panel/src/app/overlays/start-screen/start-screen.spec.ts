@@ -4,6 +4,8 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { signal } from '@angular/core';
 import { LogService } from '../../services/log';
+import { BrandingService } from '../../services/branding';
+import { DEFAULT_BRANDING } from '../../models/branding';
 
 describe('StartScreen', () => {
   let component: StartScreen;
@@ -67,6 +69,10 @@ describe('StartScreen', () => {
         {
           provide: LogService,
           useValue: mockLogService,
+        },
+        {
+          provide: BrandingService,
+          useValue: { branding: signal({ ...DEFAULT_BRANDING }) },
         },
       ],
     }).compileComponents();

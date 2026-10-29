@@ -6,6 +6,8 @@ import { MapScreenDisplay } from './map-screen-display';
 import { BroadcastStateService } from '../../services/broadcast-state';
 import { BroadcastState } from '../../models/broadcast-state';
 import { LogService } from '../../services/log';
+import { BrandingService } from '../../services/branding';
+import { DEFAULT_BRANDING } from '../../models/branding';
 
 describe('MapScreenDisplay', () => {
   let component: MapScreenDisplay;
@@ -71,6 +73,10 @@ describe('MapScreenDisplay', () => {
         {
           provide: LogService,
           useValue: mockLogService,
+        },
+        {
+          provide: BrandingService,
+          useValue: { branding: signal({ ...DEFAULT_BRANDING }) },
         },
       ],
     })

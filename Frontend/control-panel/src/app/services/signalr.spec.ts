@@ -2,13 +2,16 @@ import { TestBed } from '@angular/core/testing';
 import * as signalR from '@microsoft/signalr';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Signalr } from './signalr';
-import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
+import { Branding } from '../models/branding';
 
 describe('Signalr', () => {
   let service: Signalr;
+  const handlers = new Map<string, (...args: unknown[]) => void>();
 
   const mockConnection = {
-    on: vi.fn(),
+    on: vi.fn((eventName: string, handler: (...args: unknown[]) => void) => {
+      handlers.set(eventName, handler);
+    }),
     onreconnecting: vi.fn(),
     onreconnected: vi.fn(),
     onclose: vi.fn(),
@@ -17,6 +20,7 @@ describe('Signalr', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    handlers.clear();
 
     TestBed.resetTestingModule();
 
@@ -33,7 +37,6 @@ describe('Signalr', () => {
     });
 
     service = TestBed.inject(Signalr);
-    service.connectionType = SignalrServiceConnection.None;
   });
 
   afterEach(() => {
@@ -76,7 +79,6 @@ describe('Signalr', () => {
   });
 
   it('should build a SignalR connection', async () => {
-    service.connectionType = SignalrServiceConnection.BroadcastState;
     await service.start();
 
     expect(signalR.HubConnectionBuilder.prototype.withUrl).toHaveBeenCalledWith(
@@ -88,6 +90,7 @@ describe('Signalr', () => {
     expect(signalR.HubConnectionBuilder.prototype.build).toHaveBeenCalled();
 
     expect(mockConnection.on).toHaveBeenCalledWith('broadcastStateUpdated', expect.any(Function));
+    expect(mockConnection.on).toHaveBeenCalledWith('brandingUpdated', expect.any(Function));
 
     expect(mockConnection.onreconnecting).toHaveBeenCalled();
     expect(mockConnection.onreconnected).toHaveBeenCalled();
@@ -106,7 +109,6 @@ describe('Signalr', () => {
 
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    service.connectionType = SignalrServiceConnection.BroadcastState;
     await service.start();
 
     expect(mockConnection.start).toHaveBeenCalledTimes(1);
@@ -118,5 +120,31 @@ describe('Signalr', () => {
     expect(service.isConnected()).toBe(true);
 
     consoleErrorSpy.mockRestore();
+  });
+
+  it('should receive branding updates on the shared connection', async () => {
+    await service.start();
+    const branding: Branding = {
+      organizationName: 'Example Org',
+      organizationShortName: 'EX',
+      tournamentName: 'Example Cup',
+      logoUrl: 'assets/example/logo.png',
+      largeLogoUrl: 'assets/example/logo-large.png',
+      outlineLogoUrl: 'assets/example/logo-outline.png',
+      primaryColor: '#123456',
+      secondaryColor: '#abcdef',
+    };
+
+    handlers.get('brandingUpdated')?.(branding);
+
+    expect(service.liveBranding()).toEqual(branding);
+  });
+
+  it('should start only one connection when multiple services request it', async () => {
+    await service.start();
+    await service.start();
+
+    expect(signalR.HubConnectionBuilder.prototype.build).toHaveBeenCalledOnce();
+    expect(mockConnection.start).toHaveBeenCalledOnce();
   });
 });

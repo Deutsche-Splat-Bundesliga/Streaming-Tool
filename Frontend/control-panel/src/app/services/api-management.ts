@@ -6,7 +6,6 @@ import { ApiSettings } from '../models/api-settings';
 import { ApiKey } from '../models/api-key';
 import { ApiKeyCreated } from '../models/api-key-created';
 import { ApiLogEntry } from '../models/api-log-entry';
-import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
 import { NotificationManager } from './notification-manager';
 import { NotificationType } from '../enums/notification-type';
@@ -72,8 +71,6 @@ export class ApiManagementService {
 
       this.keys.set(incoming);
     });
-
-    this._signalr.connectionType = SignalrServiceConnection.Api;
 
     this._signalr.start();
 

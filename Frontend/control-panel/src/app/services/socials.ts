@@ -2,7 +2,6 @@ import { effect, inject, Injectable, signal, WritableSignal } from '@angular/cor
 import { SocialsApi } from './socials-api';
 import { Signalr } from './signalr';
 import { Socials } from '../models/socials';
-import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
 
 @Injectable({
@@ -40,8 +39,6 @@ export class SocialsService {
 
       this._log.info('Socials updated from SignalR');
     });
-
-    this._signalr.connectionType = SignalrServiceConnection.Socials;
 
     this._signalr.start();
 

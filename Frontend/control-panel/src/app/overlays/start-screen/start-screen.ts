@@ -12,6 +12,7 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { ResizableText } from '../../features/resizable-text/resizable-text';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { BrandingService } from '../../services/branding';
 
 @Component({
   selector: 'start-screen',
@@ -34,6 +35,7 @@ export class StartScreen implements OnInit, OnDestroy {
    * Broadcast state service used to load and expose overlay state.
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
+  brandingService: BrandingService = inject(BrandingService);
 
   /**
    * Current broadcast state signal for the start screen.

@@ -1,5 +1,9 @@
 <div class="end-screen">
-  <img class="dsb-logo" src="assets/dsb/DSB_Logo-Large.png" />
+  <img
+    class="dsb-logo"
+    [src]="brandingService.branding().largeLogoUrl"
+    [alt]="brandingService.branding().organizationName"
+  />
   <span class="ending-text">
     GGs und danke fürs Mitfiebern! <br />
     Bis zum nächsten Match - Stay Fresh!
