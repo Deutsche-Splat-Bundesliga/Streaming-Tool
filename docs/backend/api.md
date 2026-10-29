@@ -59,8 +59,25 @@ See [`backend.md`](./backend.md) for the full `BroadcastStateDto`, `SocialsDto` 
 | `POST` | `/api/broadcast/state`                            | Overwrite the broadcast state.       |
 | `GET`  | `/api/socials/socials`                            | Get the current socials.             |
 | `POST` | `/api/socials/socials`                            | Overwrite the socials.               |
+| `GET`  | `/api/branding`                                   | Get organization branding settings. |
+| `POST` | `/api/branding`                                   | Update branding and notify clients through SignalR. |
+| `POST` | `/api/branding/assets`                            | Upload a branding image.             |
+| `GET`  | `/api/branding/assets/{fileName}`                 | Retrieve an uploaded branding image. |
 | `GET`  | `/api/commentator-box-time-data/commentator-box-time-data` | Get the commentator box timing. |
 | `POST` | `/api/commentator-box-time-data/commentator-box-time-data` | Overwrite the commentator box timing. |
+
+The branding resource contains `organizationName`, `organizationShortName`, `tournamentName`,
+`logoUrl`, `largeLogoUrl`, `outlineLogoUrl`, `primaryColor`, and `secondaryColor`. Logo values may
+be local asset paths or image URLs; color values must be six-digit hexadecimal colors. The Control
+Panel exposes these settings in its Branding dialog. Saved changes are broadcast to connected
+clients, and are applied to the sidebar, tournament overlays, logos, and overlay theme colors.
+For example, `POST /api/branding` accepts a complete branding object; omitted values are not
+partial updates.
+
+The Branding dialog accepts PNG, JPEG, WebP, and GIF uploads up to 10 MB by choosing a file or
+dragging it into the relevant logo field. Files are stored under the current user's local
+application-data directory (`StreamingTool/branding-assets`); uploaded asset URLs can be assigned
+to the corresponding logo field and are served by the backend.
 
 ### Convenience endpoints (Stream Deck friendly)
 

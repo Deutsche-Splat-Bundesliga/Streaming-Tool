@@ -18,7 +18,11 @@
     {{ state().scoreBravo }}
   </span>
 
-  <img src="assets/dsb/DSB_Logo.png" width="100px" alt="DSB Logo" />
+  <img
+    [src]="brandingService.branding().logoUrl"
+    width="100px"
+    [alt]="brandingService.branding().organizationName"
+  />
 </div>
 
 <app-commentator-box class="make-responsive"></app-commentator-box>

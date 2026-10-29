@@ -11,6 +11,8 @@ import { CommentatorBoxTimeData } from '../../models/commentator-box-time-data';
 import { Socials } from '../../models/socials';
 import { LogService } from '../../services/log';
 import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
+import { BrandingService } from '../../services/branding';
+import { DEFAULT_BRANDING } from '../../models/branding';
 
 describe('InfoboxDisplay', () => {
   let component: InfoboxDisplay;
@@ -100,6 +102,13 @@ describe('InfoboxDisplay', () => {
         {
           provide: LogService,
           useValue: mockLogService,
+        },
+        {
+          provide: BrandingService,
+          useValue: {
+            branding: signal({ ...DEFAULT_BRANDING }),
+            tournamentInfo: vi.fn().mockReturnValue('Tournament'),
+          },
         },
       ],
     }).compileComponents();

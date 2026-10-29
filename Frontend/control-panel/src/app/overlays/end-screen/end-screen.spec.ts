@@ -6,6 +6,8 @@ import { BroadcastStateService } from '../../services/broadcast-state';
 import { Socials } from '../../models/socials';
 import { SocialsService } from '../../services/socials';
 import { LogService } from '../../services/log';
+import { BrandingService } from '../../services/branding';
+import { DEFAULT_BRANDING } from '../../models/branding';
 
 describe('EndScreen', () => {
   let component: EndScreen;
@@ -85,6 +87,10 @@ describe('EndScreen', () => {
         {
           provide: LogService,
           useValue: mockLogService,
+        },
+        {
+          provide: BrandingService,
+          useValue: { branding: signal({ ...DEFAULT_BRANDING }) },
         },
       ],
     }).compileComponents();

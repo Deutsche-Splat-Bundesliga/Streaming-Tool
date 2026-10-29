@@ -5,6 +5,7 @@ import { SocialsService } from '../../services/socials';
 import { Socials } from '../../models/socials';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { BrandingService } from '../../services/branding';
 @Component({
   selector: 'end-screen',
   imports: [],
@@ -30,6 +31,7 @@ export class EndScreen implements OnInit, OnDestroy {
    * Service managing socials data.
    */
   socialsService = inject(SocialsService);
+  brandingService = inject(BrandingService);
 
   /**
    * Current broadcast state.

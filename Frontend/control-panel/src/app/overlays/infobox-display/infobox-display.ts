@@ -5,6 +5,7 @@ import { CommentatorBox } from '../commentator-box/commentator-box';
 import { ResizableText } from '../../features/resizable-text/resizable-text';
 import { LogService } from '../../services/log';
 import { LogScope } from '../../models/log-scope';
+import { BrandingService } from '../../services/branding';
 
 @Component({
   selector: 'app-infobox-display',
@@ -27,23 +28,19 @@ export class InfoboxDisplay implements OnInit, OnDestroy {
    * Broadcast state service.
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
+  brandingService: BrandingService = inject(BrandingService);
 
   /**
    * Current broadcast state.
    */
   state: WritableSignal<BroadcastState> = this.stateService.state;
 
-  // TODO: Make this function into a seperate service once we introduce further branding options, and also add translation!
   /**
    * Gets the tournament info string in the overlay header depending on if the current format is a league or normal tournament setting
    * @returns {string} Tournament info (Bracket, Name, ...)
    */
   get tournamentInfo(): string {
-    const info = this.state().isLeague
-      ? `${this.state().tournamentName} Season ${this.state().season} - Woche ${this.state().week} - Division ${this.state().division}`
-      : `${this.state().tournamentName} - ${this.state().bracketName}`;
-
-    return info.replace(/- $/, '').trim();
+    return this.brandingService.tournamentInfo(this.state());
   }
 
   /**

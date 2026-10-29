@@ -70,6 +70,63 @@ namespace DSB.StreamBackend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DSB.StreamBackend.Models.BrandingEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("LargeLogoUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LogoUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OrganizationName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OrganizationShortName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OutlineLogoUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PrimaryColor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SecondaryColor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TournamentName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branding");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            LargeLogoUrl = "assets/dsb/DSB_Logo-Large.png",
+                            LogoUrl = "assets/dsb/DSB_Logo.png",
+                            OrganizationName = "Deutsche Splat Bundesliga",
+                            OrganizationShortName = "DSB",
+                            OutlineLogoUrl = "assets/dsb/DSB_Outline_White.png",
+                            PrimaryColor = "#501776",
+                            SecondaryColor = "#c4c4c4",
+                            TournamentName = "Deutsche Splat Bundesliga"
+                        });
+                });
+
             modelBuilder.Entity("DSB.StreamBackend.Models.BroadcastStateEntity", b =>
                 {
                     b.Property<int>("Id")

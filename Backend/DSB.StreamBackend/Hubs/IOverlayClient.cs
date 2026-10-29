@@ -32,6 +32,11 @@ public interface IOverlayClient
     Task ApiSettingsUpdated(ApiSettingsDto settings);
 
     /// <summary>
+    /// Sends the updated organization branding profile to connected clients.
+    /// </summary>
+    Task BrandingUpdated(BrandingDto branding);
+
+    /// <summary>
     /// Sends the updated list of issued API keys to connected clients (Control Panel).
     /// </summary>
     /// <param name="keys">The current list of API keys.</param>

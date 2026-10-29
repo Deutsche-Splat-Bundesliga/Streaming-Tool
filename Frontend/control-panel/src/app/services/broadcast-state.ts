@@ -13,7 +13,6 @@ import { BroadcastState } from '../models/broadcast-state';
 import { Division } from '../models/division';
 import { Map } from '../models/map';
 import { Mode } from '../models/mode';
-import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
 import { MatchColor } from '../models/match-color';
 import { TranslocoService } from '@jsverse/transloco';
@@ -73,8 +72,6 @@ export class BroadcastStateService {
         this.availableModes.set(availableModes);
       });
     });
-
-    this._signalr.connectionType = SignalrServiceConnection.BroadcastState;
 
     this._signalr.start();
 

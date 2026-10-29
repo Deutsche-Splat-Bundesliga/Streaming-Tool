@@ -6,7 +6,7 @@ import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
 import { ApiSettings } from '../models/api-settings';
 import { ApiKey } from '../models/api-key';
 import { ApiLogEntry } from '../models/api-log-entry';
-import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
+import { Branding } from '../models/branding';
 import { LogService } from './log';
 
 @Injectable({
@@ -91,6 +91,13 @@ export class Signalr {
     });
   };
 
+  private connectToBranding = () => {
+    this._connection?.on('brandingUpdated', (branding: Branding) => {
+      this._log.debug('SignalR brandingUpdated received', branding);
+      this.liveBranding.set(branding);
+    });
+  };
+
   liveState: WritableSignal<BroadcastState | null> = signal<BroadcastState | null>(null);
 
   liveSocials: WritableSignal<Socials | null> = signal<Socials | null>(null);
@@ -102,6 +109,8 @@ export class Signalr {
    * Latest known API settings pushed from the backend.
    */
   liveApiSettings: WritableSignal<ApiSettings | null> = signal<ApiSettings | null>(null);
+
+  liveBranding: WritableSignal<Branding | null> = signal<Branding | null>(null);
 
   /**
    * Latest known list of issued API keys pushed from the backend.
@@ -116,43 +125,33 @@ export class Signalr {
 
   isConnected: WritableSignal<boolean> = signal<boolean>(false);
 
-  connectionType: SignalrServiceConnection = SignalrServiceConnection.None;
-
-  private _serviceConnections: Map<SignalrServiceConnection, () => void> = new Map([
-    [SignalrServiceConnection.BroadcastState, this.connectToState],
-    [SignalrServiceConnection.Socials, this.connectToSocials],
-    [SignalrServiceConnection.CommentatorBoxTimeData, this.connectToCommentatorBoxTimeData],
-    [SignalrServiceConnection.Api, this.connectToApi],
-  ]);
+  private connectToAllStreams = () => {
+    this.connectToState();
+    this.connectToSocials();
+    this.connectToCommentatorBoxTimeData();
+    this.connectToApi();
+    this.connectToBranding();
+  };
 
   /**
    * Starts SignalR connection
    */
   async start() {
+    if (this._connection) {
+      return;
+    }
+
     const scope = this._log.beginScope('Signalr.start');
 
-    this._log.info('Initializing SignalR connection', {
-      connectionType: this.connectionType,
-    });
+    this._log.info('Initializing SignalR connection');
 
     this._connection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:7000/overlayHub')
       .withAutomaticReconnect()
       .build();
 
-    const connectionFunction = this._serviceConnections.get(this.connectionType);
-
-    if (!connectionFunction) {
-      this._log.warn('No SignalR connection handler registered', {
-        connectionType: this.connectionType,
-      });
-    } else {
-      this._log.debug('Registering SignalR handlers', {
-        connectionType: this.connectionType,
-      });
-
-      connectionFunction();
-    }
+    this._log.debug('Registering SignalR handlers');
+    this.connectToAllStreams();
 
     this._connection.onreconnecting(() => {
       this.isConnected.set(false);

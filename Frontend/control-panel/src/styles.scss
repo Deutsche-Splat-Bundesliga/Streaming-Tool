@@ -5,6 +5,9 @@
   --team-bravo-color: black;
 
   --current-division-color: white;
+  --brand-primary-color: #501776;
+  --brand-secondary-color: #c4c4c4;
+  --brand-outline-logo: url('/assets/dsb/DSB_Outline_White.png');
 
   @include mat.dialog-overrides(
     (
