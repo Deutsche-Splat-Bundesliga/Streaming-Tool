@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { afterEach, describe, it, expect, beforeEach, vi } from 'vitest';
 import { LogService } from './log';
-import { LogLevel } from '../enums/log-level';
 
 describe('LogService', () => {
   let service: LogService;
@@ -30,18 +29,12 @@ describe('LogService', () => {
 
     expect(console.log).toHaveBeenCalledTimes(1);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [prefix, message, entry] = (console.log as any).mock.calls[0];
+    const [prefix, message, dataLabel, data] = vi.mocked(console.log).mock.calls[0];
 
-    expect(prefix).toBe('[Info]');
+    expect(prefix).toMatch(/^\[2025-01-01T00:00:00\.000Z\] \[Info\] \[.+:\d+\]$/);
     expect(message).toBe('test message');
-
-    expect(entry).toMatchObject({
-      level: LogLevel.Info,
-      message: 'test message',
-      data: { a: 1 },
-      scope: undefined,
-    });
+    expect(dataLabel).toBe('Data:');
+    expect(data).toEqual({ a: 1 });
   });
 
   it('should route Warning logs to console.warn', () => {
@@ -49,9 +42,8 @@ describe('LogService', () => {
 
     expect(console.warn).toHaveBeenCalledTimes(1);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [prefix] = (console.warn as any).mock.calls[0];
-    expect(prefix).toBe('[Warning]');
+    const [prefix] = vi.mocked(console.warn).mock.calls[0];
+    expect(prefix).toMatch(/^\[2025-01-01T00:00:00\.000Z\] \[Warning\] \[.+:\d+\]$/);
   });
 
   it('should route Error logs to console.error', () => {
@@ -59,33 +51,26 @@ describe('LogService', () => {
 
     expect(console.error).toHaveBeenCalledTimes(1);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [prefix, message, entry] = (console.error as any).mock.calls[0];
+    const [prefix, message, errorLabel, error] = vi.mocked(console.error).mock.calls[0];
 
-    expect(prefix).toBe('[Error]');
+    expect(prefix).toMatch(/^\[2025-01-01T00:00:00\.000Z\] \[Error\] \[.+:\d+\]$/);
     expect(message).toBe('error message');
-
-    expect(entry.error).toBeInstanceOf(Error);
+    expect(errorLabel).toBe('Error:');
+    expect(error).toBeInstanceOf(Error);
   });
 
-  it('should attach scope from beginScope', () => {
+  it('should not clutter console output with scopes', () => {
     const scope = service.beginScope('TestScope');
 
     service.info('inside scope');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [, , entry] = (console.log as any).mock.calls[0];
-
-    expect(entry.scope).toBe('TestScope');
+    expect(vi.mocked(console.log).mock.calls[0]).not.toContain('TestScope');
 
     scope.dispose();
 
     service.info('outside scope');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [, , entry2] = (console.log as any).mock.calls[1];
-
-    expect(entry2.scope).toBeUndefined();
+    expect(vi.mocked(console.log).mock.calls[1]).not.toContain('TestScope');
   });
 
   it('should support nested scopes (LIFO behavior)', () => {
@@ -94,19 +79,13 @@ describe('LogService', () => {
 
     service.info('test');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [, , entry] = (console.log as any).mock.calls[0];
-
-    expect(entry.scope).toBe('Scope2');
+    expect(vi.mocked(console.log).mock.calls[0]).not.toContain('Scope2');
 
     scope2.dispose();
 
     service.info('after pop');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [, , entry2] = (console.log as any).mock.calls[1];
-
-    expect(entry2.scope).toBe('Scope1');
+    expect(vi.mocked(console.log).mock.calls[1]).not.toContain('Scope1');
 
     scope1.dispose();
   });
@@ -114,10 +93,8 @@ describe('LogService', () => {
   it('should include timestamp in ISO format', () => {
     service.info('time test');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [, , entry] = (console.log as any).mock.calls[0];
-
-    expect(entry.timestamp).toBe('2025-01-01T00:00:00.000Z');
+    const [prefix] = vi.mocked(console.log).mock.calls[0];
+    expect(prefix).toContain('[2025-01-01T00:00:00.000Z]');
   });
 
   it('should pass error correctly in critical logs', () => {
@@ -125,11 +102,10 @@ describe('LogService', () => {
 
     service.critical('critical issue', err, { x: 1 });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [, , entry] = (console.error as any).mock.calls[0];
-
-    expect(entry.level).toBe(LogLevel.Critical);
-    expect(entry.error).toBe(err);
-    expect(entry.data).toEqual({ x: 1 });
+    const [, , dataLabel, data, errorLabel, error] = vi.mocked(console.error).mock.calls[0];
+    expect(dataLabel).toBe('Data:');
+    expect(data).toEqual({ x: 1 });
+    expect(errorLabel).toBe('Error:');
+    expect(error).toBe(err);
   });
 });

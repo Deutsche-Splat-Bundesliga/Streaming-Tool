@@ -1,4 +1,5 @@
 using DSB.StreamBackend.Logging;
+using System.Diagnostics;
 
 namespace DSB.StreamBackend.Services;
 
@@ -21,7 +22,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
     public Task TraceAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Trace, message, null, data);
+        => LogAsync(Logging.LogLevel.Trace, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs a Debug log.
@@ -32,7 +33,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
     public Task DebugAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Debug, message, null, data);
+        => LogAsync(Logging.LogLevel.Debug, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs an Info log.
@@ -40,7 +41,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
     public Task InfoAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Info, message, null, data);
+        => LogAsync(Logging.LogLevel.Info, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs a Warning log.
@@ -48,7 +49,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
     public Task WarningAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Warning, message, null, data);
+        => LogAsync(Logging.LogLevel.Warning, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs an Error log.
@@ -56,7 +57,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
     public Task ErrorAsync(string message, Exception? ex = null, object? data = null)
-        => LogAsync(Logging.LogLevel.Error, message, ex, data);
+        => LogAsync(Logging.LogLevel.Error, message, ex, data, GetSourceLocation());
 
     /// <summary>
     /// Logs a Critical Error log.
@@ -64,12 +65,12 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
     public Task CriticalAsync(string message, Exception? ex = null, object? data = null)
-        => LogAsync(Logging.LogLevel.Critical, message, ex, data);
+        => LogAsync(Logging.LogLevel.Critical, message, ex, data, GetSourceLocation());
 
     /// <summary>
     /// Writes a log entry to all configured sinks.
     /// </summary>
-    private async Task LogAsync(Logging.LogLevel level, string message, Exception? ex, object? data)
+    private async Task LogAsync(Logging.LogLevel level, string message, Exception? ex, object? data, string source)
     {
         if (!ShouldLog(level)) return;
 
@@ -78,6 +79,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
             Timestamp = DateTime.Now,
             Level = level,
             Message = message,
+            Source = source,
             Exception = ex,
             Data = data,
             Scope = LoggingScope.Current
@@ -93,6 +95,32 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
                 catch { }
             })
         );
+    }
+
+    private static string GetSourceLocation()
+    {
+        StackFrame? callerFrame = new StackTrace(fNeedFileInfo: true)
+            .GetFrames()?
+            .FirstOrDefault(frame => !IsLogServiceFrame(frame));
+        string? filePath = callerFrame?.GetFileName();
+        int lineNumber = callerFrame?.GetFileLineNumber() ?? 0;
+
+        return string.IsNullOrWhiteSpace(filePath) || lineNumber == 0
+            ? "unknown"
+            : $"{Path.GetFileName(filePath)}:{lineNumber}";
+    }
+
+    private static bool IsLogServiceFrame(StackFrame frame)
+    {
+        Type? frameType = frame.GetMethod()?.DeclaringType;
+
+        while (frameType is not null)
+        {
+            if (frameType == typeof(LogService)) return true;
+            frameType = frameType.DeclaringType;
+        }
+
+        return false;
     }
 
     /// <inheritdoc />

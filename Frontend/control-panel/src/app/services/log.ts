@@ -108,6 +108,7 @@ export class LogService {
       timestamp: new Date().toISOString(),
       level,
       message,
+      source: this.getCallerLocation(),
       data,
       error,
       scope: this.scope,
@@ -121,19 +122,41 @@ export class LogService {
    * @param entry {LogEntry} The log entry to write to the console
    */
   private writeToConsole(entry: LogEntry): void {
-    const prefix = `[${LogLevel[entry.level]}]`;
+    const prefix = `[${entry.timestamp}] [${LogLevel[entry.level]}]${entry.source ? ` [${entry.source}]` : ''}`;
+    const details: unknown[] = [];
+
+    if (entry.data !== undefined) details.push('Data:', entry.data);
+    if (entry.error !== undefined) details.push('Error:', entry.error);
 
     switch (entry.level) {
       case LogLevel.Error:
       case LogLevel.Critical:
-        console.error(prefix, entry.message, entry);
+        console.error(prefix, entry.message, ...details);
         break;
       case LogLevel.Warning:
-        console.warn(prefix, entry.message, entry);
+        console.warn(prefix, entry.message, ...details);
         break;
       default:
-        console.log(prefix, entry.message, entry);
+        console.log(prefix, entry.message, ...details);
         break;
     }
+  }
+
+  private getCallerLocation(): string | undefined {
+    const frames = new Error().stack?.split('\n').slice(1) ?? [];
+    const callerFrame = frames.find(
+      (frame) =>
+        !/(?:^|[\\/])log\.[^\\/]+:\d+:\d+/.test(frame) &&
+        !frame.includes('LogService.getCallerLocation'),
+    );
+    const location =
+      callerFrame?.match(/(?:\(|@)(.*?):(\d+):(\d+)\)?$/) ??
+      callerFrame?.match(/(?:^|\s)([^()\s]+):(\d+):(\d+)$/);
+
+    if (!location) return undefined;
+
+    const fileName = location[1].split(/[\\/]/).at(-1)?.split('?')[0];
+
+    return fileName ? `${fileName}:${location[2]}` : undefined;
   }
 }
