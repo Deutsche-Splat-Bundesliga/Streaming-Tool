@@ -1,83 +1,83 @@
 name: E2E Tests
 
 on:
-    pull_request:
-        branches: ["master"]
+  pull_request:
+    branches: ["master"]
 
 permissions:
-    contents: read
+  contents: read
 
 env:
-    FRONTEND_PATH: ./Frontend/control-panel
+  FRONTEND_PATH: ./Frontend/control-panel
 
 jobs:
-    e2e:
-        runs-on: ubuntu-latest
+  e2e:
+    runs-on: ubuntu-24.04
 
-        strategy:
-            fail-fast: false
-            matrix:
-                browser: [chromium, firefox, webkit]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
 
-        name: E2E – ${{ matrix.browser }}
+    name: E2E – ${{ matrix.browser }}
 
-        steps:
-            - uses: actions/checkout@v7
+    steps:
+      - uses: actions/checkout@v7
 
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v6
-              with:
-                  dotnet-version: 9.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 9.0.x
 
-            - name: Use Node.js 26.x
-              uses: actions/setup-node@v7
-              with:
-                  node-version: 26.x
-                  cache: "npm"
-                  cache-dependency-path: ${{ env.FRONTEND_PATH }}/package-lock.json
+      - name: Use Node.js 26.x
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26.x
+          cache: "npm"
+          cache-dependency-path: ${{ env.FRONTEND_PATH }}/package-lock.json
 
-            - name: Install frontend dependencies
-              run: npm ci
-              working-directory: ${{ env.FRONTEND_PATH }}
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: ${{ env.FRONTEND_PATH }}
 
-            - name: Build backend
-              run: dotnet build Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
+      - name: Build backend
+        run: dotnet build Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
 
-            - name: Build E2E test project
-              run: dotnet build tests/DSB.StreamTool.E2E/DSB.StreamTool.E2E.csproj
+      - name: Build E2E test project
+        run: dotnet build tests/DSB.StreamTool.E2E/DSB.StreamTool.E2E.csproj
 
-            - name: Install Playwright browser (${{ matrix.browser }})
-              run: pwsh tests/DSB.StreamTool.E2E/bin/Debug/net9.0/playwright.ps1 install --with-deps ${{ matrix.browser }}
+      - name: Install Playwright browser (${{ matrix.browser }})
+        run: pwsh tests/DSB.StreamTool.E2E/bin/Debug/net9.0/playwright.ps1 install --with-deps ${{ matrix.browser }}
 
-            - name: Start backend
-              run: dotnet run --project Backend/DSB.StreamBackend/DSB.StreamBackend.csproj --launch-profile http > backend.log 2>&1 &
-              env:
-                  ASPNETCORE_ENVIRONMENT: Development
+      - name: Start backend
+        run: dotnet run --project Backend/DSB.StreamBackend/DSB.StreamBackend.csproj --launch-profile http > backend.log 2>&1 &
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
 
-            - name: Start Angular dev server
-              run: npm start > frontend.log 2>&1 &
-              working-directory: ${{ env.FRONTEND_PATH }}
+      - name: Start Angular dev server
+        run: npm start > frontend.log 2>&1 &
+        working-directory: ${{ env.FRONTEND_PATH }}
 
-            - name: Wait for services to be ready
-              run: |
-                  echo "Waiting for backend (http://localhost:7000)..."
-                  timeout 60 bash -c 'until curl -sf http://localhost:7000/api/broadcast/state > /dev/null 2>&1; do sleep 2; done'
-                  echo "Backend is ready."
-                  echo "Waiting for frontend (http://localhost:4200)..."
-                  timeout 120 bash -c 'until curl -sf http://localhost:4200 > /dev/null 2>&1; do sleep 2; done'
-                  echo "Frontend is ready."
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for backend (http://localhost:7000)..."
+          timeout 60 bash -c 'until curl -sf http://localhost:7000/api/broadcast/state > /dev/null 2>&1; do sleep 2; done'
+          echo "Backend is ready."
+          echo "Waiting for frontend (http://localhost:4200)..."
+          timeout 120 bash -c 'until curl -sf http://localhost:4200 > /dev/null 2>&1; do sleep 2; done'
+          echo "Frontend is ready."
 
-            - name: Run E2E tests
-              run: dotnet test --no-build --verbosity normal tests/DSB.StreamTool.E2E/DSB.StreamTool.E2E.csproj
-              env:
-                  BROWSER: ${{ matrix.browser }}
+      - name: Run E2E tests
+        run: dotnet test --no-build --verbosity normal tests/DSB.StreamTool.E2E/DSB.StreamTool.E2E.csproj
+        env:
+          BROWSER: ${{ matrix.browser }}
 
-            - name: Upload service logs on failure
-              if: failure()
-              uses: actions/upload-artifact@v7
-              with:
-                  name: service-logs-${{ matrix.browser }}
-                  path: |
-                      backend.log
-                      Frontend/control-panel/frontend.log
-                  retention-days: 7
+      - name: Upload service logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: service-logs-${{ matrix.browser }}
+          path: |
+            backend.log
+            Frontend/control-panel/frontend.log
+          retention-days: 7
