@@ -21,6 +21,11 @@ public class LogEntry
     public string Message { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets the source file and line where the log was created.
+    /// </summary>
+    public string Source { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the associated exception.
     /// </summary>
     public Exception? Exception { get; set; }

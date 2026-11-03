@@ -71,6 +71,13 @@ DSB.StreamBackend/
 > The public REST API, authentication, API keys and the Stream Deck convenience endpoints are
 > documented separately in [`api.md`](./api.md).
 
+## Logging
+
+The backend `ILogService` API supports trace, debug, info, warning, error, and critical messages,
+plus logical scopes. The console sink prints an ISO timestamp, severity, source file/line, and
+message on one line, followed by any structured data or exception. Scope metadata remains
+available on each log entry but is omitted from console output to keep it uncluttered.
+
 ---
 
 ## Data Model
