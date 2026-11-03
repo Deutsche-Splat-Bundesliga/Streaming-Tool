@@ -24,7 +24,11 @@
       <span class="ink-splat-logo team-bravo-color"></span>
     </div>
 
-    <img class="match dsb-logo" src="assets/dsb/DSB_Logo-Large.png" />
+    <img
+      class="match dsb-logo"
+      [src]="brandingService.branding().largeLogoUrl"
+      [alt]="brandingService.branding().organizationName"
+    />
   </div>
 
   <div class="map-grid">

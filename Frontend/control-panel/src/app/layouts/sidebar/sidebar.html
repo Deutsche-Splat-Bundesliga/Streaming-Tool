@@ -140,10 +140,21 @@
     >
       {{ t('text.api-settings') }}
     </button>
+    <button
+      class="click-button open-branding-dialog-button"
+      (click)="handleBrandingSettingsButtonClick()"
+    >
+      {{ t('text.branding') }}
+    </button>
 
     <button class="click-button open-settings-dialog-button" (click)="handleSettingsButtonClick()">
       {{ t('text.settings') }}
     </button>
   </section>
-  <img src="assets/dsb/DSB_Logo.png" width="100px" />
+  <img
+    [src]="brandingService.branding().logoUrl"
+    [alt]="brandingService.branding().organizationName"
+    width="100px"
+  />
+  <span class="organization-short-name">{{ brandingService.branding().organizationShortName }}</span>
 </div>

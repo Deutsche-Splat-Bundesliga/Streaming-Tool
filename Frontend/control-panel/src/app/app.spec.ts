@@ -11,6 +11,8 @@ import { CommentatorBoxTimeDataService } from './services/commentator-box-time-d
 import { CommBoxDisplayMode } from './enums/comm-box-display-modes';
 import { Division } from './models/division';
 import { getTranslocoModule } from './transloco-testing.module';
+import { BrandingService } from './services/branding';
+import { DEFAULT_BRANDING } from './models/branding';
 
 describe('App', () => {
   let component: App;
@@ -81,6 +83,10 @@ describe('App', () => {
           useValue: {
             commentatorBoxTimeData: mockTimeData,
           },
+        },
+        {
+          provide: BrandingService,
+          useValue: { branding: signal({ ...DEFAULT_BRANDING }) },
         },
       ],
     }).compileComponents();

@@ -9,6 +9,8 @@ import { Division } from '../../models/division';
 import { LogService } from '../../services/log';
 import { CommBoxDisplayMode } from '../../enums/comm-box-display-modes';
 import { getTranslocoModule } from '../../transloco-testing.module';
+import { BrandingService } from '../../services/branding';
+import { DEFAULT_BRANDING } from '../../models/branding';
 
 describe('Sidebar', () => {
   let component: Sidebar;
@@ -77,6 +79,10 @@ describe('Sidebar', () => {
         {
           provide: LogService,
           useValue: mockLogService,
+        },
+        {
+          provide: BrandingService,
+          useValue: { branding: signal({ ...DEFAULT_BRANDING }) },
         },
       ],
     }).compileComponents();

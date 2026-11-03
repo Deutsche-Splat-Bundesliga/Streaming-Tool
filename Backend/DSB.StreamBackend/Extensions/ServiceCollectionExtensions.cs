@@ -37,6 +37,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<SocialsService>();
         services.AddScoped<CommentatorBoxTimeDataService>();
         services.AddScoped<ApiSettingsService>();
+        services.AddScoped<BrandingService>();
+        services.AddScoped<BrandingAssetsService>();
         services.AddScoped<ApiKeyService>();
         services.AddSingleton<ApiRequestLog>();
 

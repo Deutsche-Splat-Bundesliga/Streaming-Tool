@@ -42,6 +42,11 @@ public class StreamToolDbContext(
     public DbSet<ApiKeyEntity> ApiKeys => Set<ApiKeyEntity>();
 
     /// <summary>
+    /// DbSet representing the single organization branding profile.
+    /// </summary>
+    public DbSet<BrandingEntity> Branding => Set<BrandingEntity>();
+
+    /// <summary>
     /// Configures the model by defining the relationships and seeding initial data for the BroadcastStateEntity and MapStateEntity tables.
     /// </summary>
     /// <param name="modelBuilder">The ModelBuilder instance used to configure the model.</param>
@@ -64,6 +69,12 @@ public class StreamToolDbContext(
 
         modelBuilder.Entity<ApiKeyEntity>()
             .HasKey(x => x.Id);
+
+        modelBuilder.Entity<BrandingEntity>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<BrandingEntity>()
+            .HasData(new BrandingEntity { Id = 1 });
 
         modelBuilder.Entity<BroadcastStateEntity>()
             .HasMany(x => x.Maps)

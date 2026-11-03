@@ -2,7 +2,6 @@ import { effect, inject, Injectable, signal, WritableSignal } from '@angular/cor
 import { CommentatorBoxTimeDataApi } from './commentator-box-time-data-api';
 import { Signalr } from './signalr';
 import { CommentatorBoxTimeData } from '../models/commentator-box-time-data';
-import { SignalrServiceConnection } from '../enums/SignalrServiceConnection';
 import { LogService } from './log';
 import { CommBoxDisplayMode } from '../enums/comm-box-display-modes';
 
@@ -42,8 +41,6 @@ export class CommentatorBoxTimeDataService {
 
       this._log.info('CommentatorBoxTimeData updated from SignalR');
     });
-
-    this._signalr.connectionType = SignalrServiceConnection.CommentatorBoxTimeData;
 
     this._signalr.start();
 

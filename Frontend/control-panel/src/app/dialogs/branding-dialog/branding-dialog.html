@@ -1,0 +1,65 @@
+<main *transloco="let t">
+  <h1 mat-dialog-title>{{ t('text.branding') }}</h1>
+  <mat-dialog-content>
+    <label>
+      {{ t('text.organization-name') }}
+      <input [(ngModel)]="draft.organizationName" (ngModelChange)="markDirty()" />
+    </label>
+    <label>
+      {{ t('text.organization-short-name') }}
+      <input [(ngModel)]="draft.organizationShortName" (ngModelChange)="markDirty()" />
+    </label>
+    <label>
+      {{ t('text.tournament-name') }}
+      <input [(ngModel)]="draft.tournamentName" (ngModelChange)="markDirty()" />
+    </label>
+    @for (field of imageFields; track field.key) {
+      <section>
+        <label>
+          {{ t(field.label) }}
+          <input [(ngModel)]="draft[field.key]" (ngModelChange)="markDirty()" />
+        </label>
+        @if (draft[field.key]) {
+          <figure class="branding-image-preview">
+            <figcaption>{{ t('text.preview') }}</figcaption>
+            <img [src]="draft[field.key]" [alt]="t(field.label)" />
+          </figure>
+        }
+        <label
+          class="branding-image-dropzone"
+          [class.dragging]="draggingField() === field.key"
+          (dragover)="handleDragOver($event, field.key)"
+          (dragleave)="clearDraggingField()"
+          (drop)="handleDrop($event, field.key)"
+        >
+          {{ t('text.drop-or-choose-image') }}
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            (change)="handleFileSelection($event, field.key)"
+          />
+        </label>
+      </section>
+    }
+    @if (uploading()) {
+      <p>{{ t('text.uploading-image') }}</p>
+    }
+    @if (uploadError(); as errorKey) {
+      <p role="alert">{{ t(errorKey) }}</p>
+    }
+    <label>
+      {{ t('text.primary-color') }}
+      <input type="color" [(ngModel)]="draft.primaryColor" (ngModelChange)="markDirty()" />
+    </label>
+    <label>
+      {{ t('text.secondary-color') }}
+      <input type="color" [(ngModel)]="draft.secondaryColor" (ngModelChange)="markDirty()" />
+    </label>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="click-button" [disabled]="saving() || uploading()" (click)="save()">
+      {{ t('button.save') }}
+    </button>
+    <button class="click-button" mat-dialog-close>✖</button>
+  </mat-dialog-actions>
+</main>

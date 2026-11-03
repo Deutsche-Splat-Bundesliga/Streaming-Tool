@@ -19,6 +19,8 @@ import { CommBoxSettingsDialog } from '../../dialogs/comm-box-settings-dialog/co
 import { ApiSettingsDialog } from '../../dialogs/api-settings-dialog/api-settings-dialog';
 import { SettingsDialog } from '../../dialogs/settings-dialog/settings-dialog';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { BrandingService } from '../../services/branding';
+import { BrandingDialog } from '../../dialogs/branding-dialog/branding-dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -51,6 +53,7 @@ export class Sidebar implements OnInit, OnDestroy {
    * Service that manages broadcast state and division data.
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
+  brandingService: BrandingService = inject(BrandingService);
 
   /**
    * Service that manages commentator box time data.
@@ -147,6 +150,11 @@ export class Sidebar implements OnInit, OnDestroy {
     this._dialog.closeAll();
     this._log.trace('Opening dialog for settings');
     this._dialog.open(SettingsDialog, { panelClass: 'settings-dialog' });
+  }
+
+  handleBrandingSettingsButtonClick(): void {
+    this._dialog.closeAll();
+    this._dialog.open(BrandingDialog, { panelClass: 'branding-dialog' });
   }
 
   /**

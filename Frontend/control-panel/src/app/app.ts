@@ -20,6 +20,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { NotificationsContainer } from './features/notifications-container/notifications-container';
 import translocoConfig from '../../transloco.config';
+import { BrandingService } from './services/branding';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +42,7 @@ export class App implements OnDestroy {
    * Injects the `BroadcastStateService` to access the current broadcast state and available maps, modes, and divisions. The `state` signal is used to reactively track changes to the broadcast state, allowing the score box component to update its UI accordingly whenever the state changes. This setup enables the score box to display the current team names and scores based on the latest broadcast state received from the service.
    */
   stateService: BroadcastStateService = inject(BroadcastStateService);
+  brandingService: BrandingService = inject(BrandingService);
 
   /**
    * Injects the `SocialsService` to access social links such as discord server invite, twitter handle, etc. The `socials` signal is used to reactively track changes to the socials state to update the overlay accordingly
@@ -114,6 +116,19 @@ export class App implements OnDestroy {
     );
   });
 
+  private _brandingEffect = afterRenderEffect(() => {
+    const branding = this.brandingService.branding();
+    document.documentElement.style.setProperty('--brand-primary-color', branding.primaryColor);
+    document.documentElement.style.setProperty(
+      '--brand-secondary-color',
+      branding.secondaryColor,
+    );
+    document.documentElement.style.setProperty(
+      '--brand-outline-logo',
+      `url(${JSON.stringify(branding.outlineLogoUrl)})`,
+    );
+  });
+
   /**
    * Effect that fires after every page render to get the last selected active language from local storage and to set it in transloco
    */
@@ -147,6 +162,7 @@ export class App implements OnDestroy {
   ngOnDestroy(): void {
     this._divisionColorEffect.destroy();
     this._matchColorsEffect.destroy();
+    this._brandingEffect.destroy();
     this._currentLanguageOnRender.destroy();
     this._notificationsOverlayonRender.destroy();
   }
