@@ -104,6 +104,7 @@ Key properties:
 - `timestamp`
 - `level`
 - `message`
+- `source` (source file and line)
 - `data`
 - `error`
 - `scope`
@@ -227,7 +228,11 @@ The app uses six primary frontend services.
 
 ### `LogService`
 
-- Adds logging capabilities with various levels.
+- Provides trace, debug, info, warning, error, and critical methods without changing the existing
+  logging call signatures.
+- Writes a compact console prefix containing the ISO timestamp, severity, and source file/line.
+- Prints structured data and exceptions separately; active scopes remain on the entry but are not
+  repeated in console output.
 
 ### `NotificationManager`
 
