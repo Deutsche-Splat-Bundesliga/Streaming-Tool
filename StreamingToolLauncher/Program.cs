@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Microsoft.VisualBasic;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
@@ -33,6 +32,10 @@ if (!CommandExists("node"))
         }
     }
 }
+else
+{
+    Console.WriteLine("Node.js found!");
+}
 
 if (!DotNet10Exists())
 {
@@ -61,6 +64,10 @@ if (!DotNet10Exists())
             return;
         }
     }
+}
+else
+{
+    Console.WriteLine(".NET 10 SDK found!");
 }
 
 string root = AppContext.BaseDirectory;
