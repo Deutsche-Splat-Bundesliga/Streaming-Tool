@@ -19,6 +19,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Dependencies
 
+- Updated Angular packages:
+    - `@angular/cdk`: `22.2.4` --> `22.2.5`
+    - `@angular/common`: `22.2.3` --> `22.2.4`
+    - `@angular/compiler`: `22.2.3` --> `22.2.4`
+    - `@angular/core`: `22.2.3` --> `22.2.4`
+    - `@angular/forms`: `22.2.3` --> `22.2.4`
+    - `@angular/material`: `22.2.4` --> `22.2.5`
+    - `@angular/platform-browser`: `22.2.3` --> `22.2.4`
+    - `@angular/platform-server`: `22.2.3` --> `22.2.4`
+    - `@angular/router`: `22.2.3` --> `22.2.4`
+    - `@angular/ssr`: `22.2.4` --> `22.2.5`
+    - `@angular/cli`: `22.2.4` --> `22.2.5`
+    - `@angular/compiler-cli`: `22.2.3` --> `22.2.4`
 - Updated the following npm packages:
     - `marked`: `18.1.1` --> `18.1.2`
     - `katex`: `0.19.0` --> `0.19.1`
@@ -26,6 +39,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     - `fast-uri`: `3.1.8` --> `3.1.9`
     - `qs`: `6.16.0` --> `6.17.1`
     - `vite`: `8.3.0` --> `8.3.5`
+    - `tslib`: `2.8.1` --> `2.9.1`
+    - `@types/node`: `26.6.5` --> `26.6.6`
+    - `eslint`: `10.13.0` --> `10.14.0`
+    - `typescript-eslint`: `8.72.0` --> `8.72.1`
 
 ## [1.2.3](1.2.3)
 
