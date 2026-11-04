@@ -37,7 +37,7 @@ There are start scripts for both Windows and Linux/macOS. They check for require
 | Linux / macOS | `start.sh`               |
 
 > [!NOTE]
-> The scripts will prompt you to install missing dependencies via WinGet (Windows) or your system package manager (Linux/macOS).
+> The Windows launcher is a self-contained, single-file executable and does not require the .NET runtime to launch. The Streaming Tool itself still requires Node.js and the .NET 10 SDK; the launcher can prompt to install them via WinGet.
 
 ### Manual Start
 
