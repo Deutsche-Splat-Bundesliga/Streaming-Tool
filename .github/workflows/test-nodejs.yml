@@ -10,10 +10,6 @@ defaults:
         shell: bash
 
 on:
-    workflow_run:
-        workflows: ["Build Node.js CI"]
-        types:
-            - completed
     pull_request:
         branches:
             - master
@@ -21,9 +17,12 @@ on:
         branches:
             - master
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
     build:
-        if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Build Node.js CI' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'pull_request' }}
         runs-on: ubuntu-latest
 
         strategy:
@@ -42,14 +41,9 @@ jobs:
             - name: Install dependencies
               run: npm ci
               working-directory: ${{ env.FRONTEND_PATH }}
-            - name: Install Angular CLI
-              run: npm install -g @angular/cli
-              working-directory: ${{ env.FRONTEND_PATH }}
-            - name: Install @vitest/browser-playwright
-              run: npm install @vitest/browser-playwright
             - name: Set Up Playwright Browsers
               run: npx playwright install --with-deps
               working-directory: ${{ env.FRONTEND_PATH }}
             - name: Run Node.js Tests
-              run: npm test
+              run: npm test -- --watch=false
               working-directory: ${{ env.FRONTEND_PATH }}

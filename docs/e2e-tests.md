@@ -186,15 +186,15 @@ Tests run in parallel across three browsers:
 | `firefox`  | Gecko                      |
 | `webkit`   | WebKit (Safari equivalent) |
 
-Each browser runs as a separate CI job (`E2E – chromium`, `E2E – firefox`, `E2E – webkit`). `fail-fast: false` ensures all three jobs always complete even if one fails, providing a full picture of cross-browser compatibility.
+Each browser runs as a separate CI job (`E2E – chromium`, `E2E – firefox`, `E2E – webkit`). `fail-fast: false` keeps a browser failure from cancelling the other browser jobs. A newer revision of the same pull request cancels the older workflow run.
 
 ### How the Workflow Operates
 
-1. Installs .NET 9 and Node 20
+1. Installs .NET 9 for the test project, .NET 10 for the backend, and Node 26
 2. Installs frontend npm dependencies
-3. Builds backend and E2E test project
+3. Restores cached NuGet packages where available, then builds backend and E2E test project
 4. Installs the Playwright browser binary for that matrix entry (`pwsh playwright.ps1 install --with-deps <browser>`)
-5. Starts the backend in the background using the `http` launch profile (`http://localhost:7000`)
+5. Starts the built backend without rebuilding, using the `http` launch profile (`http://localhost:7000`)
 6. Starts the Angular dev server in the background (`http://localhost:4200`)
 7. Polls both endpoints with `curl` until they respond (timeout: 60s backend, 120s frontend)
 8. Runs `dotnet test` with `BROWSER=<browser>` set — `PageTest` picks this up automatically

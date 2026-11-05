@@ -4,6 +4,13 @@ All notable changes to the DSB Streaming Tool will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2](1.3.2) - 2026-11-05
+
+### Changed
+
+- CI runs unit tests directly on pushes and pull requests, cancels superseded PR checks, reuses NuGet downloads, and avoids redundant frontend installs and backend rebuilds.
+- E2E CI explicitly installs both .NET versions required by the backend and test project while retaining all three browsers.
+
 ## [1.3.1](1.3.1) - 2026-11-03
 
 ### Fixed
@@ -235,6 +242,7 @@ Use semantic versioning: `MAJOR.MINOR.PATCH`
 Add links at the bottom for easy version comparison:
 
 ```markdown
+[1.3.2]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.3.2
 [1.3.1]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.3.1
 [1.3.0]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.3.0
 [1.2.3]: https://github.com/Deutsche-Splat-Bundesliga/Streaming-Tool/releases/tag/v1.2.3
