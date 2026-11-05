@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   FRONTEND_PATH: ./Frontend/control-panel
 
@@ -27,7 +31,18 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: |
+            9.0.x
+            10.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ github.workflow }}-${{ hashFiles('**/*.csproj', '**/nuget.config') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-${{ github.workflow }}-
+            ${{ runner.os }}-nuget-
 
       - name: Use Node.js 26.x
         uses: actions/setup-node@v7
@@ -50,7 +65,7 @@ jobs:
         run: pwsh tests/DSB.StreamTool.E2E/bin/Debug/net9.0/playwright.ps1 install --with-deps ${{ matrix.browser }}
 
       - name: Start backend
-        run: dotnet run --project Backend/DSB.StreamBackend/DSB.StreamBackend.csproj --launch-profile http > backend.log 2>&1 &
+        run: dotnet run --no-build --project Backend/DSB.StreamBackend/DSB.StreamBackend.csproj --launch-profile http > backend.log 2>&1 &
         env:
           ASPNETCORE_ENVIRONMENT: Development
 

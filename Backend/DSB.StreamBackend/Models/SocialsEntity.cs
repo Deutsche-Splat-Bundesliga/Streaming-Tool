@@ -1,7 +1,7 @@
 namespace DSB.StreamBackend.Models;
 
 /// <summary>
-/// Represents the current Social Media links 
+/// Represents the current Social Media links
 /// </summary>
 public class SocialsEntity
 {

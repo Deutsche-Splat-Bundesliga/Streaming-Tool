@@ -17,9 +17,9 @@ namespace DSB.StreamBackend.Controllers;
 public class SocialsController(
     SocialsService socialsService,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    ILogService log) : ControllerBase
+    ILogService log
+) : ControllerBase
 {
-
     /// <summary>
     /// Retrieves the current socials.
     /// </summary>
@@ -44,16 +44,18 @@ public class SocialsController(
     /// <param name="socials">The new socials to apply.</param>
     /// <returns>The updated socials.</returns>
     [HttpPost("socials")]
-    public async Task<ActionResult<SocialsDto>> UpdateSocials(
-        SocialsDto socials)
+    public async Task<ActionResult<SocialsDto>> UpdateSocials(SocialsDto socials)
     {
         using IDisposable scope = log.BeginScope(nameof(UpdateSocials));
 
-        _ = log.InfoAsync("POST /api/socials/socials received", new
-        {
-            HasXHandle = !string.IsNullOrWhiteSpace(socials.XHandle),
-            HasDiscordInvite = !string.IsNullOrWhiteSpace(socials.DiscordInvite)
-        });
+        _ = log.InfoAsync(
+            "POST /api/socials/socials received",
+            new
+            {
+                HasXHandle = !string.IsNullOrWhiteSpace(socials.XHandle),
+                HasDiscordInvite = !string.IsNullOrWhiteSpace(socials.DiscordInvite),
+            }
+        );
 
         SocialsDto updatedSocials = await socialsService.UpdateSocialsAsync(socials);
 

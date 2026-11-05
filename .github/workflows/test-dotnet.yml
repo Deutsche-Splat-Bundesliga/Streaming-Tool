@@ -4,10 +4,6 @@ permissions:
     contents: read
 
 on:
-    workflow_run:
-        workflows: ["Build .NET CI"]
-        types:
-            - completed
     pull_request:
         branches:
             - master
@@ -15,9 +11,12 @@ on:
         branches:
             - master
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
     test:
-        if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Build .NET CI' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'pull_request' }}
         runs-on: ubuntu-latest
 
         steps:
@@ -25,8 +24,16 @@ jobs:
             - name: Setup .NET
               uses: actions/setup-dotnet@v6
               with:
-                  dotnet-version: 9.0.x
+                  dotnet-version: 10.0.x
+            - name: Cache NuGet packages
+              uses: actions/cache@v5
+              with:
+                  path: ~/.nuget/packages
+                  key: ${{ runner.os }}-nuget-${{ github.workflow }}-${{ hashFiles('**/*.csproj', '**/nuget.config') }}
+                  restore-keys: |
+                      ${{ runner.os }}-nuget-${{ github.workflow }}-
+                      ${{ runner.os }}-nuget-
             - name: Restore dependencies
               run: dotnet restore tests/DSB.StreamBackend.Tests/DSB.StreamBackend.Tests.csproj
             - name: Run Backend Unit Tests
-              run: dotnet test --verbosity normal tests/DSB.StreamBackend.Tests/DSB.StreamBackend.Tests.csproj
+              run: dotnet test --no-restore --verbosity normal tests/DSB.StreamBackend.Tests/DSB.StreamBackend.Tests.csproj

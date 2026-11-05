@@ -69,15 +69,16 @@ public class BrandingService(StreamToolDbContext db, ILogService log)
         return entity;
     }
 
-    private static BrandingDto ToDto(BrandingEntity entity) => new()
-    {
-        OrganizationName = entity.OrganizationName,
-        OrganizationShortName = entity.OrganizationShortName,
-        TournamentName = entity.TournamentName,
-        LogoUrl = entity.LogoUrl,
-        LargeLogoUrl = entity.LargeLogoUrl,
-        OutlineLogoUrl = entity.OutlineLogoUrl,
-        PrimaryColor = entity.PrimaryColor,
-        SecondaryColor = entity.SecondaryColor
-    };
+    private static BrandingDto ToDto(BrandingEntity entity) =>
+        new()
+        {
+            OrganizationName = entity.OrganizationName,
+            OrganizationShortName = entity.OrganizationShortName,
+            TournamentName = entity.TournamentName,
+            LogoUrl = entity.LogoUrl,
+            LargeLogoUrl = entity.LargeLogoUrl,
+            OutlineLogoUrl = entity.OutlineLogoUrl,
+            PrimaryColor = entity.PrimaryColor,
+            SecondaryColor = entity.SecondaryColor,
+        };
 }

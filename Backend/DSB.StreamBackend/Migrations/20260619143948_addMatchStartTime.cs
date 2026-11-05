@@ -16,22 +16,22 @@ namespace DSB.StreamBackend.Migrations
                 table: "BroadcastStates",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+            );
 
             migrationBuilder.UpdateData(
                 table: "BroadcastStates",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "StartTime",
-                value: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                value: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "StartTime",
-                table: "BroadcastStates");
+            migrationBuilder.DropColumn(name: "StartTime", table: "BroadcastStates");
         }
     }
 }

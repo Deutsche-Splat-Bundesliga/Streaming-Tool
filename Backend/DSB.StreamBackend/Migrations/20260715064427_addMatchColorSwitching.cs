@@ -15,33 +15,32 @@ namespace DSB.StreamBackend.Migrations
                 table: "BroadcastStates",
                 type: "INTEGER",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
 
             migrationBuilder.AddColumn<int>(
                 name: "CurrentColorsId",
                 table: "BroadcastStates",
                 type: "INTEGER",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 0
+            );
 
             migrationBuilder.UpdateData(
                 table: "BroadcastStates",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "ColorLockActive", "CurrentColorsId" },
-                values: new object[] { false, 0 });
+                values: new object[] { false, 0 }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ColorLockActive",
-                table: "BroadcastStates");
+            migrationBuilder.DropColumn(name: "ColorLockActive", table: "BroadcastStates");
 
-            migrationBuilder.DropColumn(
-                name: "CurrentColorsId",
-                table: "BroadcastStates");
+            migrationBuilder.DropColumn(name: "CurrentColorsId", table: "BroadcastStates");
         }
     }
 }

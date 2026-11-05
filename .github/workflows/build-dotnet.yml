@@ -12,6 +12,10 @@ on:
     pull_request:
         branches: ["master"]
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -21,7 +25,19 @@ jobs:
             - name: Setup .NET
               uses: actions/setup-dotnet@v6
               with:
-                  dotnet-version: 9.0.x
+                  dotnet-version: 10.0.x
+            - name: Cache NuGet packages
+              uses: actions/cache@v5
+              with:
+                  path: ~/.nuget/packages
+                  key: ${{ runner.os }}-nuget-${{ github.workflow }}-${{ hashFiles('**/*.csproj', '**/nuget.config') }}
+                  restore-keys: |
+                      ${{ runner.os }}-nuget-${{ github.workflow }}-
+                      ${{ runner.os }}-nuget-
+            - name: Restore .NET tools
+              run: dotnet tool restore
+            - name: Check backend formatting
+              run: dotnet csharpier check Backend/DSB.StreamBackend
             - name: Restore dependencies
               run: dotnet restore ./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
             - name: Build

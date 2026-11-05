@@ -15,15 +15,14 @@ namespace DSB.StreamBackend.Migrations
                 table: "CommentatorBoxTimeData",
                 type: "INTEGER",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 0
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "DisplayMode",
-                table: "CommentatorBoxTimeData");
+            migrationBuilder.DropColumn(name: "DisplayMode", table: "CommentatorBoxTimeData");
         }
     }
 }

@@ -33,5 +33,5 @@ public enum LogLevel
     /// <summary>
     /// Represents a Critical Error log
     /// </summary>
-    Critical
+    Critical,
 }

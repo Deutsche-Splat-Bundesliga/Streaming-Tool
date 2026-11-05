@@ -17,9 +17,9 @@ namespace DSB.StreamBackend.Controllers;
 public class BroadcastController(
     BroadcastStateService stateService,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    ILogService log) : ControllerBase
+    ILogService log
+) : ControllerBase
 {
-
     /// <summary>
     /// Retrieves the current broadcast state.
     /// </summary>
@@ -44,18 +44,20 @@ public class BroadcastController(
     /// <param name="state">The new broadcast state to apply.</param>
     /// <returns>The updated broadcast state.</returns>
     [HttpPost("state")]
-    public async Task<ActionResult<BroadcastStateDto>> UpdateState(
-        BroadcastStateDto state)
+    public async Task<ActionResult<BroadcastStateDto>> UpdateState(BroadcastStateDto state)
     {
         using var scope = log.BeginScope(nameof(UpdateState));
 
-        _ = log.InfoAsync("POST /api/broadcast/state called", new
-        {
-            state.TeamAlphaName,
-            state.TeamBravoName,
-            state.ScoreAlpha,
-            state.ScoreBravo
-        });
+        _ = log.InfoAsync(
+            "POST /api/broadcast/state called",
+            new
+            {
+                state.TeamAlphaName,
+                state.TeamBravoName,
+                state.ScoreAlpha,
+                state.ScoreBravo,
+            }
+        );
 
         BroadcastStateDto updatedState = await stateService.UpdateStateAsync(state);
         await hub.Clients.All.BroadcastStateUpdated(updatedState);
@@ -77,7 +79,8 @@ public class BroadcastController(
     [HttpPost("maps/{mapId}/winner")]
     public async Task<ActionResult<BroadcastStateDto>> SetMapWinner(
         string mapId,
-        [FromQuery] string? winner)
+        [FromQuery] string? winner
+    )
     {
         using IDisposable scope = log.BeginScope(nameof(SetMapWinner));
 
@@ -85,10 +88,12 @@ public class BroadcastController(
 
         if (!TryParseWinner(winner, out string? normalizedWinner))
         {
-            return BadRequest(new
-            {
-                error = "Unknown winner. Use 'alpha', 'bravo', or 'none' (also 'null'/empty) to clear it."
-            });
+            return BadRequest(
+                new
+                {
+                    error = "Unknown winner. Use 'alpha', 'bravo', or 'none' (also 'null'/empty) to clear it.",
+                }
+            );
         }
 
         try
@@ -112,13 +117,16 @@ public class BroadcastController(
             BroadcastStateDto updatedState = await stateService.UpdateStateAsync(state);
             await hub.Clients.All.BroadcastStateUpdated(updatedState);
 
-            _ = log.InfoAsync("Map winner set and pushed to SignalR clients", new
-            {
-                mapId,
-                winner = normalizedWinner,
-                updatedState.ScoreAlpha,
-                updatedState.ScoreBravo
-            });
+            _ = log.InfoAsync(
+                "Map winner set and pushed to SignalR clients",
+                new
+                {
+                    mapId,
+                    winner = normalizedWinner,
+                    updatedState.ScoreAlpha,
+                    updatedState.ScoreBravo,
+                }
+            );
 
             return Ok(updatedState);
         }
@@ -191,10 +199,12 @@ public class BroadcastController(
                     state.ShowInfobox = !state.ShowInfobox;
                     break;
                 default:
-                    return BadRequest(new
-                    {
-                        error = "Unknown element. Use 'map-screen', 'score-box', 'commentator-box' or 'info-box'."
-                    });
+                    return BadRequest(
+                        new
+                        {
+                            error = "Unknown element. Use 'map-screen', 'score-box', 'commentator-box' or 'info-box'.",
+                        }
+                    );
             }
 
             BroadcastStateDto updatedState = await stateService.UpdateStateAsync(state);

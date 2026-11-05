@@ -14,19 +14,32 @@ namespace DSB.StreamBackend.Migrations
                 name: "CommentatorBoxTimeData",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ShowDisplayIntervalInSeconds = table.Column<int>(type: "INTEGER", nullable: false),
-                    HideDisplayIntervalInSeconds = table.Column<int>(type: "INTEGER", nullable: false)
+                    ShowDisplayIntervalInSeconds = table.Column<int>(
+                        type: "INTEGER",
+                        nullable: false
+                    ),
+                    HideDisplayIntervalInSeconds = table.Column<int>(
+                        type: "INTEGER",
+                        nullable: false
+                    ),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CommentatorBoxTimeData", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.InsertData(
                 table: "CommentatorBoxTimeData",
-                columns: new[] { "Id", "ShowDisplayIntervalInSeconds", "HideDisplayIntervalInSeconds" },
+                columns: new[]
+                {
+                    "Id",
+                    "ShowDisplayIntervalInSeconds",
+                    "HideDisplayIntervalInSeconds",
+                },
                 values: new object[] { 1, 50, 5 }
             );
         }
@@ -34,8 +47,7 @@ namespace DSB.StreamBackend.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "CommentatorBoxTimeData");
+            migrationBuilder.DropTable(name: "CommentatorBoxTimeData");
         }
     }
 }

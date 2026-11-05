@@ -19,6 +19,10 @@ on:
     pull_request:
         branches: ["master"]
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
     typescript-quality-check:
         runs-on: ubuntu-latest
@@ -39,5 +43,5 @@ jobs:
               run: npm ci
               working-directory: ${{ env.FRONTEND_PATH }}
             - name: Check TypeScript code quality
-              run: npx eslint src/ --format gha
+              run: npm run code-quality -- --format gha
               working-directory: ${{ env.FRONTEND_PATH }}

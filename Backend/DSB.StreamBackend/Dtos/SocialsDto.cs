@@ -1,7 +1,7 @@
 namespace DSB.StreamBackend.Dtos;
 
 /// <summary>
-/// Represents the current Social Media links 
+/// Represents the current Social Media links
 /// </summary>
 public class SocialsDto
 {

@@ -21,12 +21,13 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
     protected override DbSet<CommentatorBoxTimeDataEntity> DbSet => Db.CommentatorBoxTimeData;
 
     /// <inheritdoc />
-    protected override object? GetLogData(CommentatorBoxTimeDataEntity entity) => new
-    {
-        entity.ShowDisplayIntervalInSeconds,
-        entity.HideDisplayIntervalInSeconds,
-        entity.DisplayMode
-    };
+    protected override object? GetLogData(CommentatorBoxTimeDataEntity entity) =>
+        new
+        {
+            entity.ShowDisplayIntervalInSeconds,
+            entity.HideDisplayIntervalInSeconds,
+            entity.DisplayMode,
+        };
 
     /// <summary>
     /// Asynchronously gets the commentator box time data
@@ -39,10 +40,15 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
     /// </summary>
     /// <param name="dto">The <see cref="CommentatorBoxTimeDataDto"/> containing the updated information</param>
     /// <returns>The updated <see cref="CommentatorBoxTimeDataDto"/> object</returns>
-    public Task<CommentatorBoxTimeDataDto> UpdateCommentatorBoxTimeDataAsync(CommentatorBoxTimeDataDto dto) => UpdateAsync(dto);
+    public Task<CommentatorBoxTimeDataDto> UpdateCommentatorBoxTimeDataAsync(
+        CommentatorBoxTimeDataDto dto
+    ) => UpdateAsync(dto);
 
     /// <inheritdoc />
-    protected override void Apply(CommentatorBoxTimeDataEntity entity, CommentatorBoxTimeDataDto dto)
+    protected override void Apply(
+        CommentatorBoxTimeDataEntity entity,
+        CommentatorBoxTimeDataDto dto
+    )
     {
         entity.HideDisplayIntervalInSeconds = dto.HideDisplayIntervalInSeconds;
         entity.ShowDisplayIntervalInSeconds = dto.ShowDisplayIntervalInSeconds;
@@ -56,7 +62,7 @@ public class CommentatorBoxTimeDataService(StreamToolDbContext db, ILogService l
         {
             HideDisplayIntervalInSeconds = entity.HideDisplayIntervalInSeconds,
             ShowDisplayIntervalInSeconds = entity.ShowDisplayIntervalInSeconds,
-            DisplayMode = entity.DisplayMode
+            DisplayMode = entity.DisplayMode,
         };
     }
 }

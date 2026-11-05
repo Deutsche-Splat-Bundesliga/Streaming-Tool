@@ -1,96 +1,102 @@
-# CONTRIBUTING
+# Contributing
 
-Thank you for wanting to contribute to the DSB Streaming Tool repository!
-This document explains how to report bugs, propose new features, and create pull requests.
+Thank you for your interest in contributing to the DSB Streaming Tool. This guide
+outlines the development workflow and explains how to report issues and submit
+changes.
 
 ## 1. Getting Started
 
-1. Fork the repository.
-2. Clone your fork locally:
-    ```bash
-    git clone https://github.com/<your-username>/Streaming-Tool.git
-    ```
-3. Add the original repository as upstream:
-    ```bash
-    git remote add upstream https://github.com/Hazeolation/Streaming-Tool.git
-    ```
-4. Update your local copy before starting new work:
-    ```bash
-    git fetch upstream
-    git switch master
-    git merge upstream/master
-    ```
+1. Fork the repository on GitHub.
+2. Clone your fork:
+   ```bash
+   git clone https://github.com/<your-username>/Streaming-Tool.git
+   ```
+3. Add the main repository as the `upstream` remote:
+   ```bash
+   git remote add upstream https://github.com/Hazeolation/Streaming-Tool.git
+   ```
+4. Update your local `master` branch before starting work:
+   ```bash
+   git fetch upstream
+   git switch master
+   git merge upstream/master
+   ```
 
 ## 2. Development Setup
 
 ### Backend
 
-- Project path: `Backend/DSB.StreamBackend/DSB.StreamBackend.csproj`
-- Technology: ASP.NET Core 9, SignalR, SQLite
-- Start the backend in Visual Studio or with `dotnet run` from `Backend/DSB.StreamBackend`.
+- Project: `Backend/DSB.StreamBackend/DSB.StreamBackend.csproj`
+- Stack: ASP.NET Core 9, SignalR, and SQLite
+- Run the backend in Visual Studio or run `dotnet run` from `Backend/DSB.StreamBackend`.
 - Configuration files:
-    - `appsettings.json`
-    - `appsettings.Development.json`
+  - `appsettings.json`
+  - `appsettings.Development.json`
 
 ### Frontend
 
-- Project path: `Frontend/control-panel`
-- Technology: Angular
+- Project: `Frontend/control-panel`
+- Stack: Angular
 - Install dependencies:
-    ```bash
-    cd Frontend/control-panel
-    npm install
-    ```
+  ```bash
+  cd Frontend/control-panel
+  npm install
+  ```
 - Start the frontend:
-    ```bash
-    npm start
-    ```
+  ```bash
+  npm start
+  ```
 - The control panel is usually available at `http://localhost:4200`.
 
 > [!IMPORTANT]
-> The backend and frontend should run together locally so overlays update live via SignalR.
+> Run the backend and frontend together during local development to verify that
+> overlays receive live updates through SignalR.
 
 ## 3. What You Can Contribute
 
-- Bug reports and reproduction steps
-- Fixes for existing features
-- New overlay components or control panel improvements
+- Bug reports with reproducible steps
+- Bug fixes and improvements to existing features
+- Overlay components and control panel improvements
 - Documentation and screenshots
-- Tests or build workflow improvements
+- Tests and build workflow improvements
 
 ## 4. Style and Quality
 
-- Write clear, concise commit messages.
-- Keep branch names short and meaningful, e.g. `fix/[Issue#]-scorebox-update` or `feature/[Issue#]-map-screen`.
-- Follow existing conventions for Angular and C# code.
-- Avoid unrelated formatting changes in files unless they are part of your contribution.
+- Use clear, concise commit messages.
+- Choose short, descriptive branch names, such as `fix/123-scorebox-update` or
+  `feature/123-map-screen`.
+- Follow the existing Angular and C# conventions.
+- Keep changes focused; avoid unrelated formatting or refactoring.
 
 ## 5. Pull Request Process
 
-1. Create a new branch from `master`.
-2. In your PR, describe:
-    - What changed
-    - Why the change was needed
-    - How it was tested
-3. Link relevant issues if applicable.
-4. Make sure your branch is based on the latest `master` before opening the PR.
+1. Create a branch from the latest `master`.
+2. In your pull request, explain:
+   - What changed and why
+   - How it was tested
+3. Link any related issues.
+4. Confirm your branch is up to date with `master` before submitting.
 
 ## 6. Bug Reports and Feature Requests
 
-- Open issues when you find a bug or want to suggest an improvement.
-- Describe the behavior as precisely as possible.
-- Include reproduction steps, expected behavior, and screenshots if available.
+- Search existing issues before opening a new one.
+- For bugs, include the observed and expected behavior, steps to reproduce, and
+  relevant environment details. Add screenshots or logs when they help explain
+  the issue.
+- For feature requests, describe the use case and proposed improvement.
 
 ## 7. Testing and Verification
 
-- Backend: Run any existing tests if available and verify locally.
-- Frontend: Check changes in the browser against the control panel and overlay pages.
-- Ensure key SignalR and overlay features still work.
+- Run relevant existing tests and verify your changes locally.
+- For frontend changes, check the control panel and affected overlay pages in a
+  browser.
+- For changes affecting live updates, verify the relevant SignalR behavior.
 
 ## 8. License and Legal
 
-By contributing, you agree that your code will be used under this repository's license.
+Contributions are subject to the license and terms that apply to this repository.
 
 ## 9. Questions?
 
-If anything is unclear, please open an issue or contact the repository team through GitHub Discussions / Issues.
+For questions, open an issue or contact the maintainers through GitHub
+Discussions or Issues.

@@ -1,6 +1,8 @@
 # ESLint - Rules Documentation
 This document serves to document which rules we're using in our Code Quality tests with [ESLint](https://eslint.org) and [typescript-eslint](https://typescript-eslint.io)
 
+The check is scoped to TypeScript files under `src/`. Run it locally with `npm run code-quality` from `Frontend/control-panel`; CI runs the same script and adds its GitHub Actions formatter.
+
 # Used Rulesets
 ## Predefined Rulesets
 

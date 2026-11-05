@@ -15,7 +15,8 @@ namespace DSB.StreamBackend.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "Division", "Season" },
-                values: new object[] { 1, 10 });
+                values: new object[] { 1, 10 }
+            );
         }
 
         /// <inheritdoc />
@@ -26,7 +27,8 @@ namespace DSB.StreamBackend.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "Division", "Season" },
-                values: new object[] { 0, 0 });
+                values: new object[] { 0, 0 }
+            );
         }
     }
 }

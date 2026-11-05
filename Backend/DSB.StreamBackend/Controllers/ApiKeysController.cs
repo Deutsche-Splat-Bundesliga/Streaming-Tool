@@ -17,7 +17,8 @@ namespace DSB.StreamBackend.Controllers;
 public class ApiKeysController(
     ApiKeyService keyService,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    ILogService log) : ControllerBase
+    ILogService log
+) : ControllerBase
 {
     /// <summary>
     /// Retrieves all issued API keys (metadata only, never the keys themselves).

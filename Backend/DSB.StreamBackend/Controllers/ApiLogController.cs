@@ -17,7 +17,8 @@ namespace DSB.StreamBackend.Controllers;
 public class ApiLogController(
     ApiRequestLog requestLog,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    ILogService log) : ControllerBase
+    ILogService log
+) : ControllerBase
 {
     /// <summary>
     /// Retrieves all API log entries of the current backend session, oldest first.

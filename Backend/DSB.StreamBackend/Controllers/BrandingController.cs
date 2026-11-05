@@ -14,7 +14,8 @@ namespace DSB.StreamBackend.Controllers;
 public class BrandingController(
     BrandingService brandingService,
     BrandingAssetsService brandingAssetsService,
-    IHubContext<OverlayHub, IOverlayClient> hub) : ControllerBase
+    IHubContext<OverlayHub, IOverlayClient> hub
+) : ControllerBase
 {
     private const long MaxUploadRequestSize = 10 * 1024 * 1024 + 128 * 1024;
 
@@ -46,10 +47,9 @@ public class BrandingController(
         try
         {
             BrandingAssetFile asset = await brandingAssetsService.SaveAsync(image);
-            string assetUrl = Url.ActionLink(
-                nameof(GetBrandingAsset),
-                values: new { fileName = asset.FileName }) ??
-                throw new InvalidOperationException("Unable to create the branding asset URL.");
+            string assetUrl =
+                Url.ActionLink(nameof(GetBrandingAsset), values: new { fileName = asset.FileName })
+                ?? throw new InvalidOperationException("Unable to create the branding asset URL.");
 
             return Created(assetUrl, new { assetUrl });
         }
@@ -63,8 +63,6 @@ public class BrandingController(
     public IActionResult GetBrandingAsset(string fileName)
     {
         BrandingAssetFile? asset = brandingAssetsService.Find(fileName);
-        return asset is null
-            ? NotFound()
-            : PhysicalFile(asset.FullPath, asset.ContentType);
+        return asset is null ? NotFound() : PhysicalFile(asset.FullPath, asset.ContentType);
     }
 }

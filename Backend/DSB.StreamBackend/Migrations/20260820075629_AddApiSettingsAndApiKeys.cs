@@ -21,40 +21,45 @@ namespace DSB.StreamBackend.Migrations
                     KeyHash = table.Column<string>(type: "TEXT", nullable: false),
                     AccessLevel = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    LastUsedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    LastUsedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApiKeys", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "ApiSettings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    AllowUnauthenticatedRequests = table.Column<bool>(type: "INTEGER", nullable: false)
+                    AllowUnauthenticatedRequests = table.Column<bool>(
+                        type: "INTEGER",
+                        nullable: false
+                    ),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApiSettings", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.InsertData(
                 table: "ApiSettings",
                 columns: new[] { "Id", "AllowUnauthenticatedRequests" },
-                values: new object[] { 1, true });
+                values: new object[] { 1, true }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ApiKeys");
+            migrationBuilder.DropTable(name: "ApiKeys");
 
-            migrationBuilder.DropTable(
-                name: "ApiSettings");
+            migrationBuilder.DropTable(name: "ApiSettings");
         }
     }
 }
