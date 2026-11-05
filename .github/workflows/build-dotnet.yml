@@ -21,7 +21,11 @@ jobs:
             - name: Setup .NET
               uses: actions/setup-dotnet@v6
               with:
-                  dotnet-version: 9.0.x
+                  dotnet-version: 10.0.x
+            - name: Restore .NET tools
+              run: dotnet tool restore
+            - name: Check backend formatting
+              run: dotnet csharpier check Backend/DSB.StreamBackend
             - name: Restore dependencies
               run: dotnet restore ./Backend/DSB.StreamBackend/DSB.StreamBackend.csproj
             - name: Build

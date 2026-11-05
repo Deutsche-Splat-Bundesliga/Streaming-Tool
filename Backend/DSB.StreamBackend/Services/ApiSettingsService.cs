@@ -44,10 +44,7 @@ public class ApiSettingsService(StreamToolDbContext db, ILogService log)
     {
         using IDisposable scope = log.BeginScope(nameof(UpdateSettingsAsync));
 
-        await log.InfoAsync("Updating API settings", new
-        {
-            dto.AllowUnauthenticatedRequests
-        });
+        await log.InfoAsync("Updating API settings", new { dto.AllowUnauthenticatedRequests });
 
         try
         {
@@ -57,10 +54,10 @@ public class ApiSettingsService(StreamToolDbContext db, ILogService log)
 
             await db.SaveChangesAsync();
 
-            await log.InfoAsync("API settings updated", new
-            {
-                entity.AllowUnauthenticatedRequests
-            });
+            await log.InfoAsync(
+                "API settings updated",
+                new { entity.AllowUnauthenticatedRequests }
+            );
 
             return ToDto(entity);
         }
@@ -89,10 +86,7 @@ public class ApiSettingsService(StreamToolDbContext db, ILogService log)
 
         await log.WarningAsync("API settings not found, creating default");
 
-        entity = new ApiSettingsEntity
-        {
-            Id = 1
-        };
+        entity = new ApiSettingsEntity { Id = 1 };
 
         db.ApiSettings.Add(entity);
 
@@ -112,7 +106,7 @@ public class ApiSettingsService(StreamToolDbContext db, ILogService log)
     {
         return new ApiSettingsDto
         {
-            AllowUnauthenticatedRequests = entity.AllowUnauthenticatedRequests
+            AllowUnauthenticatedRequests = entity.AllowUnauthenticatedRequests,
         };
     }
 }

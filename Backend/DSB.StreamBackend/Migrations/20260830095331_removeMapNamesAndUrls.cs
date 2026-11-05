@@ -10,17 +10,11 @@ namespace DSB.StreamBackend.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ImageUrl",
-                table: "MapStates");
+            migrationBuilder.DropColumn(name: "ImageUrl", table: "MapStates");
 
-            migrationBuilder.DropColumn(
-                name: "MapName",
-                table: "MapStates");
+            migrationBuilder.DropColumn(name: "MapName", table: "MapStates");
 
-            migrationBuilder.DropColumn(
-                name: "ModeName",
-                table: "MapStates");
+            migrationBuilder.DropColumn(name: "ModeName", table: "MapStates");
         }
 
         /// <inheritdoc />
@@ -31,21 +25,24 @@ namespace DSB.StreamBackend.Migrations
                 table: "MapStates",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "MapName",
                 table: "MapStates",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "ModeName",
                 table: "MapStates",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
         }
     }
 }

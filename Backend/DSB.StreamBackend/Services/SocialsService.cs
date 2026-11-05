@@ -21,11 +21,12 @@ public class SocialsService(StreamToolDbContext db, ILogService log)
     protected override DbSet<SocialsEntity> DbSet => Db.Socials;
 
     /// <inheritdoc />
-    protected override object? GetLogData(SocialsEntity entity) => new
-    {
-        HasXHandle = !string.IsNullOrWhiteSpace(entity.XHandle),
-        HasDiscordInvite = !string.IsNullOrWhiteSpace(entity.DiscordInvite)
-    };
+    protected override object? GetLogData(SocialsEntity entity) =>
+        new
+        {
+            HasXHandle = !string.IsNullOrWhiteSpace(entity.XHandle),
+            HasDiscordInvite = !string.IsNullOrWhiteSpace(entity.DiscordInvite),
+        };
 
     /// <summary>
     /// Asynchronously gets the socials
@@ -50,10 +51,6 @@ public class SocialsService(StreamToolDbContext db, ILogService log)
     /// <inheritdoc />
     protected override SocialsDto ToDto(SocialsEntity entity)
     {
-        return new SocialsDto
-        {
-            XHandle = entity.XHandle,
-            DiscordInvite = entity.DiscordInvite
-        };
+        return new SocialsDto { XHandle = entity.XHandle, DiscordInvite = entity.DiscordInvite };
     }
 }

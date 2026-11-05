@@ -6,7 +6,7 @@ The workflows defined in `.github/workflows/` automate build, test, quality chec
 
 | Workflow                                  | File                                       | Description                                                                                                             |
 | ----------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| Build .NET CI                             | `.github/workflows/build-dotnet.yml`       | Checks whether the Backend .NET code can be built using `dotnet build`. Also checks the .NET code quality during build. |
+| Build .NET CI                             | `.github/workflows/build-dotnet.yml`       | Checks backend formatting with CSharpier and builds the Backend .NET project. |
 | Run .NET Tests CI                         | `.github/workflows/test-dotnet.yml`        | Runs the Backend unit tests after a successful Build .NET CI run.                                                       |
 | Build Node.js CI                          | `.github/workflows/build-nodejs.yml`       | Checks whether the Frontend code can be built using `ng s`.                                                             |
 | TypeScript Code Quality CI                | `.github/workflows/typescript-quality.yml` | Checks the code quality of the Frontend TypeScript code using ESLint.                                                   |
@@ -21,7 +21,7 @@ The workflows defined in `.github/workflows/` automate build, test, quality chec
 ### Build .NET CI
 
 File: `.github/workflows/build-dotnet.yml`
-Description: Builds the Backend .NET project and validates code quality during the build stage.
+Description: Checks backend formatting with the repository-pinned CSharpier tool, then builds the Backend .NET project.
 
 ### Run .NET Tests CI
 

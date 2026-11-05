@@ -39,8 +39,8 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
 
         try
         {
-            List<ApiKeyEntity> entities = await db.ApiKeys
-                .OrderByDescending(x => x.CreatedAt)
+            List<ApiKeyEntity> entities = await db
+                .ApiKeys.OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
 
             await log.InfoAsync("API keys loaded", new { Count = entities.Count });
@@ -86,20 +86,24 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
                 KeyPrefix = plaintextKey[..DisplayPrefixLength],
                 KeyHash = ComputeHash(plaintextKey),
                 AccessLevel = accessLevel,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
             };
 
             db.ApiKeys.Add(entity);
 
             await db.SaveChangesAsync();
 
-            await log.InfoAsync("API key created", new { entity.Id, entity.Name, entity.KeyPrefix });
+            await log.InfoAsync(
+                "API key created",
+                new
+                {
+                    entity.Id,
+                    entity.Name,
+                    entity.KeyPrefix,
+                }
+            );
 
-            return new ApiKeyCreatedDto
-            {
-                Key = plaintextKey,
-                ApiKey = ToDto(entity)
-            };
+            return new ApiKeyCreatedDto { Key = plaintextKey, ApiKey = ToDto(entity) };
         }
         catch (Exception ex)
         {
@@ -178,7 +182,8 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
     /// <returns>The generated plaintext key</returns>
     private static string GenerateKey()
     {
-        return KeyPrefix + Convert.ToHexString(RandomNumberGenerator.GetBytes(24)).ToLowerInvariant();
+        return KeyPrefix
+            + Convert.ToHexString(RandomNumberGenerator.GetBytes(24)).ToLowerInvariant();
     }
 
     /// <summary>
@@ -188,7 +193,9 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
     /// <returns>The hash as lowercase hex string</returns>
     private static string ComputeHash(string plaintextKey)
     {
-        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(plaintextKey))).ToLowerInvariant();
+        return Convert
+            .ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(plaintextKey)))
+            .ToLowerInvariant();
     }
 
     /// <summary>
@@ -205,7 +212,7 @@ public class ApiKeyService(StreamToolDbContext db, ILogService log)
             KeyPrefix = entity.KeyPrefix,
             AccessLevel = entity.AccessLevel,
             CreatedAt = entity.CreatedAt,
-            LastUsedAt = entity.LastUsedAt
+            LastUsedAt = entity.LastUsedAt,
         };
     }
 }

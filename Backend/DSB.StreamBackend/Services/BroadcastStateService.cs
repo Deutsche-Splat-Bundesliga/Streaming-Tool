@@ -21,16 +21,18 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
     protected override DbSet<BroadcastStateEntity> DbSet => Db.BroadcastStates;
 
     /// <inheritdoc />
-    protected override IQueryable<BroadcastStateEntity> IncludeRelated(IQueryable<BroadcastStateEntity> query)
-        => query.Include(x => x.Maps);
+    protected override IQueryable<BroadcastStateEntity> IncludeRelated(
+        IQueryable<BroadcastStateEntity> query
+    ) => query.Include(x => x.Maps);
 
     /// <inheritdoc />
-    protected override object? GetLogData(BroadcastStateEntity entity) => new
-    {
-        entity.ScoreAlpha,
-        entity.ScoreBravo,
-        Maps = entity.Maps.Count
-    };
+    protected override object? GetLogData(BroadcastStateEntity entity) =>
+        new
+        {
+            entity.ScoreAlpha,
+            entity.ScoreBravo,
+            Maps = entity.Maps.Count,
+        };
 
     /// <summary>
     /// Asynchronously gets the <see cref="BroadcastStateDto"/>
@@ -87,20 +89,14 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
     /// <param name="dtoMaps">A <see cref="List{T}"/> of the <see cref="MapStateDto"/>s to update</param>
     private void UpdateMaps(BroadcastStateEntity entity, List<MapStateDto> dtoMaps)
     {
-        _ = Log.DebugAsync("Updating map state collection", new
-        {
-            Existing = entity.Maps.Count,
-            Incoming = dtoMaps.Count
-        });
+        _ = Log.DebugAsync(
+            "Updating map state collection",
+            new { Existing = entity.Maps.Count, Incoming = dtoMaps.Count }
+        );
 
-        var dtoIds = dtoMaps
-            .Where(x => !string.IsNullOrEmpty(x.Id))
-            .Select(x => x.Id)
-            .ToHashSet();
+        var dtoIds = dtoMaps.Where(x => !string.IsNullOrEmpty(x.Id)).Select(x => x.Id).ToHashSet();
 
-        var removed = entity.Maps
-            .Where(x => !dtoIds.Contains(x.Id))
-            .ToList();
+        var removed = entity.Maps.Where(x => !dtoIds.Contains(x.Id)).ToList();
 
         if (removed.Count > 0)
         {
@@ -117,10 +113,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
 
             if (existing != null)
             {
-                _ = Log.TraceAsync("Updating map", new
-                {
-                    existing.Id
-                });
+                _ = Log.TraceAsync("Updating map", new { existing.Id });
 
                 existing.Order = mapDto.Order;
                 existing.MapId = mapDto.MapId;
@@ -130,25 +123,22 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
             }
             else
             {
-                var id = string.IsNullOrEmpty(mapDto.Id)
-                    ? Guid.NewGuid().ToString()
-                    : mapDto.Id;
+                var id = string.IsNullOrEmpty(mapDto.Id) ? Guid.NewGuid().ToString() : mapDto.Id;
 
-                _ = Log.InfoAsync("Adding map", new
-                {
-                    id,
-                });
+                _ = Log.InfoAsync("Adding map", new { id });
 
-                entity.Maps.Add(new MapStateEntity
-                {
-                    Id = id,
-                    Order = mapDto.Order,
-                    MapId = mapDto.MapId,
-                    ModeId = mapDto.ModeId,
-                    Winner = mapDto.Winner,
-                    IsVisible = mapDto.IsVisible,
-                    BroadcastStateEntityId = 1
-                });
+                entity.Maps.Add(
+                    new MapStateEntity
+                    {
+                        Id = id,
+                        Order = mapDto.Order,
+                        MapId = mapDto.MapId,
+                        ModeId = mapDto.ModeId,
+                        Winner = mapDto.Winner,
+                        IsVisible = mapDto.IsVisible,
+                        BroadcastStateEntityId = 1,
+                    }
+                );
             }
         }
     }
@@ -172,7 +162,8 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
             ShowInfobox = entity.ShowInfobox,
             Maps =
             [
-                ..entity.Maps.OrderBy(x => x.Order)
+                .. entity
+                    .Maps.OrderBy(x => x.Order)
                     .Select(x => new MapStateDto
                     {
                         Id = x.Id,
@@ -180,8 +171,8 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
                         MapId = x.MapId,
                         ModeId = x.ModeId,
                         Winner = x.Winner,
-                        IsVisible = x.IsVisible
-                    })
+                        IsVisible = x.IsVisible,
+                    }),
             ],
             Season = entity.Season,
             Division = entity.Division,
@@ -191,7 +182,7 @@ public class BroadcastStateService(StreamToolDbContext db, ILogService log)
             BracketName = entity.BracketName,
             StartTime = entity.StartTime,
             CurrentColorsId = entity.CurrentColorsId,
-            ColorLockActive = entity.ColorLockActive
+            ColorLockActive = entity.ColorLockActive,
         };
     }
 }

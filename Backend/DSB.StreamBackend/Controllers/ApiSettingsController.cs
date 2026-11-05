@@ -17,7 +17,8 @@ namespace DSB.StreamBackend.Controllers;
 public class ApiSettingsController(
     ApiSettingsService settingsService,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    ILogService log) : ControllerBase
+    ILogService log
+) : ControllerBase
 {
     /// <summary>
     /// Retrieves the current API settings.
@@ -55,10 +56,10 @@ public class ApiSettingsController(
     {
         using IDisposable scope = log.BeginScope(nameof(UpdateSettings));
 
-        _ = log.InfoAsync("POST /api/api-settings called", new
-        {
-            settings.AllowUnauthenticatedRequests
-        });
+        _ = log.InfoAsync(
+            "POST /api/api-settings called",
+            new { settings.AllowUnauthenticatedRequests }
+        );
 
         try
         {

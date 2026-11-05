@@ -16,7 +16,8 @@ public partial class AddBranding : Migration
             name: "Branding",
             columns: table => new
             {
-                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                Id = table
+                    .Column<int>(type: "INTEGER", nullable: false)
                     .Annotation("Sqlite:Autoincrement", true),
                 OrganizationName = table.Column<string>(type: "TEXT", nullable: false),
                 OrganizationShortName = table.Column<string>(type: "TEXT", nullable: false),
@@ -25,11 +26,13 @@ public partial class AddBranding : Migration
                 LargeLogoUrl = table.Column<string>(type: "TEXT", nullable: false),
                 OutlineLogoUrl = table.Column<string>(type: "TEXT", nullable: false),
                 PrimaryColor = table.Column<string>(type: "TEXT", nullable: false),
-                SecondaryColor = table.Column<string>(type: "TEXT", nullable: false)
+                SecondaryColor = table.Column<string>(type: "TEXT", nullable: false),
             },
-            constraints: table => table.PrimaryKey("PK_Branding", x => x.Id));
+            constraints: table => table.PrimaryKey("PK_Branding", x => x.Id)
+        );
 
-        migrationBuilder.Sql("""
+        migrationBuilder.Sql(
+            """
             INSERT INTO "Branding" (
                 "Id", "OrganizationName", "OrganizationShortName", "TournamentName",
                 "LogoUrl", "LargeLogoUrl", "OutlineLogoUrl", "PrimaryColor", "SecondaryColor"
@@ -38,7 +41,8 @@ public partial class AddBranding : Migration
                 'assets/dsb/DSB_Logo.png', 'assets/dsb/DSB_Logo-Large.png',
                 'assets/dsb/DSB_Outline_White.png', '#501776', '#c4c4c4'
             );
-            """);
+            """
+        );
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)

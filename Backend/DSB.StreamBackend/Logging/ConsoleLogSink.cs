@@ -10,10 +10,7 @@ public class ConsoleLogSink : ILogSink
 {
     private static readonly object ConsoleLock = new();
 
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        WriteIndented = false
-    };
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = false };
 
     /// <inheritdoc />
     public Task WriteAsync(LogEntry entry)
@@ -67,8 +64,8 @@ public class ConsoleLogSink : ILogSink
     /// <summary>
     /// Returns the console color for a log level.
     /// </summary>
-    private static ConsoleColor GetColor(LogLevel level)
-        => level switch
+    private static ConsoleColor GetColor(LogLevel level) =>
+        level switch
         {
             LogLevel.Trace => ConsoleColor.DarkGray,
             LogLevel.Debug => ConsoleColor.Gray,
@@ -76,6 +73,6 @@ public class ConsoleLogSink : ILogSink
             LogLevel.Warning => ConsoleColor.Yellow,
             LogLevel.Error => ConsoleColor.Red,
             LogLevel.Critical => ConsoleColor.Magenta,
-            _ => ConsoleColor.White
+            _ => ConsoleColor.White,
         };
 }

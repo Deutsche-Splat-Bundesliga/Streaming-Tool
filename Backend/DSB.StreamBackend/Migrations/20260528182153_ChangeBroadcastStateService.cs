@@ -15,33 +15,32 @@ namespace DSB.StreamBackend.Migrations
                 table: "BroadcastStates",
                 type: "INTEGER",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 0
+            );
 
             migrationBuilder.AddColumn<int>(
                 name: "Season",
                 table: "BroadcastStates",
                 type: "INTEGER",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 0
+            );
 
             migrationBuilder.UpdateData(
                 table: "BroadcastStates",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "Division", "Season" },
-                values: new object[] { 0, 0 });
+                values: new object[] { 0, 0 }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Division",
-                table: "BroadcastStates");
+            migrationBuilder.DropColumn(name: "Division", table: "BroadcastStates");
 
-            migrationBuilder.DropColumn(
-                name: "Season",
-                table: "BroadcastStates");
+            migrationBuilder.DropColumn(name: "Season", table: "BroadcastStates");
         }
     }
 }

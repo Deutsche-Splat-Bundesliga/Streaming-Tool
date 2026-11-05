@@ -15,22 +15,22 @@ namespace DSB.StreamBackend.Migrations
                 table: "BroadcastStates",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.UpdateData(
                 table: "BroadcastStates",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "Streamer",
-                value: "");
+                value: ""
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Streamer",
-                table: "BroadcastStates");
+            migrationBuilder.DropColumn(name: "Streamer", table: "BroadcastStates");
         }
     }
 }

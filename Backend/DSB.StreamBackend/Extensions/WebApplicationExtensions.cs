@@ -18,8 +18,7 @@ public static class WebApplicationExtensions
     {
         using var scope = app.Services.CreateScope();
 
-        var db = scope.ServiceProvider
-            .GetRequiredService<StreamToolDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<StreamToolDbContext>();
 
         db.Database.Migrate();
 

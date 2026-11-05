@@ -39,5 +39,5 @@ jobs:
               run: npm ci
               working-directory: ${{ env.FRONTEND_PATH }}
             - name: Check TypeScript code quality
-              run: npx eslint src/ --format gha
+              run: npm run code-quality -- --format gha
               working-directory: ${{ env.FRONTEND_PATH }}

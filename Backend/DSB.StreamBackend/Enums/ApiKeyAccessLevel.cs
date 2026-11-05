@@ -13,5 +13,5 @@ public enum ApiKeyAccessLevel
     /// <summary>
     /// The key may perform read and write requests.
     /// </summary>
-    ReadWrite
+    ReadWrite,
 }

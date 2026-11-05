@@ -17,7 +17,8 @@ namespace DSB.StreamBackend.Controllers;
 public class CommentatorBoxTimeDataController(
     CommentatorBoxTimeDataService timeDataService,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    ILogService log) : ControllerBase
+    ILogService log
+) : ControllerBase
 {
     /// <summary>
     /// Retrieves the current commentator box time data.
@@ -44,15 +45,20 @@ public class CommentatorBoxTimeDataController(
     /// <returns>The updated commentator box time data.</returns>
     [HttpPost("commentator-box-time-data")]
     public async Task<ActionResult<CommentatorBoxTimeDataDto>> UpdateCommentatorBoxTimeData(
-        CommentatorBoxTimeDataDto timeData)
+        CommentatorBoxTimeDataDto timeData
+    )
     {
         using IDisposable scope = log.BeginScope(nameof(UpdateCommentatorBoxTimeData));
 
         _ = log.InfoAsync("Updating CommentatorBoxTimeData: {@TimeData}", timeData);
 
-        CommentatorBoxTimeDataDto updatedTimeData = await timeDataService.UpdateCommentatorBoxTimeDataAsync(timeData);
+        CommentatorBoxTimeDataDto updatedTimeData =
+            await timeDataService.UpdateCommentatorBoxTimeDataAsync(timeData);
 
-        _ = log.InfoAsync("CommentatorBoxTimeData updated successfully: {@UpdatedTimeData}", updatedTimeData);
+        _ = log.InfoAsync(
+            "CommentatorBoxTimeData updated successfully: {@UpdatedTimeData}",
+            updatedTimeData
+        );
 
         await hub.Clients.All.CommentatorBoxTimeDataUpdated(updatedTimeData);
 

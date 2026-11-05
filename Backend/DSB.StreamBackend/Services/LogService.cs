@@ -1,5 +1,5 @@
-using DSB.StreamBackend.Logging;
 using System.Diagnostics;
+using DSB.StreamBackend.Logging;
 
 namespace DSB.StreamBackend.Services;
 
@@ -12,7 +12,6 @@ namespace DSB.StreamBackend.Services;
 /// <param name="sinks">A list of all sinks to connect to the logging service.</param>
 public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = null) : ILogService
 {
-
     /// <summary>
     /// Logs a Trace log.
     /// </summary>
@@ -21,8 +20,8 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// </remarks>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public Task TraceAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Trace, message, null, data, GetSourceLocation());
+    public Task TraceAsync(string message, object? data = null) =>
+        LogAsync(Logging.LogLevel.Trace, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs a Debug log.
@@ -32,47 +31,54 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// </remarks>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public Task DebugAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Debug, message, null, data, GetSourceLocation());
+    public Task DebugAsync(string message, object? data = null) =>
+        LogAsync(Logging.LogLevel.Debug, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs an Info log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public Task InfoAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Info, message, null, data, GetSourceLocation());
+    public Task InfoAsync(string message, object? data = null) =>
+        LogAsync(Logging.LogLevel.Info, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs a Warning log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="data">The object to log</param>
-    public Task WarningAsync(string message, object? data = null)
-        => LogAsync(Logging.LogLevel.Warning, message, null, data, GetSourceLocation());
+    public Task WarningAsync(string message, object? data = null) =>
+        LogAsync(Logging.LogLevel.Warning, message, null, data, GetSourceLocation());
 
     /// <summary>
     /// Logs an Error log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
-    public Task ErrorAsync(string message, Exception? ex = null, object? data = null)
-        => LogAsync(Logging.LogLevel.Error, message, ex, data, GetSourceLocation());
+    public Task ErrorAsync(string message, Exception? ex = null, object? data = null) =>
+        LogAsync(Logging.LogLevel.Error, message, ex, data, GetSourceLocation());
 
     /// <summary>
     /// Logs a Critical Error log.
     /// </summary>
     /// <param name="message">The log message to display</param>
     /// <param name="ex">The Exception to log</param>
-    public Task CriticalAsync(string message, Exception? ex = null, object? data = null)
-        => LogAsync(Logging.LogLevel.Critical, message, ex, data, GetSourceLocation());
+    public Task CriticalAsync(string message, Exception? ex = null, object? data = null) =>
+        LogAsync(Logging.LogLevel.Critical, message, ex, data, GetSourceLocation());
 
     /// <summary>
     /// Writes a log entry to all configured sinks.
     /// </summary>
-    private async Task LogAsync(Logging.LogLevel level, string message, Exception? ex, object? data, string source)
+    private async Task LogAsync(
+        Logging.LogLevel level,
+        string message,
+        Exception? ex,
+        object? data,
+        string source
+    )
     {
-        if (!ShouldLog(level)) return;
+        if (!ShouldLog(level))
+            return;
 
         LogEntry entry = new()
         {
@@ -82,7 +88,7 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
             Source = source,
             Exception = ex,
             Data = data,
-            Scope = LoggingScope.Current
+            Scope = LoggingScope.Current,
         };
 
         await Task.WhenAll(
@@ -100,8 +106,8 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     private static string GetSourceLocation()
     {
         StackFrame? callerFrame = new StackTrace(fNeedFileInfo: true)
-            .GetFrames()?
-            .FirstOrDefault(frame => !IsLogServiceFrame(frame));
+            .GetFrames()
+            ?.FirstOrDefault(frame => !IsLogServiceFrame(frame));
         string? filePath = callerFrame?.GetFileName();
         int lineNumber = callerFrame?.GetFileLineNumber() ?? 0;
 
@@ -116,7 +122,8 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
 
         while (frameType is not null)
         {
-            if (frameType == typeof(LogService)) return true;
+            if (frameType == typeof(LogService))
+                return true;
             frameType = frameType.DeclaringType;
         }
 
@@ -136,7 +143,8 @@ public class LogService(IEnumerable<ILogSink> sinks, IWebHostEnvironment? env = 
     /// <returns>True if the log should be logged, otherwise false</returns>
     private bool ShouldLog(Logging.LogLevel level)
     {
-        if (env is null || env!.IsDevelopment()) return true;
+        if (env is null || env!.IsDevelopment())
+            return true;
         return level > Logging.LogLevel.Debug;
     }
 }

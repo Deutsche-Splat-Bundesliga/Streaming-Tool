@@ -6,18 +6,8 @@ import tseslint from 'typescript-eslint';
 export default defineConfig([
     {
         files: [
-            "**/*.ts"
-        ]
-    },
-    {
-        ignores: [
-            "./node_modules/",
-            "./.vscode/",
-            "./.angular/",
-            "./dist/"
-        ]
-    },
-    {
+            "src/**/*.ts"
+        ],
         extends: [
             js.configs.recommended,
             tseslint.configs.recommended

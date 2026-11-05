@@ -33,7 +33,8 @@ public class ApiAuthenticationMiddleware(
     RequestDelegate next,
     ApiRequestLog requestLog,
     IHubContext<OverlayHub, IOverlayClient> hub,
-    ILogService log)
+    ILogService log
+)
 {
     /// <summary>
     /// Name of the HTTP header third-party clients use to send their API key.
@@ -58,7 +59,7 @@ public class ApiAuthenticationMiddleware(
     private static readonly string[] ControlPanelOrigins =
     [
         "http://localhost:4200",
-        "http://localhost:4201"
+        "http://localhost:4201",
     ];
 
     /// <summary>
@@ -71,11 +72,15 @@ public class ApiAuthenticationMiddleware(
     public async Task InvokeAsync(
         HttpContext context,
         ApiSettingsService settingsService,
-        ApiKeyService keyService)
+        ApiKeyService keyService
+    )
     {
         // Only guard REST API endpoints; SignalR hubs, Swagger etc. are unaffected.
         // OPTIONS is skipped so CORS preflight requests always succeed.
-        if (!context.Request.Path.StartsWithSegments("/api") || HttpMethods.IsOptions(context.Request.Method))
+        if (
+            !context.Request.Path.StartsWithSegments("/api")
+            || HttpMethods.IsOptions(context.Request.Method)
+        )
         {
             await next(context);
             return;
@@ -109,19 +114,25 @@ public class ApiAuthenticationMiddleware(
             {
                 source = apiKey.Name;
 
-                if (apiKey.AccessLevel == ApiKeyAccessLevel.ReadOnly
+                if (
+                    apiKey.AccessLevel == ApiKeyAccessLevel.ReadOnly
                     && !HttpMethods.IsGet(context.Request.Method)
-                    && !HttpMethods.IsHead(context.Request.Method))
+                    && !HttpMethods.IsHead(context.Request.Method)
+                )
                 {
                     rejected = true;
                     rejectionStatusCode = HttpStatusCode.Forbidden;
-                    rejectionReason = "This API key is read-only and cannot perform write requests.";
+                    rejectionReason =
+                        "This API key is read-only and cannot perform write requests.";
                 }
-                else if (!settings.AllowUnauthenticatedRequests && IsManagementPath(context.Request.Path))
+                else if (
+                    !settings.AllowUnauthenticatedRequests && IsManagementPath(context.Request.Path)
+                )
                 {
                     rejected = true;
                     rejectionStatusCode = HttpStatusCode.Forbidden;
-                    rejectionReason = "API management endpoints are reserved for the Control Panel.";
+                    rejectionReason =
+                        "API management endpoints are reserved for the Control Panel.";
                 }
             }
             else if (!settings.AllowUnauthenticatedRequests)
@@ -136,14 +147,17 @@ public class ApiAuthenticationMiddleware(
 
         if (rejected)
         {
-            _ = log.WarningAsync("API request rejected", new
-            {
-                context.Request.Method,
-                Path = context.Request.Path.ToString(),
-                source,
-                rejectionStatusCode,
-                rejectionReason
-            });
+            _ = log.WarningAsync(
+                "API request rejected",
+                new
+                {
+                    context.Request.Method,
+                    Path = context.Request.Path.ToString(),
+                    source,
+                    rejectionStatusCode,
+                    rejectionReason,
+                }
+            );
 
             context.Response.StatusCode = (int)rejectionStatusCode;
             await context.Response.WriteAsJsonAsync(new { error = rejectionReason });
@@ -156,7 +170,12 @@ public class ApiAuthenticationMiddleware(
             }
             catch (Exception)
             {
-                await RecordAsync(context, source, rejected: false, statusCodeOverride: HttpStatusCode.InternalServerError);
+                await RecordAsync(
+                    context,
+                    source,
+                    rejected: false,
+                    statusCodeOverride: HttpStatusCode.InternalServerError
+                );
                 throw;
             }
         }
@@ -185,7 +204,12 @@ public class ApiAuthenticationMiddleware(
     /// <param name="source">Who issued the request.</param>
     /// <param name="rejected">Whether the request was rejected by this middleware.</param>
     /// <param name="statusCodeOverride">Optional status code overriding the response's one (used for exceptions).</param>
-    private async Task RecordAsync(HttpContext context, string source, bool rejected, HttpStatusCode? statusCodeOverride)
+    private async Task RecordAsync(
+        HttpContext context,
+        string source,
+        bool rejected,
+        HttpStatusCode? statusCodeOverride
+    )
     {
         ApiLogEntryDto entry = new()
         {
@@ -194,7 +218,7 @@ public class ApiAuthenticationMiddleware(
             Path = context.Request.Path.ToString(),
             StatusCode = statusCodeOverride ?? (HttpStatusCode)context.Response.StatusCode,
             Source = source,
-            WasRejected = rejected
+            WasRejected = rejected,
         };
 
         requestLog.Add(entry);

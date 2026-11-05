@@ -14,7 +14,8 @@ namespace DSB.StreamBackend.Migrations
                 name: "BroadcastStates",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TeamAlphaName = table.Column<string>(type: "TEXT", nullable: false),
                     TeamBravoName = table.Column<string>(type: "TEXT", nullable: false),
@@ -26,12 +27,13 @@ namespace DSB.StreamBackend.Migrations
                     ShowMapScreen = table.Column<bool>(type: "INTEGER", nullable: false),
                     ShowScoreBox = table.Column<bool>(type: "INTEGER", nullable: false),
                     ShowCommentatorBox = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ShowInfobox = table.Column<bool>(type: "INTEGER", nullable: false)
+                    ShowInfobox = table.Column<bool>(type: "INTEGER", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BroadcastStates", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "MapStates",
@@ -46,7 +48,7 @@ namespace DSB.StreamBackend.Migrations
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
                     Winner = table.Column<string>(type: "TEXT", nullable: true),
                     IsVisible = table.Column<bool>(type: "INTEGER", nullable: false),
-                    BroadcastStateEntityId = table.Column<int>(type: "INTEGER", nullable: false)
+                    BroadcastStateEntityId = table.Column<int>(type: "INTEGER", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -56,28 +58,58 @@ namespace DSB.StreamBackend.Migrations
                         column: x => x.BroadcastStateEntityId,
                         principalTable: "BroadcastStates",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.InsertData(
                 table: "BroadcastStates",
-                columns: new[] { "Id", "AlphaIsLeft", "Commentator1", "Commentator2", "ScoreAlpha", "ScoreBravo", "ShowCommentatorBox", "ShowInfobox", "ShowMapScreen", "ShowScoreBox", "TeamAlphaName", "TeamBravoName" },
-                values: new object[] { 1, true, "", "", 0, 0, true, true, true, true, "Team Alpha", "Team Bravo" });
+                columns: new[]
+                {
+                    "Id",
+                    "AlphaIsLeft",
+                    "Commentator1",
+                    "Commentator2",
+                    "ScoreAlpha",
+                    "ScoreBravo",
+                    "ShowCommentatorBox",
+                    "ShowInfobox",
+                    "ShowMapScreen",
+                    "ShowScoreBox",
+                    "TeamAlphaName",
+                    "TeamBravoName",
+                },
+                values: new object[]
+                {
+                    1,
+                    true,
+                    "",
+                    "",
+                    0,
+                    0,
+                    true,
+                    true,
+                    true,
+                    true,
+                    "Team Alpha",
+                    "Team Bravo",
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_MapStates_BroadcastStateEntityId",
                 table: "MapStates",
-                column: "BroadcastStateEntityId");
+                column: "BroadcastStateEntityId"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "MapStates");
+            migrationBuilder.DropTable(name: "MapStates");
 
-            migrationBuilder.DropTable(
-                name: "BroadcastStates");
+            migrationBuilder.DropTable(name: "BroadcastStates");
         }
     }
 }

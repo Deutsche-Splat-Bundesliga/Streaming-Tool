@@ -21,7 +21,10 @@ public static class ServiceCollectionExtensions
     /// <param name="services">The service collection to configure.</param>
     /// <param name="configuration">The application configuration, used to resolve the connection string.</param>
     /// <returns>The same <see cref="IServiceCollection"/> so calls can be chained.</returns>
-    public static IServiceCollection AddStreamBackend(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddStreamBackend(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services.AddControllers();
         services.AddSignalR();
@@ -44,17 +47,17 @@ public static class ServiceCollectionExtensions
 
         services.AddCors(options =>
         {
-            options.AddPolicy(FrontendCorsPolicyName,
+            options.AddPolicy(
+                FrontendCorsPolicyName,
                 policy =>
                 {
                     policy
-                        .WithOrigins(
-                            "http://localhost:4200",
-                            "http://localhost:4201")
+                        .WithOrigins("http://localhost:4200", "http://localhost:4201")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
-                });
+                }
+            );
         });
 
         services.AddEndpointsApiExplorer();
